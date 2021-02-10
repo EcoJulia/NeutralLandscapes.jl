@@ -1,9 +1,9 @@
 
 rescale!(mat) = (mat .- minimum(mat)) ./ (maximum(mat) - minimum(mat))
 
-function mask!(array, maskarray) 
+function mask!(array::AbstractArray{<:Float64}, maskarray::AbstractArray{<:Bool}) 
     for i in eachindex(array, maskarray)
-        array[i] = maskarray[i] == 0 ? array[i] : missing
+        array[i] = maskarray[i] ? array[i] : NaN
     end
     array
 end
