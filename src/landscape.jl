@@ -1,5 +1,8 @@
 
-rescale!(mat) = (mat .- NaNMath.minimum(mat)) ./ (NaNMath.maximum(mat) - NaNMath.minimum(mat))
+function rescale!(mat)
+  mat .-= NaNMath.minimum(mat)
+  mat ./= NaNMath.maximum(mat)
+end 
 
 function mask!(array::AbstractArray{<:Float64}, maskarray::AbstractArray{<:Bool}) 
     for i in eachindex(array, maskarray)
