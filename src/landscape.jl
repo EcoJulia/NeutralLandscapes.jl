@@ -5,9 +5,7 @@ function rescale!(mat)
 end 
 
 function mask!(array::AbstractArray{<:Float64}, maskarray::AbstractArray{<:Bool}) 
-    for i in eachindex(array, maskarray)
-        array[i] = maskarray[i] ? array[i] : NaN
-    end
+    array[.!maskarray] .= NaN
     array
 end
 
