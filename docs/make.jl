@@ -1,20 +1,17 @@
 using Documenter, NCBITaxonomy
 
 makedocs(
-    sitename="NCBITaxonomy",
+    sitename="Neutral Landscapes",
     authors="Timothée Poisot",
-    modules=[NCBITaxonomy],
+    modules=[NeutralLandscapes],
     pages=[
-        "Index" => "index.md",
-        "Finding taxa" => "namefinding.md",
-        "Navigating lineages" => "lineages.md",
-        "Portal data use-case" => "portal.md"
+        "Index" => "index.md"
         ]
 )
 
 deploydocs(
     deps=Deps.pip("pygments", "python-markdown-math"),
-    repo="github.com/EcoJulia/NCBITaxonomy.jl.git",
+    repo="github.com/EcoJulia/NeutralLandscapes.jl.git",
     devbranch="main",
     push_preview=true
 )
