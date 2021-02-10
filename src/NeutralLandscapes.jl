@@ -18,4 +18,8 @@ export PlanarGradient
 include(joinpath("algorithms", "edgegradient.jl"))
 export EdgeGradient
 
+include(joinpath("algorithms", "diamondsquare.jl"))
+export DiamondSquare
+
+
 end # module
