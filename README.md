@@ -2,7 +2,7 @@
 
 **Python source:** https://github.com/tretherington/nlmpy
 
-~~~julia
+```julia
 julia> grad = PlanarGradient(60.0)
 PlanarGradient(60.0)
 
@@ -19,4 +19,3 @@ julia> landscape(grad, (4, 6), mask = mask)
  0.171523   0.320066  NaN           0.617152  0.765695  NaN
  0.0857614  0.234305    0.382848  NaN         0.679934  NaN
  0.0        0.148543  NaN           0.445629  0.594173    0.742716
-~~~
