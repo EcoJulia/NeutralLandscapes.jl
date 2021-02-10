@@ -19,13 +19,6 @@ Creates a `PlanarGradient` with a random direction.
 """
 PlanarGradient() = PlanarGradient(360rand())
 
-"""
-    landscape(alg::PlanarGradient, s::Tuple{IT,IT}=(10,30)) where {IT <: Integer}
-
-Creates a landscape of size `s` following the planar gradient model. The
-additional arguments `kw...` are passed to the post-processing function, see the
-documentation of **TODO**. 
-"""
 function _landscape!(mat, alg::PlanarGradient; kw...) where {IT <: Integer}
     eastness = sin(deg2rad(alg.direction))
     southness = -1cos(deg2rad(alg.direction))
