@@ -19,3 +19,13 @@ julia> landscape(grad, (4, 6), mask = mask)
  0.171523   0.320066  NaN           0.617152  0.765695  NaN
  0.0857614  0.234305    0.382848  NaN         0.679934  NaN
  0.0        0.148543  NaN           0.445629  0.594173    0.742716
+
+ using Plots
+plot(
+    heatmap(landscape(grad, (100, 100)), title = "Planar"),
+    heatmap(landscape(grad, (100, 100), mask = rand(100, 100) .> 0.2), title = "Planar + mask"),
+    heatmap(landscape(EdgeGradient(30), (100, 100)), title = "Edge"),
+    layout = (1,3), size = (900, 300), colorbar = false
+)
+```
+![three landscapes](https://user-images.githubusercontent.com/8429802/107582714-3596bf80-6bfa-11eb-93ad-4202be6425e6.png)
