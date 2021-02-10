@@ -1,5 +1,7 @@
 module NeutralLandscapes
 
+import NaNMath
+
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
 
