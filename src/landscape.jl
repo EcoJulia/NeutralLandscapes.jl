@@ -1,0 +1,20 @@
+
+rescale!(mat) = (mat .- minimum(mat)) ./ (maximum(mat) - minimum(mat))
+
+function mask!(array, maskarray) 
+    for i in eachindex(array, maskarray)
+        array[i] = maskarray[i] == 0 ? array[i] : missing
+    end
+    array
+end
+
+function landscape(alg, size; mask = nothing, kw...) 
+    ret = Matrix{Float64}(undef, size...)
+    landscape!(ret, alg; mask = mask, kw...)
+  end
+  
+  function landscape!(mat, alg; mask = nothing, kw...)
+    _landscape!(mat, alg; kw...)
+    isnothing(mask) || mask!(mat, mask)
+    rescale!(mat)
+  end

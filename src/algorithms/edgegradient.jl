@@ -12,7 +12,7 @@ Creates a landscape of size `s` following the planar gradient model. The
 additional arguments `kw...` are passed to the post-processing function, see the
 documentation of **TODO**. 
 """
-function landscape(alg::EdgeGradient, s::Tuple{IT,IT}=(10,30); kw...) where {IT <: Integer}
-    l = landscape(PlanarGradient(alg.direction), s; kw...)
-    return -2.0abs.(0.5 .- l) .+ 1.0
+function _landscape!(mat, alg::EdgeGradient; kw...) where {IT <: Integer}
+    _landscape!(mat, PlanarGradient(alg.direction); kw...)
+    mat .= -2.0abs.(0.5 .- mat) .+ 1.0
 end
