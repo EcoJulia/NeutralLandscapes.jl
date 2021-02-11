@@ -7,7 +7,7 @@ abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
 
 include("landscape.jl")
-export landscape
+export landscape, landscape!
 
 include(joinpath("algorithms", "nogradient.jl"))
 export NoGradient

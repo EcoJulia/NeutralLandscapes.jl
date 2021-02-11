@@ -16,6 +16,7 @@ EdgeGradient
 ```@docs
 landscape!
 landscape
+_landscape!
 ```
 
 ## Other functions
