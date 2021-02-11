@@ -1,4 +1,4 @@
-using Documenter, NCBITaxonomy
+using Documenter, NeutralLandscapes
 
 makedocs(
     sitename="Neutral Landscapes",
