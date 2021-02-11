@@ -4,7 +4,7 @@ using Test
 global anyerrors = false
 
 tests = [
-   "utilities" => "utilities.jl"
+   "planar gradient" => "planar.jl"
 ]
 
 for test in tests

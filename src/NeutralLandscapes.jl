@@ -1,13 +1,13 @@
 module NeutralLandscapes
 
 import NaNMath
-using Random: rand, rand!
+using Random: rand!
 
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
 
 include("landscape.jl")
-export landscape, landscape!
+export rand, rand!
 
 include(joinpath("algorithms", "nogradient.jl"))
 export NoGradient
