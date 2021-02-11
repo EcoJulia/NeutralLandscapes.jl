@@ -14,8 +14,8 @@ EdgeGradient
 ## Landscape generating function
 
 ```@docs
-landscape!
-landscape
+rand!
+rand
 _landscape!
 ```
 

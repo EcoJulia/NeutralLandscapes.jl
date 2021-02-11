@@ -1,7 +1,7 @@
 module NeutralLandscapes
 
 import NaNMath
-using Random: rand!
+using Random: rand, rand!
 
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker

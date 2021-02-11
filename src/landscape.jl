@@ -1,3 +1,5 @@
+import Random.rand!
+
 """
     _rescale!(mat)
 
@@ -27,9 +29,9 @@ Creates a landscape of size `dims` (a tuple of two integers) following the model
 defined by `alg`. The `mask` argument accepts a matrix of boolean values, and is
 passed to `mask!` if it is not `nothing`. 
 """
-function landscape(alg, dims::Tuple{Vararg{Int64,2}}; mask=nothing) where {T <: Integer}
-    ret = Matrix{Float64}(undef, size...)
-    landscape!(ret, alg; mask=mask)
+function Base.rand(alg, dims::Tuple{Vararg{Int64,2}}; mask=nothing) where {T <: Integer}
+    ret = Matrix{Float64}(undef, dims...)
+    rand!(ret, alg; mask=mask)
 end
 
 """
@@ -39,7 +41,7 @@ Fill the matrix `mat` with a landscape created following the model defined by
 `alg`. The `mask` argument accepts a matrix of boolean values, and is passed to
 `mask!` if it is not `nothing`. 
 """
-function landscape!(mat, alg; mask=nothing)
+function rand!(mat, alg; mask=nothing)
     _landscape!(mat, alg)
     isnothing(mask) || mask!(mat, mask)
     _rescale!(mat)
