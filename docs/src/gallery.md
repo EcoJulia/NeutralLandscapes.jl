@@ -1,0 +1,28 @@
+```@example gallery
+using NeutralLandscapes
+using Plots
+```
+
+## No gradient
+
+```@example gallery
+heatmap(rand(NoGradient(), (45, 45)))
+```
+
+## Planar gradient
+
+```@example gallery
+heatmap(rand(PlanarGradient(), (45, 45)))
+```
+
+## Edge gradient
+
+```@example gallery
+heatmap(rand(EdgeGradient(), (45, 45)))
+```
+
+## Wave surface
+
+```@example gallery
+heatmap(rand(WaveSurface(), (45, 45)))
+```

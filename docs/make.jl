@@ -5,7 +5,8 @@ makedocs(
     authors="Timothée Poisot",
     modules=[NeutralLandscapes],
     pages=[
-        "Index" => "index.md"
+        "Index" => "index.md",
+        "Gallery" => "gallery.md"
         ]
 )
 
