@@ -29,7 +29,7 @@ Creates a landscape of size `dims` (a tuple of two integers) following the model
 defined by `alg`. The `mask` argument accepts a matrix of boolean values, and is
 passed to `mask!` if it is not `nothing`. 
 """
-function Base.rand(alg::T, dims::Tuple{Int64,Int64}; mask=nothing) where {T <: NeutralLandscapeMaker}
+function Base.rand(alg::T, dims::Integer...; mask=nothing) where {T <: NeutralLandscapeMaker}
     ret = Matrix{Float64}(undef, dims...)
     rand!(ret, alg; mask=mask)
 end
