@@ -41,8 +41,13 @@ Fill the matrix `mat` with a landscape created following the model defined by
 `alg`. The `mask` argument accepts a matrix of boolean values, and is passed to
 `mask!` if it is not `nothing`. 
 """
-function rand!(mat::AbstractArray{<:AbstractFloat,2} where N, alg::T; mask=nothing) where {T <: NeutralLandscapeMaker}
+function rand!(mat::AbstractArray{<:AbstractFloat,2} where N, alg::T; mask=nothing) where {T <: ContinuousNeutralLandscapeMaker}
     _landscape!(mat, alg)
     isnothing(mask) || mask!(mat, mask)
     _rescale!(mat)
+end
+
+function rand!(mat::AbstractArray{<:AbstractFloat,2} where N, alg::T; mask=nothing) where {T <: DiscreteNeutralLandscapeMaker}
+    _landscape!(mat, alg)
+    isnothing(mask) || mask!(mat, mask)
 end

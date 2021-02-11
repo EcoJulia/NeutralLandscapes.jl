@@ -4,7 +4,8 @@ import NaNMath
 using Random: rand!
 
 abstract type NeutralLandscapeMaker end
-export NeutralLandscapeMaker
+abstract type ContinuousNeutralLandscapeMaker <: NeutralLandscapeMaker end
+abstract type DiscreteNeutralLandscapeMaker <: NeutralLandscapeMaker end
 
 include("landscape.jl")
 export rand, rand!

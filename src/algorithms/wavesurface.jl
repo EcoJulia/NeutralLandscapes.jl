@@ -4,7 +4,7 @@
 Creates a sinusoidal landscape with a `direction` and a number of `periods`. If
 neither are specified, there will be a single period of random direction.
 """
-struct WaveSurface <: NeutralLandscapeMaker
+struct WaveSurface <: ContinuousNeutralLandscapeMaker
     direction::Float64
     periods::Int64
     function WaveSurface(x::T, y::K) where {T <: Real, K <: Integer}

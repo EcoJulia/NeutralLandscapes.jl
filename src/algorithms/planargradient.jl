@@ -7,7 +7,7 @@ expressed as a floating point value, which will be in *[0,360]*. The inner
 constructor takes the mod of the value passed and 360, so that a value that is
 out of the correct interval will be corrected.
 """
-struct PlanarGradient <: NeutralLandscapeMaker
+struct PlanarGradient <: ContinuousNeutralLandscapeMaker
     direction::Float64
     PlanarGradient(x::T) where {T <: Real} = new(mod(x, 360.0))
 end
