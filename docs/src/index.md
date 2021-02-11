@@ -9,6 +9,7 @@ NeutralLandscapeMaker
 NoGradient
 PlanarGradient
 EdgeGradient
+WaveSurface
 ```
 
 ## Landscape generating function

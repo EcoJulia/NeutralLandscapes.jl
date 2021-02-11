@@ -18,4 +18,7 @@ export PlanarGradient
 include(joinpath("algorithms", "edgegradient.jl"))
 export EdgeGradient
 
+include(joinpath("algorithms", "wavesurface.jl"))
+export WaveSurface
+
 end # module
