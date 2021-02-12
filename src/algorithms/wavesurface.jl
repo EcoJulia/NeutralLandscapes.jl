@@ -16,6 +16,6 @@ end
 WaveSurface() = WaveSurface(360rand(), 1)
 
 function _landscape!(mat, alg::WaveSurface)
-    _landscape!(mat, PlanarGradient(alg.direction))
+    rand!(mat, PlanarGradient(alg.direction))
     mat .= sin.(mat .* (2π * alg.periods))
 end
