@@ -11,6 +11,8 @@ end
 DistanceGradient() = DistanceGradient([1])
 
 function _landscape!(mat, alg::DistanceGradient)
+    @assert maximum(alg.sources) <= length(mat)
+    @assert minimum(alg.sources) > 0
     indices = vcat(CartesianIndices(mat)...)
     coordinates = zeros(Float64, (2, length(indices)))
     coordinates[1,:] .= getindex.(indices, 1)
