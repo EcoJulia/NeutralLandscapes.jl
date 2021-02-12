@@ -33,6 +33,7 @@ function Base.rand(alg::T, dims::Tuple{Int64,Int64}; mask=nothing) where {T <: N
     ret = Matrix{Float64}(undef, dims...)
     rand!(ret, alg; mask=mask)
 end
+Base.rand(alg::T, dims::Integer...; mask=nothing) where {T <: NeutralLandscapeMaker} = rand(alg, dims; mask = mask)
 
 """
     rand!(mat, alg) where {IT <: Integer}
