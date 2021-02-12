@@ -6,6 +6,7 @@ version = "0.0.1"
 [deps]
 NaNMath = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SignedDistanceFields = "73760f76-fbc4-59ce-8f25-708e95d2df96"
 
 [compat]
 NaNMath = "0.3"
