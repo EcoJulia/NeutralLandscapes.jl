@@ -15,7 +15,7 @@ julia> mask = rand(4, 6) .> 0.2
  1  1  1  0  1  0
  1  1  0  1  1  1
 
-julia> landscape(grad, (4, 6), mask = mask)
+julia> rand(grad, 4, 6, mask = mask)
 4×6 Matrix{Float64}:
  0.257284   0.405827    0.554371    0.702914  0.851457    1.0
  0.171523   0.320066  NaN           0.617152  0.765695  NaN
@@ -24,9 +24,9 @@ julia> landscape(grad, (4, 6), mask = mask)
 
  using Plots
 plot(
-    heatmap(landscape(grad, (100, 100)), title = "Planar"),
-    heatmap(landscape(grad, (100, 100), mask = rand(100, 100) .> 0.2), title = "Planar + mask"),
-    heatmap(landscape(EdgeGradient(30), (100, 100)), title = "Edge"),
+    heatmap(rand(grad, 100, 100), title = "Planar"),
+    heatmap(rand(grad, 100, 100, mask = rand(100, 100) .> 0.2), title = "Planar + mask"),
+    heatmap(rand(EdgeGradient(30), 100, 100), title = "Edge"),
     layout = (1,3), size = (900, 300), colorbar = false
 )
 ```
