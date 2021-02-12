@@ -16,5 +16,6 @@ function _landscape!(mat, alg::RectangularCluster)
     tree = KDTree(coordinates)
     guesses = coordinates[:,setdiff(eachindex(mat),alg.sources)]
     mat[guesses] .= nn(tree, guesses)[2]
+    mat[alg.sources] .= 0.0
     return mat
 end
