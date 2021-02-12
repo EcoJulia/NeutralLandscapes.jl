@@ -1,11 +1,12 @@
-using Documenter, NCBITaxonomy
+using Documenter, NeutralLandscapes
 
 makedocs(
     sitename="Neutral Landscapes",
     authors="Timothée Poisot",
     modules=[NeutralLandscapes],
     pages=[
-        "Index" => "index.md"
+        "Index" => "index.md",
+        "Gallery" => "gallery.md"
         ]
 )
 

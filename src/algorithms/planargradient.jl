@@ -19,7 +19,7 @@ Creates a `PlanarGradient` with a random direction.
 """
 PlanarGradient() = PlanarGradient(360rand())
 
-function _landscape!(mat, alg::PlanarGradient; kw...) where {IT <: Integer}
+function _landscape!(mat, alg::PlanarGradient) where {IT <: Integer}
     eastness = sin(deg2rad(alg.direction))
     southness = -1cos(deg2rad(alg.direction))
     rows, cols = axes(mat)

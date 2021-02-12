@@ -1,35 +1,48 @@
+import Random.rand!
 
-function rescale!(mat)
-  mat .-= NaNMath.minimum(mat)
-  mat ./= NaNMath.maximum(mat)
+"""
+    _rescale!(mat)
+
+Changes the matrix `mat` so that it is between `0` and `1`.
+"""
+function _rescale!(mat)
+    mat .-= NaNMath.minimum(mat)
+    mat ./= NaNMath.maximum(mat)
 end 
 
+"""
+    mask!(array::AbstractArray{<:AbstractFloat}, maskarray::AbstractArray{<:AbstractBool}) 
+
+Modifies `array` so that the positions at which `maskarray` is `false` are
+replaced by `NaN`.
+"""
 function mask!(array::AbstractArray{<:Float64}, maskarray::AbstractArray{<:Bool}) 
+    (size(array) == size(maskarray)) || throw(DimensionMismatch("The dimensions of array, $(size(array)), and maskarray, $(size(maskarray)), must match. "))
     array[.!maskarray] .= NaN
     array
 end
 
 """
-    landscape(alg, s::Tuple{IT,IT}=(10,30)) where {IT <: Integer}
+    rand(alg, dims::Tuple{Vararg{Int64,2}}; mask=nothing) where {T <: Integer}
 
-Creates a landscape of size `s` following the model defined by `alg`. The
-additional arguments `kw...` are passed to the post-processing function, see the
-documentation of **TODO**. 
+Creates a landscape of size `dims` (a tuple of two integers) following the model
+defined by `alg`. The `mask` argument accepts a matrix of boolean values, and is
+passed to `mask!` if it is not `nothing`. 
 """
-function landscape(alg, size; mask = nothing, kw...) 
-    ret = Matrix{Float64}(undef, size...)
-    landscape!(ret, alg; mask = mask, kw...)
+function Base.rand(alg::T, dims::Tuple{Int64,Int64}; mask=nothing) where {T <: NeutralLandscapeMaker}
+    ret = Matrix{Float64}(undef, dims...)
+    rand!(ret, alg; mask=mask)
 end
 
 """
-    landscape!(mat, alg) where {IT <: Integer}
+    rand!(mat, alg) where {IT <: Integer}
 
-Fill the matrix `mat` with a landscape of size `s` following the model defined by `alg`. The
-additional arguments `kw...` are passed to the post-processing function, see the
-documentation of **TODO**. 
+Fill the matrix `mat` with a landscape created following the model defined by
+`alg`. The `mask` argument accepts a matrix of boolean values, and is passed to
+`mask!` if it is not `nothing`. 
 """
-function landscape!(mat, alg; mask = nothing, kw...)
-  _landscape!(mat, alg; kw...)
-  isnothing(mask) || mask!(mat, mask)
-  rescale!(mat)
+function rand!(mat::AbstractArray{<:AbstractFloat,2} where N, alg::T; mask=nothing) where {T <: NeutralLandscapeMaker}
+    _landscape!(mat, alg)
+    isnothing(mask) || mask!(mat, mask)
+    _rescale!(mat)
 end

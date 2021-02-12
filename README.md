@@ -3,6 +3,8 @@
 **Python source:** https://github.com/tretherington/nlmpy
 
 ```julia
+using NeutralLandscapes
+
 julia> grad = PlanarGradient(60.0)
 PlanarGradient(60.0)
 

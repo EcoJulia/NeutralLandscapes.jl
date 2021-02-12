@@ -1,8 +1,11 @@
 name = "NeutralLandscapes"
 uuid = "71847384-8354-4223-ac08-659a5128069f"
-authors = ["Timothée Poisot <timothee.poisot@umontreal.ca>"]
+authors = ["Timothée Poisot <timothee.poisot@umontreal.ca>", "Michael Krabbe Borregaard <mkborregaard@sund.ku.dk>"]
 version = "0.0.1"
 
 [deps]
 NaNMath = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+
+[compat]
+NaNMath = "0.3"

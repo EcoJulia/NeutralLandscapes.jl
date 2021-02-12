@@ -7,7 +7,7 @@ abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
 
 include("landscape.jl")
-export landscape
+export rand, rand!
 
 include(joinpath("algorithms", "nogradient.jl"))
 export NoGradient
@@ -21,5 +21,10 @@ export EdgeGradient
 include(joinpath("algorithms", "diamondsquare.jl"))
 export DiamondSquare
 
+include(joinpath("algorithms", "wavesurface.jl"))
+export WaveSurface
+
+include(joinpath("algorithms", "rectangularcluster.jl"))
+export RectangularCluster
 
 end # module

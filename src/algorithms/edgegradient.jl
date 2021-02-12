@@ -14,7 +14,7 @@ end
 
 EdgeGradient() = EdgeGradient(360rand())
 
-function _landscape!(mat, alg::EdgeGradient; kw...) where {IT <: Integer}
-    _landscape!(mat, PlanarGradient(alg.direction); kw...)
+function _landscape!(mat, alg::EdgeGradient) where {IT <: Integer}
+    _landscape!(mat, PlanarGradient(alg.direction))
     mat .= -2.0abs.(0.5 .- mat) .+ 1.0
 end
