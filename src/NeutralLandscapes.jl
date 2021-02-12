@@ -2,7 +2,6 @@ module NeutralLandscapes
 
 import NaNMath
 using Random: rand!
-
 using NearestNeighbors
 
 abstract type NeutralLandscapeMaker end

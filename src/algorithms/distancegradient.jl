@@ -8,7 +8,9 @@ struct DistanceGradient <: NeutralLandscapeMaker
     sources::Vector{Integer}
 end
 
-function _landscape!(mat, alg::RectangularCluster)
+DistanceGradient() = DistanceGradient([1])
+
+function _landscape!(mat, alg::DistanceGradient)
     indices = vcat(CartesianIndices(mat)...)
     coordinates = zeros(Float64, (2, length(indices)))
     coordinates[1,:] .= getindex.(indices, 1)
