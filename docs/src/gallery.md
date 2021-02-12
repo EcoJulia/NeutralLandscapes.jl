@@ -32,3 +32,9 @@ heatmap(rand(WaveSurface(), (45, 45)))
 ```@example gallery
 heatmap(rand(DistanceGradient(), (45, 45)))
 ```
+
+## Rectangular cluster
+
+```@example gallery
+heatmap(rand(RectangularCluster(), (45, 45)))
+```

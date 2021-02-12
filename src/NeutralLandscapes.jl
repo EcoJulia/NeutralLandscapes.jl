@@ -26,4 +26,7 @@ export WaveSurface
 include(joinpath("algorithms", "distancegradient.jl"))
 export DistanceGradient
 
+include(joinpath("algorithms", "rectangularcluster.jl"))
+export RectangularCluster
+
 end # module

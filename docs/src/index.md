@@ -11,6 +11,7 @@ PlanarGradient
 EdgeGradient
 WaveSurface
 DistanceGradient
+RectangularCluster
 ```
 
 ## Landscape generating function
