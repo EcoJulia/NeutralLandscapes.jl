@@ -1,27 +1,20 @@
 """
-    RectangularCluster
+    DistanceGradient
 
-Fills the landscape with rectangles containing a random value. The size of each
-rectangle/patch is between `minimum` and `maximum` (the two can be equal for a
-fixed size rectangle).
+The `sources` field is the *linear* indices of the matrix, from which the
+distance must be calculated.
 """
 struct DistanceGradient <: NeutralLandscapeMaker
-    sources::Integer
+    sources::Vector{Integer}
 end
 
 function _landscape!(mat, alg::RectangularCluster)
-    mat .= Inf # 🎃
+    indices = vcat(CartesianIndices(mat)...)
+    coordinates = zeros(Float64, (2, length(indices)))
+    coordinates[1,:] .= getindex.(indices, 1)
+    coordinates[2,:] .= getindex.(indices, 2)
+    tree = KDTree(coordinates)
+    guesses = coordinates[:,setdiff(eachindex(mat),alg.sources)]
+    mat[guesses] .= nn(tree, guesses)[2]
     return mat
 end
-
-S = (1000, 1000)
-D = rand(Float64, S)
-@time begin
-    P = vcat(CartesianIndices(D)...)
-    C = zeros(Float64, (2, length(P)))
-    C[1,:] .= getindex.(P, 1)
-    C[2,:] .= getindex.(P, 2)
-    M = rand(1:prod(S), 100)
-    T = KDTree(C);
-    nn(T, C[:,rand(1:size(C, 2), 200)])
-end;
