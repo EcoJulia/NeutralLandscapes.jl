@@ -26,3 +26,9 @@ heatmap(rand(EdgeGradient(), (45, 45)))
 ```@example gallery
 heatmap(rand(WaveSurface(), (45, 45)))
 ```
+
+## Rectangular cluster
+
+```@example gallery
+heatmap(rand(RectangularCluster(), (45, 45)))
+```
