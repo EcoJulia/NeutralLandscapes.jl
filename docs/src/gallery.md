@@ -26,3 +26,9 @@ heatmap(rand(EdgeGradient(), (45, 45)))
 ```@example gallery
 heatmap(rand(WaveSurface(), (45, 45)))
 ```
+
+## Distance gradient
+
+```@example gallery
+heatmap(rand(DistanceGradient(), (45, 45)))
+```

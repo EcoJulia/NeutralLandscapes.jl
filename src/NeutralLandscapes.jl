@@ -21,4 +21,7 @@ export EdgeGradient
 include(joinpath("algorithms", "wavesurface.jl"))
 export WaveSurface
 
+include(joinpath("algorithms", "distancegradient.jl"))
+export DistanceGradient
+
 end # module
