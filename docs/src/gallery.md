@@ -30,7 +30,8 @@ heatmap(rand(WaveSurface(), (45, 45)))
 ## Distance gradient
 
 ```@example gallery
-heatmap(rand(DistanceGradient([1,5,50,120]), (45, 45)))
+sources = unique(rand(1:2025, 15))
+heatmap(rand(DistanceGradient(sources), (45, 45)))
 ```
 
 ## Rectangular cluster
