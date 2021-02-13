@@ -24,4 +24,7 @@ export WaveSurface
 include(joinpath("algorithms", "rectangularcluster.jl"))
 export RectangularCluster
 
+include(joinpath("algorithms", "perlinnoise.jl"))
+export PerlinNoise
+
 end # module
