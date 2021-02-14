@@ -12,6 +12,7 @@ EdgeGradient
 WaveSurface
 DistanceGradient
 RectangularCluster
+NearestNeighborElement
 ```
 
 ## Landscape generating function

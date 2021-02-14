@@ -39,3 +39,9 @@ heatmap(rand(DistanceGradient(sources), (45, 45)))
 ```@example gallery
 heatmap(rand(RectangularCluster(), (45, 45)))
 ```
+
+## Nearest-neighbor element
+
+```@example gallery
+heatmap(rand(NearestNeighborElement(20, 1), (45, 45)))
+```
