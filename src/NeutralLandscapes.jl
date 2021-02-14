@@ -29,5 +29,6 @@ include(joinpath("algorithms", "rectangularcluster.jl"))
 export RectangularCluster
 
 include("classifyarray.jl")
+export classifyArray!
 
 end # module
