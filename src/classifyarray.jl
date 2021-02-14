@@ -4,10 +4,10 @@ function w2cp(vec)
 end
 
 function calcBoundaries(array, cumulativeProportions, classifyMask = nothing)
-    maskedarray = isnothing(classifyMask) ? array : mask!(copy(array))
-    nCells = count(isfinite, maskedarray)
-    boundaryIndexes = ceil.(Int, cumulativeProportions * nCells)
-    boundaryValues = sort(vec(maskedarray))[boundaryIndexes]
-    boundaryValues
+    if isnothing(classifyMask) 
+        quantile(vec(array), cumulativeProportions) 
+    else
+        quantile(array[classifyMask], cumulativeProportions) 
+    end
 end
 

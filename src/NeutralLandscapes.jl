@@ -2,7 +2,7 @@ module NeutralLandscapes
 
 import NaNMath
 using Random: rand!
-using NearestNeighbors
+using Statistics: quantile
 
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
