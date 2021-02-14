@@ -47,6 +47,6 @@ demolandscape(DistanceGradient(sources))
 ## Classify landscape
 
 ```@example gallery
-sources = unique(rand(1:2025, 15))
+sources = unique(rand(1:40000, 50))
 heatmap(NeutralLandscapes.classify!(rand(DistanceGradient(sources), (45, 45)), [0.5, 1, 1, 0.5]))
 ```
