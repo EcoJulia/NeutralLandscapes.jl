@@ -11,6 +11,11 @@ function calcBoundaries(array, cumulativeProportions, classifyMask = nothing)
     end
 end
 
+"""
+    classifyArray!(array, weights[, classifyMask])
+
+Classify an array into proportions based upon a list of class weights.
+"""
 function classifyArray!(array, weights, classifyMask = nothing)
     cumulativeProportions = w2cp(weights)
     boundaryvalues = calcBoundaries(array, cumulativeProportions, classifyMask)
