@@ -49,5 +49,5 @@ demolandscape(DistanceGradient(sources))
 ```@example gallery
 demolandscape(RectangularCluster())
 sources = unique(rand(1:2025, 15))
-heatmap(classifyArray!(rand(DistanceGradient(sources), (45, 45)), [0.5, 1, 1, 0.5]))
+heatmap(NeutralLandscapes.classify!(rand(DistanceGradient(sources), (45, 45)), [0.5, 1, 1, 0.5]))
 ```

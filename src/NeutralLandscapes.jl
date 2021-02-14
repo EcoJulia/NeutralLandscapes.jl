@@ -29,7 +29,6 @@ export DistanceGradient
 include(joinpath("algorithms", "rectangularcluster.jl"))
 export RectangularCluster
 
-include("classifyarray.jl")
-export classifyArray!
+include("classify.jl")
 
 end # module
