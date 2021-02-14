@@ -3,6 +3,7 @@ module NeutralLandscapes
 import NaNMath
 using Random: rand!
 using Statistics: quantile
+using NearestNeighbors: KDTree, nn
 
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
