@@ -13,13 +13,11 @@ DistanceGradient() = DistanceGradient([1])
 function _landscape!(mat, alg::DistanceGradient)
     @assert maximum(alg.sources) <= length(mat)
     @assert minimum(alg.sources) > 0
-    indices = vcat(CartesianIndices(mat)...)
-    coordinates = zeros(Float64, (2, length(indices)))
-    coordinates[1,:] .= getindex.(indices, 1)
-    coordinates[2,:] .= getindex.(indices, 2)
-    guesses = coordinates[:,setdiff(eachindex(mat),alg.sources)]
+    coordinates = Matrix{Float64}(undef, (2, prod(size(mat))))
+    for (i, p) in enumerate(Iterators.product(axes(mat)...))
+        coordinates[1:2, i] .= p
+    end
     tree = KDTree(coordinates[:,alg.sources])
-    mat[setdiff(eachindex(mat),alg.sources)] .= nn(tree, guesses)[2]
-    mat[alg.sources] .= 0.0
+    mat[:] .= nn(tree, coordinates)[2]
     return mat
 end
