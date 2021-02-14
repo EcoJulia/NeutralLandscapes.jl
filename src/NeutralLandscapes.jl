@@ -2,6 +2,7 @@ module NeutralLandscapes
 
 import NaNMath
 using Random: rand!
+using NearestNeighbors
 
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
@@ -20,6 +21,9 @@ export EdgeGradient
 
 include(joinpath("algorithms", "wavesurface.jl"))
 export WaveSurface
+
+include(joinpath("algorithms", "distancegradient.jl"))
+export DistanceGradient
 
 include(joinpath("algorithms", "rectangularcluster.jl"))
 export RectangularCluster

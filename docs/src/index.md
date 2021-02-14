@@ -10,6 +10,7 @@ NoGradient
 PlanarGradient
 EdgeGradient
 WaveSurface
+DistanceGradient
 RectangularCluster
 ```
 
