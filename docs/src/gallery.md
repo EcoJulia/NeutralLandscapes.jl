@@ -34,7 +34,7 @@ demolandscape(WaveSurface(35, 3))
 ## Rectangular cluster
 
 ```@example gallery
-heatmap(rand(RectangularCluster(), (45, 45)))
+demolandscape(RectangularCluster())
 ```
 
 ## Distance gradient
@@ -47,7 +47,6 @@ demolandscape(DistanceGradient(sources))
 ## Classify landscape
 
 ```@example gallery
-demolandscape(RectangularCluster())
 sources = unique(rand(1:2025, 15))
 heatmap(NeutralLandscapes.classify!(rand(DistanceGradient(sources), (45, 45)), [0.5, 1, 1, 0.5]))
 ```
