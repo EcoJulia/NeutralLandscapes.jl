@@ -3,7 +3,7 @@ using NeutralLandscapes
 using Plots
 
 function demolandscape(alg::T) where {T <: NeutralLandscapeMaker}
-    heatmap(rand(alg, (200, 200)), frame=:box, aspectratio=1, c=:alpine)
+    heatmap(rand(alg, (200, 200)), frame=:none, aspectratio=1, c=:davos)
 end
 ```
 
