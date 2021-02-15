@@ -48,5 +48,5 @@ demolandscape(DistanceGradient(sources))
 
 ```@example gallery
 sources = unique(rand(1:40000, 50))
-heatmap(NeutralLandscapes.classify!(rand(DistanceGradient(sources), (45, 45)), [0.5, 1, 1, 0.5]))
+heatmap(NeutralLandscapes.classify!(rand(DistanceGradient(sources), (200, 200)), [0.5, 1, 1, 0.5]))
 ```
