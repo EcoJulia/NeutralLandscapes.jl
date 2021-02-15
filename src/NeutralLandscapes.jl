@@ -2,8 +2,9 @@ module NeutralLandscapes
 
 import NaNMath
 using Random: rand!
-using StatsBase: mean
 using Distributions: Normal
+using Statistics: quantile, mean
+using NearestNeighbors: KDTree, nn
 
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
@@ -26,7 +27,13 @@ export DiamondSquare
 include(joinpath("algorithms", "wavesurface.jl"))
 export WaveSurface
 
+include(joinpath("algorithms", "distancegradient.jl"))
+export DistanceGradient
+
 include(joinpath("algorithms", "rectangularcluster.jl"))
 export RectangularCluster
+
+include("classify.jl")
+export classify!
 
 end # module
