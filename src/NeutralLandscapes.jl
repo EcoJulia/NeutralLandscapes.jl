@@ -2,7 +2,8 @@ module NeutralLandscapes
 
 import NaNMath
 using Random: rand!
-using NearestNeighbors
+using Statistics: quantile
+using NearestNeighbors: KDTree, nn
 
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
@@ -27,5 +28,8 @@ export DistanceGradient
 
 include(joinpath("algorithms", "rectangularcluster.jl"))
 export RectangularCluster
+
+include("classify.jl")
+export classify!
 
 end # module
