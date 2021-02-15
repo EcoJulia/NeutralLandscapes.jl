@@ -4,7 +4,7 @@ import NaNMath
 import StatsBase
 using Random: rand!
 using Statistics: quantile
-using NearestNeighbors: KDTree, nn
+using NearestNeighbors: KDTree, knn, nn
 
 """
 All algorithms are descended from the `NeutralLandscapeMaker` type. A new
@@ -15,9 +15,6 @@ export NeutralLandscapeMaker
 
 include("landscape.jl")
 export rand, rand!
-
-include("classifyarray.jl")
-export classifyArray!
 
 include(joinpath("algorithms", "nogradient.jl"))
 export NoGradient
@@ -39,5 +36,8 @@ export RectangularCluster
 
 include(joinpath("algorithms", "nnelement.jl"))
 export NearestNeighborElement
+
+include("classify.jl")
+export classify!
 
 end # module
