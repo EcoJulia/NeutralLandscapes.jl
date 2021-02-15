@@ -37,7 +37,7 @@ DiamondSquare() = DiamondSquare(0.5)
     pass it on to the actual algorithm
 """
 function _landscape!(mat, alg::DiamondSquare; kw...) where {IT <: Integer}
-    diamondsquare!(mat)
+    diamondsquare!(mat, alg)
 end
 
 """
