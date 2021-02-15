@@ -16,3 +16,13 @@ function classify!(array, weights, mask = nothing)
     end
     array
 end
+
+"""
+    blend(arrays[, scaling])
+
+Blend arrays weighted by scaling factors.
+"""
+function blend(arrays, scaling = ones(length(arrays)))
+    ret = sum(arrays .* scaling)
+    rescale!(ret)
+end
