@@ -32,4 +32,7 @@ export RectangularCluster
 include("classify.jl")
 export classify!
 
+include("asc.jl")
+export ascii
+
 end # module
