@@ -7,7 +7,7 @@ algorithm, which produces fractals with variable spatialautocorrelation.
 https://en.wikipedia.org/wiki/Diamond-square_algorithm
 
 The algorithm is named diamond-square because it is an iterative procedure of
-"diamond" and "square" steps. 
+"diamond" and "square" steps.
 
 
 
@@ -31,11 +31,11 @@ DiamondSquare() = DiamondSquare(0.5)
 
 
 function _landscape!(mat, alg::DiamondSquare; kw...) where {IT <: Integer}
-    # diamond-squares only works on a square lattice of size N x N, 
-    # where N = (2^n)+1 for some integer n. 
+    # diamond-squares only works on a square lattice of size N x N,
+    # where N = (2^n)+1 for some integer n.
     latticeSize::Int = size(mat)[1]
-    @assert isPowerOfTwo(latticeSize-1) && isPowerOfTwo(latticeSize-1) 
-   
+    @assert isPowerOfTwo(latticeSize-1) && isPowerOfTwo(latticeSize-1)
+
     numberOfRounds::Int = log2(latticeSize-1)
     initializeDiamondSquare!(mat, alg)
 
@@ -45,7 +45,7 @@ function _landscape!(mat, alg::DiamondSquare; kw...) where {IT <: Integer}
 
         for x in 0:numberOfSubsquaresPerAxis
             for y in 0:numberOfSubsquaresPerAxis
-                subsquareCorners = cornerCoordinates(x,y,subsquareSideLength) 
+                subsquareCorners = cornerCoordinates(x,y,subsquareSideLength)
                 square!(mat, alg, round, subsquareCorners)
                 diamond!(mat, alg, round, subsquareCorners)
             end
@@ -77,14 +77,14 @@ end
 function edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
     # bottom left, bottom right, top left, top right
     bottomLeft,bottomRight,topLeft,topRight = corners
-    
+
     leftEdgeMidpoint::Tuple{Int,Int} = (bottomLeft[1], (bottomLeft[2]+topLeft[2])/2 )
     bottomEdgeMidpoint::Tuple{Int,Int} = ( (bottomLeft[1]+bottomRight[1])/2, bottomLeft[2])
     topEdgeMidpoint::Tuple{Int,Int} = ( (topLeft[1]+topRight[1])/2, topLeft[2] )
     rightEdgeMidpoint::Tuple{Int,Int} = ( bottomRight[1], (bottomRight[2]+topRight[2])/2)
 
     edgeMidpoints = [leftEdgeMidpoint, bottomEdgeMidpoint, topEdgeMidpoint, rightEdgeMidpoint]
-    return edgeMidpoints 
+    return edgeMidpoints
 end
 
 function interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
@@ -108,6 +108,10 @@ function square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tu
 
     leftEdge, bottomEdge, topEdge, rightEdge = edgeMidpoints
     bottomLeft,bottomRight,topLeft,topRight = corners
+
+
+    # the only difference between mpd and diamond-square is that
+    # mpd would not pass centerPoint to interpolate
 
     mat[leftEdge...] = interpolate(mat, [topLeft,bottomLeft,centerPoint])+ displace(alg.H, round)
     mat[bottomEdge...] = interpolate(mat, [bottomLeft,bottomRight,centerPoint])+ displace(alg.H, round)

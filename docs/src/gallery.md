@@ -32,3 +32,8 @@ heatmap(rand(WaveSurface(), (45, 45)))
 ```@example gallery
 heatmap(rand(RectangularCluster(), (45, 45)))
 ```
+
+## Diamond Square
+```@example gallery
+heatmap(rand!(zeros(65,65), DiamondSquare()))
+```
