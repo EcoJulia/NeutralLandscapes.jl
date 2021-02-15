@@ -28,7 +28,22 @@ function blend(arrays, scaling = ones(length(arrays)))
 end
 
 function _clusterMean(clusterArray, array)
-
+    clusters = Dict{Float64, Float64}()
+    clustersum = Dict{Float64, Float64}()
+    for ind in eachindex(clusterArray, array)
+        temp = clusterArray[ind]
+        if !haskey(clusters, temp)
+            clusters[temp] = clustersum[temp] = 0.0
+        end
+        clusters[temp] += 1.0
+        clustersum[temp] += array[ind]          
+        end
+    end
+    for cl in keys(clusters)
+        clustersum[cl] /= clusters[cl]
+    end
+    clustersum[NaN] = NaN
+    _rescale!(get.(Ref(clustersum), clusterArray, NaN))
 end
 
 """
