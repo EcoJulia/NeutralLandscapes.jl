@@ -2,6 +2,8 @@ module NeutralLandscapes
 
 import NaNMath
 using Random: rand!
+using StatsBase: mean
+using Distributions: Normal
 
 abstract type NeutralLandscapeMaker end
 export NeutralLandscapeMaker
