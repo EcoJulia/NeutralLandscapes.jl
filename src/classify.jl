@@ -26,3 +26,19 @@ function blend(arrays, scaling = ones(length(arrays)))
     ret = sum(arrays .* scaling)
     rescale!(ret)
 end
+
+function _clusterMean(clusterArray, array)
+
+end
+
+"""
+    blendClusterArray(primary, arrays[, scaling])
+
+Blend a primary cluster NLM with other arrays in which the mean value per 
+cluster is weighted by scaling factors.
+"""
+function blendClusterArray(primary, arrays, scaling = ones(length(arrays)))
+
+end
+
+
