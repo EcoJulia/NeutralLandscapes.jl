@@ -12,7 +12,7 @@ The algorithm is named diamond-square because it is an iterative procedure of
 
 
 The degree of spatial autocorrelation is controlled by a parameter `H`,
-which varies from 0.0 (low autocorrelation) to 1.0 (high autocorrelation).
+which varies from 0.0 (low autocorrelation) to 1.0 (high autocorrelation) --- note this is non-inclusive and H = 0 and H = 1 will not behavive as expected.
 The result of the diamond-square algorithm is a fractal with dimension D = 2 + H.
 
 A similar algorithm, midpoint displacement *TODO link to mpd in docs*, almost
