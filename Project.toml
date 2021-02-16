@@ -1,9 +1,10 @@
 name = "NeutralLandscapes"
 uuid = "71847384-8354-4223-ac08-659a5128069f"
-authors = ["Timothée Poisot <timothee.poisot@umontreal.ca>", "Michael Krabbe Borregaard <mkborregaard@sund.ku.dk>"]
+authors = ["Timothée Poisot <timothee.poisot@umontreal.ca>", "Michael Krabbe Borregaard <mkborregaard@sund.ku.dk>", "Michael David Catchen <michael.catchen@mail.mcgill.ca>"]
 version = "0.0.1"
 
 [deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 NaNMath = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 NearestNeighbors = "b8a86587-4115-5ab1-83bc-aa920d37bbce"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"

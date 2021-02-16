@@ -2,7 +2,8 @@ module NeutralLandscapes
 
 import NaNMath
 using Random: rand!
-using Statistics: quantile
+using Distributions: Normal
+using Statistics: quantile, mean
 using NearestNeighbors: KDTree, nn
 
 abstract type NeutralLandscapeMaker end
@@ -19,6 +20,9 @@ export PlanarGradient
 
 include(joinpath("algorithms", "edgegradient.jl"))
 export EdgeGradient
+
+include(joinpath("algorithms", "diamondsquare.jl"))
+export DiamondSquare, MidpointDisplacement
 
 include(joinpath("algorithms", "wavesurface.jl"))
 export WaveSurface
