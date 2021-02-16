@@ -41,7 +41,7 @@ Blend arrays weighted by scaling factors.
 """
 function blend(arrays, scaling::AbstractVector{<:Number} = ones(length(arrays)))
     if length(scaling) != length(arrays)
-        throw(DimensionMismatch("The array of landscapes (n = $(length(arrays))) and scaling (n = $(length(scaling)) must have the same length")
+        throw(DimensionMismatch("The array of landscapes (n = $(length(arrays))) and scaling (n = $(length(scaling))) must have the same length"))
     end
     ret = sum(arrays .* scaling)
     _rescale!(ret)
