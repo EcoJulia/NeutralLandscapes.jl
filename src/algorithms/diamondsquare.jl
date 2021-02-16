@@ -20,7 +20,10 @@ identically, except that in DiamondSquare, the ed
 """
 struct DiamondSquare <: NeutralLandscapeMaker
     H::Float64
-    DiamondSquare(H::T) where {T <: Real} = new(H-floor(H)) # enforce H ∈ (0,1)
+    function DiamondSquare(H::T) where {T <: Real}
+        @assert 0 < H && H < 1
+        new(H)
+    end
 end
 
 
@@ -34,10 +37,31 @@ DiamondSquare() = DiamondSquare(0.5)
 """
     _landscape!(mat, alg::DiamondSquare; kw...)
 
-    pass it on to the actual algorithm
+    Check if `mat` is the right size and already initialized.
+    If mat is not the correct size (DiamondSquare can only run on a lattice of size NxN where N = (2^n)+1 for integer n),
+    allocates the smallest lattice large enough to contain `mat` that can run DiamondSquare.
+    Will initialize `mat` to all zeros before running DiamondSquare if it is not initialized already.
 """
 function _landscape!(mat, alg::DiamondSquare; kw...) where {IT <: Integer}
-    diamondsquare!(mat, alg)
+
+    initialized::Bool = !any(isnan, mat)
+    rightSize::Bool = isPowerOfTwo(size(mat)[1]-1) && isPowerOfTwo(size(mat)[2]-1)
+    latticeSize::Int = size(mat)[1]
+
+    dsMat = mat
+    if !rightSize
+        dim1, dim2 = size(mat)
+        smallestContainingLattice::Int = 2^ceil(log2(max(dim1, dim2))) + 1
+        @warn "DiamondSquare() cannot be run on the input dimensions ($dim1 x $dim2),
+                and will instead run on the next smallest valid size ($smallestContainingLattice x $smallestContainingLattice).
+                This can slow performance as it involves additional memory allocation."
+        dsMat = zeros(smallestContainingLattice, smallestContainingLattice)
+    elseif !initialized
+        dsMat = zeros(latticeSize,latticeSize)
+    end
+    diamondsquare!(dsMat, alg)
+
+    mat .= dsMat[1:size(mat)[1], 1:size(mat)[2]]
 end
 
 """
@@ -55,10 +79,6 @@ end
 """
 function diamondsquare!(mat, alg::DiamondSquare)
     latticeSize::Int = size(mat)[1]
-    # diamond-squares only works on a square lattice of size N x N,
-    # where N = (2^n)+1 for some integer n.
-    @assert isPowerOfTwo(latticeSize-1) && isPowerOfTwo(latticeSize-1)
-
     numberOfRounds::Int = log2(latticeSize-1)
     initializeDiamondSquare!(mat, alg)
 
