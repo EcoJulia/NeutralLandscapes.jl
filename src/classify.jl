@@ -52,7 +52,8 @@ Blend a primary cluster NLM with other arrays in which the mean value per
 cluster is weighted by scaling factors.
 """
 function blendClusterArray(primary, arrays, scaling = ones(length(arrays)))
-
+    ret = sum(_clusterMean.(Ref(primary), arrays) .* scaling)
+    rescale!(primary + ret)
 end
 
 
