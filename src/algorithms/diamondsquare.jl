@@ -29,7 +29,7 @@ end
 """
     DiamondSquare() 
 """
-DiamondSquare() = DiamondSquare()
+DiamondSquare() = DiamondSquare(0.5)
 
 """
     MidpointDisplacement()
@@ -43,9 +43,8 @@ struct MidpointDisplacement <: NeutralLandscapeMaker
         @assert 0 < H && H < 1
         new(H)
     end
-    MidpointDisplacement() = new(0.5)
 end
-
+MidpointDisplacement() = MidpointDisplacement(0.5)
 
 """
     _landscape!(mat, alg::Union{DiamondSquare, MidpointDisplacement}; kw...)

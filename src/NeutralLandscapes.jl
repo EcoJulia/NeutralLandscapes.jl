@@ -22,7 +22,7 @@ include(joinpath("algorithms", "edgegradient.jl"))
 export EdgeGradient
 
 include(joinpath("algorithms", "diamondsquare.jl"))
-export DiamondSquare, MPD
+export DiamondSquare, MidpointDisplacement
 
 include(joinpath("algorithms", "wavesurface.jl"))
 export WaveSurface
