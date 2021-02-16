@@ -86,7 +86,7 @@ end
 
 """
 function _diamondsquare!(mat, alg)
-    latticeSize::Int = size(mat)[1]
+    latticeSize = size(mat)[1]
     numberOfRounds::Int = log2(latticeSize-1)
     _initializeDiamondSquare!(mat, alg)
 
@@ -125,7 +125,7 @@ end
     Returns the coordinates for the corners of the subsquare (x,y) given a side-length `sideLength`.
 """
 function _subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
-    corners = [(1+sideLength*x, 1+sideLength*y), (1+sideLength*(x+1), 1+sideLength*y), (1+sideLength*x, sideLength*(y+1)+1), (1+sideLength*(x+1), 1+sideLength*(y+1))]
+    corners = [1 .+ sideLength.*i for i in [(x,y), (x+1, y), (x, y+1), (x+1, y+1)]]
 end
 
 """
@@ -183,7 +183,7 @@ end
     Computes the mean of a set of points, represented as a list of indecies to a matrix `mat`.
 """
 function _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
-    return mean(collect(mat[pt...] for pt in points))
+    return mean(mat[pt...] for pt in points)
 end
 
 """
@@ -200,7 +200,7 @@ end
 
 """
 function _displace(H::Float64, round::Int)
-    σ = (0.5)^(round*H)
+    σ = 0.5^(round*H)
     return(rand(Normal(0, σ)))
 end
 
@@ -212,8 +212,8 @@ end
 """
 function _centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
     bottomLeft,bottomRight,topLeft,topRight = corners
-    centerX::Int = (_xcoord(bottomLeft)+ _xcoord(bottomRight))/2
-    centerY::Int = (_ycoord(topRight)+ _ycoord(bottomRight))/2
+    centerX::Int = (_xcoord(bottomLeft)+_xcoord(bottomRight)) ÷ 2
+    centerY::Int = (_ycoord(topRight)+_ycoord(bottomRight)) ÷ 2
     return (centerX, centerY)
 end
 
@@ -240,10 +240,10 @@ function _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
     # bottom left, bottom right, top left, top right
     bottomLeft,bottomRight,topLeft,topRight = corners
 
-    leftEdgeMidpoint::Tuple{Int,Int} = (_xcoord(bottomLeft), ( _ycoord(bottomLeft)+_ycoord(topLeft) )/2 )
-    bottomEdgeMidpoint::Tuple{Int,Int} = ( (_xcoord(bottomLeft)+ _xcoord(bottomRight))/2, _ycoord(bottomLeft) )
-    topEdgeMidpoint::Tuple{Int,Int} = ( (_xcoord(topLeft)+_xcoord(topRight))/2, _ycoord(topLeft))
-    rightEdgeMidpoint::Tuple{Int,Int} = ( _xcoord(bottomRight), (_ycoord(bottomRight)+_ycoord(topRight))/2)
+    leftEdgeMidpoint::Tuple{Int,Int} = (_xcoord(bottomLeft), (_ycoord(bottomLeft)+_ycoord(topLeft))÷2 )
+    bottomEdgeMidpoint::Tuple{Int,Int} = ( (_xcoord(bottomLeft)+ _xcoord(bottomRight))÷2, _ycoord(bottomLeft) )
+    topEdgeMidpoint::Tuple{Int,Int} = ( (_xcoord(topLeft)+_xcoord(topRight))÷2, _ycoord(topLeft))
+    rightEdgeMidpoint::Tuple{Int,Int} = ( _xcoord(bottomRight), (_ycoord(bottomRight)+_ycoord(topRight))÷2)
 
     edgeMidpoints = [leftEdgeMidpoint, bottomEdgeMidpoint, topEdgeMidpoint, rightEdgeMidpoint]
     return edgeMidpoints
@@ -255,5 +255,5 @@ end
      Determines if `x`, an integer, can be expressed as `2^n`, where `n` is also an integer.
 """
 function _isPowerOfTwo(x::IT) where {IT <: Integer}
-    return log2(x) == floor(log2(x))
+    return x & (x-1) == 0
 end
