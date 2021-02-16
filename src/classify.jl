@@ -37,7 +37,6 @@ function _clusterMean(clusterArray, array)
         end
         clusters[temp] += 1.0
         clustersum[temp] += array[ind]          
-        end
     end
     for cl in keys(clusters)
         clustersum[cl] /= clusters[cl]
