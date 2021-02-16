@@ -121,6 +121,7 @@ function _initializeDiamondSquare!(mat, alg)
     end
 end
 
+
 """
     _subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
 
@@ -130,18 +131,106 @@ function _subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
     corners = [(1+sideLength*x, 1+sideLength*y), (1+sideLength*(x+1), 1+sideLength*y), (1+sideLength*x, sideLength*(y+1)+1), (1+sideLength*(x+1), 1+sideLength*(y+1))]
 end
 
+
+"""
+     _diamond!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+
+     Runs the diamond step of the `DiamondSquare` algorithm on the square defined by
+     `corners` on the matrix `mat`. The center of the square is interpolated from the
+     four corners, and is displaced. The displacement is drawn according to `alg.H` and round using `displace`
+"""
+function _diamond!(mat, alg, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+    centerPt = _centerCoordinate(corners)
+    mat[centerPt...] = _interpolate(mat, corners) + _displace(alg.H, round)
+    @assert isfinite(mat[centerPt...])
+end
+
+"""
+    _square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int,Int}})
+
+    Runs the square step of the `DiamondSquare` algorithm on the square defined
+    by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
+    by computing the mean value of the two corners on the edge and the center of the square, and the
+    displacing it. The displacement is drawn according to `alg.H` and round using `displace`
+
+"""
+function _square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+    bottomLeft,bottomRight,topLeft,topRight = corners
+    leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
+    centerPoint = _centerCoordinate(corners)
+
+    mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft,centerPoint]) + _displace(alg.H, round)
+    mat[bottomEdge...] = _interpolate(mat, [bottomLeft,bottomRight,centerPoint]) + _displace(alg.H, round)
+    mat[topEdge...] = _interpolate(mat, [topLeft,topRight,centerPoint]) + _displace(alg.H, round)
+    mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight,centerPoint]) + _displace(alg.H, round)
+end
+
+"""
+    _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int,Int}})
+
+    Runs the square step of the `MPD` algorithm on the square defined
+    by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
+    by computing the mean value of the two corners on the edge and the center of the square, and the
+    displacing it. The displacement is drawn according to `alg.H` and round using `displace`
+"""
+function _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+    bottomLeft,bottomRight,topLeft,topRight = corners
+    leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
+    mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft]) + _displace(alg.H, round)
+    mat[bottomEdge...] = _interpolate(mat, [bottomLeft,bottomRight]) + _displace(alg.H, round)
+    mat[topEdge...] = _interpolate(mat, [topLeft,topRight]) + _displace(alg.H, round)
+    mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight]) + _displace(alg.H, round)
+end
+
+"""
+    _displace(H::Float64, round::Int)
+
+    `displace` produces a random value as a function of  `H`, which is the
+    autocorrelation parameter used in `DiamondSquare` and must be between `0`
+    and `1`, and `round` which describes the current tiling size for the
+    DiamondSquare() algorithm.
+
+    Random value are drawn from a Gaussian distribution using `Distribution.Normal`
+    The standard deviation of this Gaussian, σ, is set to (1/2)^(round*H), which will
+    move from 1.0 to 0 as `round` increases.
+
+"""
+function _displace(H::Float64, round::Int)
+    σ = (0.5)^(round*H)
+    return(rand(Normal(0, σ)))
+end
+
 """
     _centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
 
-    Returns the center coordinate for a square defined by `corners` for the `DiamondSquare` algorithm.
+    Returns the center coordinate for a square defined by `corners` for the
+    `DiamondSquare` algorithm.
 """
 function _centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
     bottomLeft,bottomRight,topLeft,topRight = corners
-    x::Int = (bottomLeft[1]+bottomRight[1])/2
-    y::Int = (topRight[2]+bottomRight[2])/2
+    centerX::Int = (_xcoord(bottomLeft)+ _xcoord(bottomRight))/2
+    centerY::Int = (_ycoord(topRight)+ _ycoord(bottomRight))/2
 
-    return (x,y)
+    return (centerX, centerY)
 end
+
+
+"""
+    _xcoord(pt::Tuple{Int,Int})
+
+    Returns the x-coordinate from a lattice coordinate `pt`.
+"""
+ _xcoord(pt::Tuple{Int,Int}) = pt[1]
+
+ """
+     _ycoord(pt::Tuple{Int,Int})
+
+     Returns the y-coordinate from a lattice coordinate `pt`.
+ """
+ _ycoord(pt::Tuple{Int,Int}) = pt[2]
+
+
+
 
 """
     _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
@@ -152,10 +241,10 @@ function _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
     # bottom left, bottom right, top left, top right
     bottomLeft,bottomRight,topLeft,topRight = corners
 
-    leftEdgeMidpoint::Tuple{Int,Int} = (bottomLeft[1], (bottomLeft[2]+topLeft[2])/2 )
-    bottomEdgeMidpoint::Tuple{Int,Int} = ( (bottomLeft[1]+bottomRight[1])/2, bottomLeft[2])
-    topEdgeMidpoint::Tuple{Int,Int} = ( (topLeft[1]+topRight[1])/2, topLeft[2] )
-    rightEdgeMidpoint::Tuple{Int,Int} = ( bottomRight[1], (bottomRight[2]+topRight[2])/2)
+    leftEdgeMidpoint::Tuple{Int,Int} = (_xcoord(bottomLeft), ( _ycoord(bottomLeft)+_ycoord(topLeft) )/2 )
+    bottomEdgeMidpoint::Tuple{Int,Int} = ( (_xcoord(bottomLeft)+ _xcoord(bottomRight))/2, _ycoord(bottomLeft) )
+    topEdgeMidpoint::Tuple{Int,Int} = ( (_xcoord(topLeft)+_xcoord(topRight))/2, _ycoord(topLeft))
+    rightEdgeMidpoint::Tuple{Int,Int} = ( _xcoord(bottomRight), (_ycoord(bottomRight)+_ycoord(topRight))/2)
 
     edgeMidpoints = [leftEdgeMidpoint, bottomEdgeMidpoint, topEdgeMidpoint, rightEdgeMidpoint]
     return edgeMidpoints
@@ -182,90 +271,4 @@ end
 """
 function _isPowerOfTwo(x::IT) where {IT <: Integer}
     return log2(x) == floor(log2(x))
-end
-
-"""
-     _diamond!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
-
-     Runs the diamond step of the `DiamondSquare` algorithm on the square defined by
-     `corners` on the matrix `mat`. The center of the square is interpolated from the
-     four corners, and is displaced. The displacement is drawn according to `alg.H` and round using `displace`
-"""
-function _diamond!(mat, alg, round::Int, corners::AbstractVector{Tuple{Int, Int}})
-    centerPt = _centerCoordinate(corners)
-    mat[centerPt...] = _interpolate(mat, corners) + _displace(alg.H, round)
-    @assert isfinite(mat[centerPt...])
-end
-
-"""
-    _square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int,Int}})
-
-    Runs the square step of the `DiamondSquare` algorithm on the square defined
-    by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
-    by computing the mean value of the two corners on the edge and the center of the square, and the
-    displacing it. The displacement is drawn according to `alg.H` and round using `displace`
-
-    Note that this is the function to change to implement `mpd`
-"""
-function _square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
-    bottomLeft,bottomRight,topLeft,topRight = corners
-    leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
-    centerPoint = _centerCoordinate(corners)
-
-
-
-    # NOTE: the only difference between mpd and diamond-square is that
-    # mpd would not pass centerPoint to interpolate
-    mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft,centerPoint]) + _displace(alg.H, round)
-    mat[bottomEdge...] = _interpolate(mat, [bottomLeft,bottomRight,centerPoint]) + _displace(alg.H, round)
-    mat[topEdge...] = _interpolate(mat, [topLeft,topRight,centerPoint]) + _displace(alg.H, round)
-    mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight,centerPoint]) + _displace(alg.H, round)
-
-    @assert isfinite(mat[leftEdge...])
-    @assert isfinite(mat[rightEdge...])
-    @assert isfinite(mat[bottomEdge...])
-    @assert isfinite(mat[topEdge...])
-
-end
-
-"""
-    _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int,Int}})
-
-    Runs the square step of the `MPD` algorithm on the square defined
-    by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
-    by computing the mean value of the two corners on the edge and the center of the square, and the
-    displacing it. The displacement is drawn according to `alg.H` and round using `displace`
-"""
-function _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int, Int}})
-    bottomLeft,bottomRight,topLeft,topRight = corners
-    leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
-
-    mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft]) + _displace(alg.H, round)
-    mat[bottomEdge...] = _interpolate(mat, [bottomLeft,bottomRight]) + _displace(alg.H, round)
-    mat[topEdge...] = _interpolate(mat, [topLeft,topRight]) + _displace(alg.H, round)
-    mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight]) + _displace(alg.H, round)
-
-    @assert isfinite(mat[leftEdge...])
-    @assert isfinite(mat[rightEdge...])
-    @assert isfinite(mat[bottomEdge...])
-    @assert isfinite(mat[topEdge...])
-
-end
-
-"""
-    _displace(H::Float64, round::Int)
-
-    `displace` produces a random value as a function of  `H`, which is the
-    autocorrelation parameter used in `DiamondSquare` and must be between `0`
-    and `1`, and `round` which describes the current tiling size for the
-    DiamondSquare() algorithm.
-
-    Random value are drawn from a Gaussian distribution using `Distribution.Normal`
-    The standard deviation of this Gaussian, σ, is set to (1/2)^(round*H), which will
-    move from 1.0 to 0 as `round` increases.
-
-"""
-function _displace(H::Float64, round::Int)
-    σ = (0.5)^(round*H)
-    return(rand(Normal(0, σ)))
 end
