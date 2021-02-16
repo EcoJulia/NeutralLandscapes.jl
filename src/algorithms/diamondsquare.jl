@@ -24,6 +24,8 @@ struct DiamondSquare <: NeutralLandscapeMaker
         @assert 0 < H && H < 1
         new(H)
     end
+    DiamondSquare() = new(0.5)
+
 end
 
 """
@@ -37,17 +39,12 @@ struct MPD <: NeutralLandscapeMaker
         @assert 0 < H && H < 1
         new(H)
     end
+    MPD() = new(0.5)
 end
 
-"""
-    DiamondSquare()
-
-Creates a `DiamondSquare` with neutral spatial autocorrelation.
-"""
-DiamondSquare() = DiamondSquare(0.5)
 
 """
-    _landscape!(mat, alg::DiamondSquare; kw...)
+    _landscape!(mat, alg::Union{DiamondSquare, MPD}; kw...)
 
     Check if `mat` is the right size and already initialized.
     If mat is not the correct size (DiamondSquare can only run on a lattice of size NxN where N = (2^n)+1 for integer n),
@@ -56,7 +53,7 @@ DiamondSquare() = DiamondSquare(0.5)
 """
 function _landscape!(mat, alg::Union{DiamondSquare, MPD}; kw...) where {IT <: Integer}
 
-    rightSize::Bool = isPowerOfTwo(size(mat)[1]-1) && isPowerOfTwo(size(mat)[2]-1)
+    rightSize::Bool = _isPowerOfTwo(size(mat)[1]-1) && _isPowerOfTwo(size(mat)[2]-1)
     latticeSize::Int = size(mat)[1]
 
     dsMat = mat
@@ -68,13 +65,13 @@ function _landscape!(mat, alg::Union{DiamondSquare, MPD}; kw...) where {IT <: In
                 This can slow performance as it involves additional memory allocation."
         dsMat = zeros(smallestContainingLattice, smallestContainingLattice)
     end
-    diamondsquare!(dsMat, alg)
+    _diamondsquare!(dsMat, alg)
 
     mat .= dsMat[1:size(mat)[1], 1:size(mat)[2]]
 end
 
 """
-    diamondsquare!(mat, alg::DiamondSquare)
+    _diamondsquare!(mat, alg)
 
     Runs the diamond-square algorithm on a matrix `mat` of size
     `NxN`, where `N=(2^n)+1` for some integer `n`, i.e (N=5,9,17,33,65)
@@ -86,10 +83,10 @@ end
     by a single parameter `H` which varies between `0` (no autocorrelation) and `1` (high autocorrelation)
 
 """
-function diamondsquare!(mat, alg)
+function _diamondsquare!(mat, alg)
     latticeSize::Int = size(mat)[1]
     numberOfRounds::Int = log2(latticeSize-1)
-    initializeDiamondSquare!(mat, alg)
+    _initializeDiamondSquare!(mat, alg)
 
     for round in 0:(numberOfRounds-1)    # counting from 0 saves us a headache later
         subsquareSideLength::Int = 2^(numberOfRounds-(round))
@@ -98,10 +95,10 @@ function diamondsquare!(mat, alg)
         # iterate over the subsquares within the lattice at this side length
         for x in 0:numberOfSubsquaresPerAxis
             for y in 0:numberOfSubsquaresPerAxis
-                subsquareCorners = subsquareCornerCoordinates(x,y,subsquareSideLength)
+                subsquareCorners = _subsquareCornerCoordinates(x,y,subsquareSideLength)
 
-                diamond!(mat, alg, round, subsquareCorners)
-                square!(mat, alg, round, subsquareCorners)
+                _diamond!(mat, alg, round, subsquareCorners)
+                _square!(mat, alg, round, subsquareCorners)
             end
         end
     end
@@ -109,36 +106,36 @@ end
 
 
 """
-    initializeDiamondSquare!(mat, alg)
+    _initializeDiamondSquare!(mat, alg)
 
     Initialize's the `DiamondSquare` algorithm by displacing the four corners of the
     lattice using `displace`, scaled by the algorithm's autocorrelation `H`.
 """
-function initializeDiamondSquare!(mat, alg)
+function _initializeDiamondSquare!(mat, alg)
     latticeSize = size(mat)[1]
-    corners = subsquareCornerCoordinates(0,0, latticeSize-1)
+    corners = _subsquareCornerCoordinates(0,0, latticeSize-1)
     for mp in corners
-        mat[mp...] = displace(alg.H, 1)
+        mat[mp...] = _displace(alg.H, 1)
         @assert isfinite(mat[mp...])
 
     end
 end
 
 """
-    subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
+    _subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
 
     Returns the coordinates for the corners of the subsquare (x,y) given a side-length `sideLength`.
 """
-function subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
+function _subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
     corners = [(1+sideLength*x, 1+sideLength*y), (1+sideLength*(x+1), 1+sideLength*y), (1+sideLength*x, sideLength*(y+1)+1), (1+sideLength*(x+1), 1+sideLength*(y+1))]
 end
 
 """
-    centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
+    _centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
 
     Returns the center coordinate for a square defined by `corners` for the `DiamondSquare` algorithm.
 """
-function centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
+function _centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
     bottomLeft,bottomRight,topLeft,topRight = corners
     x::Int = (bottomLeft[1]+bottomRight[1])/2
     y::Int = (topRight[2]+bottomRight[2])/2
@@ -147,11 +144,11 @@ function centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
 end
 
 """
-    edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
+    _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
 
     Returns an array of midpoints for a square defined by `corners` for the `DiamondSquare` algorithm.
 """
-function edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
+function _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
     # bottom left, bottom right, top left, top right
     bottomLeft,bottomRight,topLeft,topRight = corners
 
@@ -166,11 +163,11 @@ end
 
 
 """
-    interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
+    _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
 
     Computes the mean of a set of points, represented as a list of indecies to a matrix `mat`.
 """
-function interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
+function _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
     for pt in points
         @assert isfinite(mat[pt...])
     end
@@ -179,29 +176,29 @@ function interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
 end
 
 """
-     isPowerOfTwo(x::IT) where {IT <: Integer}
+     _isPowerOfTwo(x::IT) where {IT <: Integer}
 
      Determines if `x`, an integer, can be expressed as `2^n`, where `n` is also an integer.
 """
-function isPowerOfTwo(x::IT) where {IT <: Integer}
+function _isPowerOfTwo(x::IT) where {IT <: Integer}
     return log2(x) == floor(log2(x))
 end
 
 """
-     diamond!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+     _diamond!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
 
      Runs the diamond step of the `DiamondSquare` algorithm on the square defined by
      `corners` on the matrix `mat`. The center of the square is interpolated from the
      four corners, and is displaced. The displacement is drawn according to `alg.H` and round using `displace`
 """
-function diamond!(mat, alg, round::Int, corners::AbstractVector{Tuple{Int, Int}})
-    centerPt = centerCoordinate(corners)
-    mat[centerPt...] = interpolate(mat, corners) + displace(alg.H, round)
+function _diamond!(mat, alg, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+    centerPt = _centerCoordinate(corners)
+    mat[centerPt...] = _interpolate(mat, corners) + _displace(alg.H, round)
     @assert isfinite(mat[centerPt...])
 end
 
 """
-    square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int,Int}})
+    _square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int,Int}})
 
     Runs the square step of the `DiamondSquare` algorithm on the square defined
     by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
@@ -210,35 +207,19 @@ end
 
     Note that this is the function to change to implement `mpd`
 """
-function square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+function _square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
     bottomLeft,bottomRight,topLeft,topRight = corners
-    leftEdge, bottomEdge, topEdge, rightEdge = edgeMidpointCoordinates(corners)
-    centerPoint = centerCoordinate(corners)
+    leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
+    centerPoint = _centerCoordinate(corners)
 
 
 
     # NOTE: the only difference between mpd and diamond-square is that
     # mpd would not pass centerPoint to interpolate
-    mat[leftEdge...] = interpolate(mat, [topLeft,bottomLeft,centerPoint]) + displace(alg.H, round)
-    mat[bottomEdge...] = interpolate(mat, [bottomLeft,bottomRight,centerPoint]) + displace(alg.H, round)
-    mat[topEdge...] = interpolate(mat, [topLeft,topRight,centerPoint]) + displace(alg.H, round)
-    mat[rightEdge...] = interpolate(mat, [topRight,bottomRight,centerPoint]) + displace(alg.H, round)
-
-    @assert isfinite(mat[leftEdge...])
-    @assert isfinite(mat[rightEdge...])
-    @assert isfinite(mat[bottomEdge...])
-    @assert isfinite(mat[topEdge...])
-
-end
-
-function square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int, Int}})
-    bottomLeft,bottomRight,topLeft,topRight = corners
-    leftEdge, bottomEdge, topEdge, rightEdge = edgeMidpointCoordinates(corners)
-
-    mat[leftEdge...] = interpolate(mat, [topLeft,bottomLeft]) + displace(alg.H, round)
-    mat[bottomEdge...] = interpolate(mat, [bottomLeft,bottomRight]) + displace(alg.H, round)
-    mat[topEdge...] = interpolate(mat, [topLeft,topRight]) + displace(alg.H, round)
-    mat[rightEdge...] = interpolate(mat, [topRight,bottomRight]) + displace(alg.H, round)
+    mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft,centerPoint]) + _displace(alg.H, round)
+    mat[bottomEdge...] = _interpolate(mat, [bottomLeft,bottomRight,centerPoint]) + _displace(alg.H, round)
+    mat[topEdge...] = _interpolate(mat, [topLeft,topRight,centerPoint]) + _displace(alg.H, round)
+    mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight,centerPoint]) + _displace(alg.H, round)
 
     @assert isfinite(mat[leftEdge...])
     @assert isfinite(mat[rightEdge...])
@@ -248,7 +229,31 @@ function square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int, I
 end
 
 """
-    displace(H::Float64, round::Int)
+    _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int,Int}})
+
+    Runs the square step of the `MPD` algorithm on the square defined
+    by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
+    by computing the mean value of the two corners on the edge and the center of the square, and the
+    displacing it. The displacement is drawn according to `alg.H` and round using `displace`
+"""
+function _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+    bottomLeft,bottomRight,topLeft,topRight = corners
+    leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
+
+    mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft]) + _displace(alg.H, round)
+    mat[bottomEdge...] = _interpolate(mat, [bottomLeft,bottomRight]) + _displace(alg.H, round)
+    mat[topEdge...] = _interpolate(mat, [topLeft,topRight]) + _displace(alg.H, round)
+    mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight]) + _displace(alg.H, round)
+
+    @assert isfinite(mat[leftEdge...])
+    @assert isfinite(mat[rightEdge...])
+    @assert isfinite(mat[bottomEdge...])
+    @assert isfinite(mat[topEdge...])
+
+end
+
+"""
+    _displace(H::Float64, round::Int)
 
     `displace` produces a random value as a function of  `H`, which is the
     autocorrelation parameter used in `DiamondSquare` and must be between `0`
@@ -260,7 +265,7 @@ end
     move from 1.0 to 0 as `round` increases.
 
 """
-function displace(H::Float64, round::Int)
+function _displace(H::Float64, round::Int)
     σ = (0.5)^(round*H)
     return(rand(Normal(0, σ)))
 end
