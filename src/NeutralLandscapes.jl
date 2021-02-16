@@ -29,7 +29,10 @@ export DistanceGradient
 include(joinpath("algorithms", "rectangularcluster.jl"))
 export RectangularCluster
 
+include(joinpath("algorithms", "perlinnoise.jl"))
+export PerlinNoise
+
 include("classify.jl")
-export classify!
+export classify!, blend, blendClusterArray
 
 end # module
