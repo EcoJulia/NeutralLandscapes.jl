@@ -31,7 +31,8 @@ end
 """
     MPD()
 
-    Creates a midpoint-displacement algorithm object `MPD`.
+    Creates a midpoint-displacement algorithm object `MPD`. The degree of spatial autocorrelation is controlled by a parameter `H`,
+    which varies from 0.0 (low autocorrelation) to 1.0 (high autocorrelation) --- note this is non-inclusive and H = 0 and H = 1 will not behavive as expected.
 """
 struct MPD <: NeutralLandscapeMaker
     H::Float64
@@ -92,8 +93,7 @@ function _diamondsquare!(mat, alg)
         subsquareSideLength::Int = 2^(numberOfRounds-(round))
         numberOfSubsquaresPerAxis::Int = ((latticeSize-1) / subsquareSideLength)-1
 
-        # iterate over the subsquares within the lattice at this side length
-        for x in 0:numberOfSubsquaresPerAxis
+        for x in 0:numberOfSubsquaresPerAxis         # iterate over the subsquares within the lattice at this side length
             for y in 0:numberOfSubsquaresPerAxis
                 subsquareCorners = _subsquareCornerCoordinates(x,y,subsquareSideLength)
 
@@ -103,7 +103,6 @@ function _diamondsquare!(mat, alg)
         end
     end
 end
-
 
 """
     _initializeDiamondSquare!(mat, alg)
@@ -116,11 +115,8 @@ function _initializeDiamondSquare!(mat, alg)
     corners = _subsquareCornerCoordinates(0,0, latticeSize-1)
     for mp in corners
         mat[mp...] = _displace(alg.H, 1)
-        @assert isfinite(mat[mp...])
-
     end
 end
-
 
 """
     _subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
@@ -130,7 +126,6 @@ end
 function _subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
     corners = [(1+sideLength*x, 1+sideLength*y), (1+sideLength*(x+1), 1+sideLength*y), (1+sideLength*x, sideLength*(y+1)+1), (1+sideLength*(x+1), 1+sideLength*(y+1))]
 end
-
 
 """
      _diamond!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
@@ -142,7 +137,6 @@ end
 function _diamond!(mat, alg, round::Int, corners::AbstractVector{Tuple{Int, Int}})
     centerPt = _centerCoordinate(corners)
     mat[centerPt...] = _interpolate(mat, corners) + _displace(alg.H, round)
-    @assert isfinite(mat[centerPt...])
 end
 
 """
@@ -183,6 +177,15 @@ function _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int, 
 end
 
 """
+    _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
+
+    Computes the mean of a set of points, represented as a list of indecies to a matrix `mat`.
+"""
+function _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
+    return mean(collect(mat[pt...] for pt in points))
+end
+
+"""
     _displace(H::Float64, round::Int)
 
     `displace` produces a random value as a function of  `H`, which is the
@@ -210,10 +213,8 @@ function _centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
     bottomLeft,bottomRight,topLeft,topRight = corners
     centerX::Int = (_xcoord(bottomLeft)+ _xcoord(bottomRight))/2
     centerY::Int = (_ycoord(topRight)+ _ycoord(bottomRight))/2
-
     return (centerX, centerY)
 end
-
 
 """
     _xcoord(pt::Tuple{Int,Int})
@@ -228,9 +229,6 @@ end
      Returns the y-coordinate from a lattice coordinate `pt`.
  """
  _ycoord(pt::Tuple{Int,Int}) = pt[2]
-
-
-
 
 """
     _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
@@ -248,20 +246,6 @@ function _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
 
     edgeMidpoints = [leftEdgeMidpoint, bottomEdgeMidpoint, topEdgeMidpoint, rightEdgeMidpoint]
     return edgeMidpoints
-end
-
-
-"""
-    _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
-
-    Computes the mean of a set of points, represented as a list of indecies to a matrix `mat`.
-"""
-function _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
-    for pt in points
-        @assert isfinite(mat[pt...])
-    end
-
-    return mean(collect(mat[pt...] for pt in points))
 end
 
 """
