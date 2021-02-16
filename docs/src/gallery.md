@@ -44,6 +44,12 @@ sources = unique(rand(1:40000, 50))
 demolandscape(DistanceGradient(sources))
 ```
 
+## Perlin Noise
+
+```@example gallery
+demolandscape(PerlinNoise())
+```
+
 ## Classify landscape
 
 ```@example gallery
