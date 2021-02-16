@@ -12,7 +12,7 @@ The algorithm is named diamond-square because it is an iterative procedure of
 
 The degree of spatial autocorrelation is controlled by a parameter `H`,
 which varies from 0.0 (low autocorrelation) to 1.0 (high autocorrelation) --- 
-note this is non-inclusive and H = 0 and H = 1 will not behavive as expected.
+note this is non-inclusive and H = 0 and H = 1 will not behave as expected.
 The result of the diamond-square algorithm is a fractal with dimension D = 2 + H.
 
 A similar algorithm, midpoint displacement *TODO link to mpd in docs*, almost
@@ -49,10 +49,9 @@ MidpointDisplacement() = MidpointDisplacement(0.5)
 """
     _landscape!(mat, alg::Union{DiamondSquare, MidpointDisplacement}; kw...)
 
-    Check if `mat` is the right size and already initialized.
+    Check if `mat` is the right size.
     If mat is not the correct size (DiamondSquare can only run on a lattice of size NxN where N = (2^n)+1 for integer n),
     allocates the smallest lattice large enough to contain `mat` that can run DiamondSquare.
-    Will initialize `mat` to all zeros before running DiamondSquare if it is not initialized already.
 """
 function _landscape!(mat, alg::Union{DiamondSquare, MidpointDisplacement}; kw...) where {IT <: Integer}
 
