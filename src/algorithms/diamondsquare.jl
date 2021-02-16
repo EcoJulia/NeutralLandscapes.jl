@@ -40,7 +40,7 @@ DiamondSquare() = DiamondSquare(0.5)
 struct MidpointDisplacement <: NeutralLandscapeMaker
     H::Float64
     function MidpointDisplacement(H::T) where {T <: Real}
-        @assert 0 < H && H < 1
+        @assert 0 <= H < 1
         new(H)
     end
 end
