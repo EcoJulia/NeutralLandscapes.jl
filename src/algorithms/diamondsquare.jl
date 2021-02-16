@@ -26,6 +26,18 @@ struct DiamondSquare <: NeutralLandscapeMaker
     end
 end
 
+"""
+    MPD()
+
+    Creates a midpoint-displacement algorithm object `MPD`.
+"""
+struct MPD <: NeutralLandscapeMaker
+    H::Float64
+    function MPD(H::T) where {T <: Real}
+        @assert 0 < H && H < 1
+        new(H)
+    end
+end
 
 """
     DiamondSquare()
@@ -42,7 +54,7 @@ DiamondSquare() = DiamondSquare(0.5)
     allocates the smallest lattice large enough to contain `mat` that can run DiamondSquare.
     Will initialize `mat` to all zeros before running DiamondSquare if it is not initialized already.
 """
-function _landscape!(mat, alg::DiamondSquare; kw...) where {IT <: Integer}
+function _landscape!(mat, alg::Union{DiamondSquare, MPD}; kw...) where {IT <: Integer}
 
     rightSize::Bool = isPowerOfTwo(size(mat)[1]-1) && isPowerOfTwo(size(mat)[2]-1)
     latticeSize::Int = size(mat)[1]
@@ -51,7 +63,7 @@ function _landscape!(mat, alg::DiamondSquare; kw...) where {IT <: Integer}
     if !rightSize
         dim1, dim2 = size(mat)
         smallestContainingLattice::Int = 2^ceil(log2(max(dim1, dim2))) + 1
-        @warn "DiamondSquare() cannot be run on the input dimensions ($dim1 x $dim2),
+        @warn "$alg cannot be run on the input dimensions ($dim1 x $dim2),
                 and will instead run on the next smallest valid size ($smallestContainingLattice x $smallestContainingLattice).
                 This can slow performance as it involves additional memory allocation."
         dsMat = zeros(smallestContainingLattice, smallestContainingLattice)
@@ -74,7 +86,7 @@ end
     by a single parameter `H` which varies between `0` (no autocorrelation) and `1` (high autocorrelation)
 
 """
-function diamondsquare!(mat, alg::DiamondSquare)
+function diamondsquare!(mat, alg)
     latticeSize::Int = size(mat)[1]
     numberOfRounds::Int = log2(latticeSize-1)
     initializeDiamondSquare!(mat, alg)
@@ -182,7 +194,7 @@ end
      `corners` on the matrix `mat`. The center of the square is interpolated from the
      four corners, and is displaced. The displacement is drawn according to `alg.H` and round using `displace`
 """
-function diamond!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+function diamond!(mat, alg, round::Int, corners::AbstractVector{Tuple{Int, Int}})
     centerPt = centerCoordinate(corners)
     mat[centerPt...] = interpolate(mat, corners) + displace(alg.H, round)
     @assert isfinite(mat[centerPt...])
@@ -211,6 +223,22 @@ function square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tu
     mat[bottomEdge...] = interpolate(mat, [bottomLeft,bottomRight,centerPoint]) + displace(alg.H, round)
     mat[topEdge...] = interpolate(mat, [topLeft,topRight,centerPoint]) + displace(alg.H, round)
     mat[rightEdge...] = interpolate(mat, [topRight,bottomRight,centerPoint]) + displace(alg.H, round)
+
+    @assert isfinite(mat[leftEdge...])
+    @assert isfinite(mat[rightEdge...])
+    @assert isfinite(mat[bottomEdge...])
+    @assert isfinite(mat[topEdge...])
+
+end
+
+function square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+    bottomLeft,bottomRight,topLeft,topRight = corners
+    leftEdge, bottomEdge, topEdge, rightEdge = edgeMidpointCoordinates(corners)
+
+    mat[leftEdge...] = interpolate(mat, [topLeft,bottomLeft]) + displace(alg.H, round)
+    mat[bottomEdge...] = interpolate(mat, [bottomLeft,bottomRight]) + displace(alg.H, round)
+    mat[topEdge...] = interpolate(mat, [topLeft,topRight]) + displace(alg.H, round)
+    mat[rightEdge...] = interpolate(mat, [topRight,bottomRight]) + displace(alg.H, round)
 
     @assert isfinite(mat[leftEdge...])
     @assert isfinite(mat[rightEdge...])
