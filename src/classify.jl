@@ -24,7 +24,7 @@ Blend arrays weighted by scaling factors.
 """
 function blend(arrays, scaling = ones(length(arrays)))
     ret = sum(arrays .* scaling)
-    rescale!(ret)
+    _rescale!(ret)
 end
 
 function _clusterMean(clusterArray, array)
@@ -53,7 +53,7 @@ cluster is weighted by scaling factors.
 """
 function blendClusterArray(primary, arrays, scaling = ones(length(arrays)))
     ret = sum(_clusterMean.(Ref(primary), arrays) .* scaling)
-    rescale!(primary + ret)
+    _rescale!(primary + ret)
 end
 
 
