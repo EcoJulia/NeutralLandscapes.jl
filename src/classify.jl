@@ -17,16 +17,6 @@ function classify!(array, weights, mask = nothing)
     array
 end
 
-"""
-    blend(arrays[, scaling])
-
-Blend arrays weighted by scaling factors.
-"""
-function blend(arrays, scaling = ones(length(arrays)))
-    ret = sum(arrays .* scaling)
-    _rescale!(ret)
-end
-
 function _clusterMean(clusterArray, array)
     clusters = Dict{Float64, Float64}()
     clustersum = Dict{Float64, Float64}()
@@ -46,14 +36,25 @@ function _clusterMean(clusterArray, array)
 end
 
 """
-    blendClusterArray(primary, arrays[, scaling])
+    blend(arrays[, scaling])
+
+Blend arrays weighted by scaling factors.
+"""
+function blend(arrays, scaling::AbstractVector{<:Number} = ones(length(arrays)))
+    if length(scaling) != length(arrays)
+        throw(DimensionMismatch("The array of landscapes (n = $(length(arrays))) and scaling (n = $(length(scaling)) must have the same length")
+    end
+    ret = sum(arrays .* scaling)
+    _rescale!(ret)
+end
+
+"""
+    blend(clusterarray, arrays[, scaling])
 
 Blend a primary cluster NLM with other arrays in which the mean value per 
 cluster is weighted by scaling factors.
 """
-function blendClusterArray(primary, arrays, scaling = ones(length(arrays)))
-    ret = sum(_clusterMean.(Ref(primary), arrays) .* scaling)
-    _rescale!(primary + ret)
+function blend(clusterarray, arrays, scaling::AbstractVector{<:Number} = ones(length(arrays)))
+    ret = sum(_clusterMean.(Ref(clusterarray), arrays) .* scaling)
+    _rescale!(clusterarray + ret)
 end
-
-
