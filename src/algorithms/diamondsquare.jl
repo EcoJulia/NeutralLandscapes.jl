@@ -10,9 +10,9 @@ The algorithm is named diamond-square because it is an iterative procedure of
 "diamond" and "square" steps.
 
 
-
 The degree of spatial autocorrelation is controlled by a parameter `H`,
-which varies from 0.0 (low autocorrelation) to 1.0 (high autocorrelation) --- note this is non-inclusive and H = 0 and H = 1 will not behavive as expected.
+which varies from 0.0 (low autocorrelation) to 1.0 (high autocorrelation) --- 
+note this is non-inclusive and H = 0 and H = 1 will not behavive as expected.
 The result of the diamond-square algorithm is a fractal with dimension D = 2 + H.
 
 A similar algorithm, midpoint displacement *TODO link to mpd in docs*, almost
@@ -21,38 +21,41 @@ identically, except that in DiamondSquare, the ed
 struct DiamondSquare <: NeutralLandscapeMaker
     H::Float64
     function DiamondSquare(H::T) where {T <: Real}
-        @assert 0 < H && H < 1
+        @assert 0 <=  H < 1
         new(H)
     end
-    DiamondSquare() = new(0.5)
-
 end
 
 """
-    MPD()
+    DiamondSquare() 
+"""
+DiamondSquare() = DiamondSquare()
 
-    Creates a midpoint-displacement algorithm object `MPD`. The degree of spatial autocorrelation is controlled by a parameter `H`,
+"""
+    MidpointDisplacement()
+
+    Creates a midpoint-displacement algorithm object `MidpointDisplacement`. The degree of spatial autocorrelation is controlled by a parameter `H`,
     which varies from 0.0 (low autocorrelation) to 1.0 (high autocorrelation) --- note this is non-inclusive and H = 0 and H = 1 will not behavive as expected.
 """
-struct MPD <: NeutralLandscapeMaker
+struct MidpointDisplacement <: NeutralLandscapeMaker
     H::Float64
-    function MPD(H::T) where {T <: Real}
+    function MidpointDisplacement(H::T) where {T <: Real}
         @assert 0 < H && H < 1
         new(H)
     end
-    MPD() = new(0.5)
+    MidpointDisplacement() = new(0.5)
 end
 
 
 """
-    _landscape!(mat, alg::Union{DiamondSquare, MPD}; kw...)
+    _landscape!(mat, alg::Union{DiamondSquare, MidpointDisplacement}; kw...)
 
     Check if `mat` is the right size and already initialized.
     If mat is not the correct size (DiamondSquare can only run on a lattice of size NxN where N = (2^n)+1 for integer n),
     allocates the smallest lattice large enough to contain `mat` that can run DiamondSquare.
     Will initialize `mat` to all zeros before running DiamondSquare if it is not initialized already.
 """
-function _landscape!(mat, alg::Union{DiamondSquare, MPD}; kw...) where {IT <: Integer}
+function _landscape!(mat, alg::Union{DiamondSquare, MidpointDisplacement}; kw...) where {IT <: Integer}
 
     rightSize::Bool = _isPowerOfTwo(size(mat)[1]-1) && _isPowerOfTwo(size(mat)[2]-1)
     latticeSize::Int = size(mat)[1]
@@ -160,14 +163,14 @@ function _square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{T
 end
 
 """
-    _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int,Int}})
+    _square!(mat, alg::MidpointDisplacement, round::Int, corners::AbstractVector{Tuple{Int,Int}})
 
-    Runs the square step of the `MPD` algorithm on the square defined
+    Runs the square step of the `MidpointDisplacement` algorithm on the square defined
     by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
     by computing the mean value of the two corners on the edge and the center of the square, and the
     displacing it. The displacement is drawn according to `alg.H` and round using `displace`
 """
-function _square!(mat, alg::MPD, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+function _square!(mat, alg::MidpointDisplacement, round::Int, corners::AbstractVector{Tuple{Int, Int}})
     bottomLeft,bottomRight,topLeft,topRight = corners
     leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
     mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft]) + _displace(alg.H, round)
