@@ -1,4 +1,3 @@
-
 """
     classify!(array, weights[, classifyMask])
 
