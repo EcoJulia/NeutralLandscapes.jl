@@ -44,7 +44,6 @@ DiamondSquare() = DiamondSquare(0.5)
 """
 function _landscape!(mat, alg::DiamondSquare; kw...) where {IT <: Integer}
 
-    initialized::Bool = !any(isnan, mat)
     rightSize::Bool = isPowerOfTwo(size(mat)[1]-1) && isPowerOfTwo(size(mat)[2]-1)
     latticeSize::Int = size(mat)[1]
 
@@ -56,8 +55,6 @@ function _landscape!(mat, alg::DiamondSquare; kw...) where {IT <: Integer}
                 and will instead run on the next smallest valid size ($smallestContainingLattice x $smallestContainingLattice).
                 This can slow performance as it involves additional memory allocation."
         dsMat = zeros(smallestContainingLattice, smallestContainingLattice)
-    elseif !initialized
-        dsMat = zeros(latticeSize,latticeSize)
     end
     diamondsquare!(dsMat, alg)
 
@@ -90,8 +87,9 @@ function diamondsquare!(mat, alg::DiamondSquare)
         for x in 0:numberOfSubsquaresPerAxis
             for y in 0:numberOfSubsquaresPerAxis
                 subsquareCorners = subsquareCornerCoordinates(x,y,subsquareSideLength)
-                square!(mat, alg, round, subsquareCorners)
+
                 diamond!(mat, alg, round, subsquareCorners)
+                square!(mat, alg, round, subsquareCorners)
             end
         end
     end
@@ -109,6 +107,8 @@ function initializeDiamondSquare!(mat, alg)
     corners = subsquareCornerCoordinates(0,0, latticeSize-1)
     for mp in corners
         mat[mp...] = displace(alg.H, 1)
+        @assert isfinite(mat[mp...])
+
     end
 end
 
@@ -159,6 +159,10 @@ end
     Computes the mean of a set of points, represented as a list of indecies to a matrix `mat`.
 """
 function interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
+    for pt in points
+        @assert isfinite(mat[pt...])
+    end
+
     return mean(collect(mat[pt...] for pt in points))
 end
 
@@ -180,8 +184,8 @@ end
 """
 function diamond!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
     centerPt = centerCoordinate(corners)
-    latticeSize = size(mat)[1]
     mat[centerPt...] = interpolate(mat, corners) + displace(alg.H, round)
+    @assert isfinite(mat[centerPt...])
 end
 
 """
@@ -195,12 +199,11 @@ end
     Note that this is the function to change to implement `mpd`
 """
 function square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
-    latticeSize::Int = size(mat)[1]
-    edgeMidpoints = edgeMidpointCoordinates(corners)
+    bottomLeft,bottomRight,topLeft,topRight = corners
+    leftEdge, bottomEdge, topEdge, rightEdge = edgeMidpointCoordinates(corners)
     centerPoint = centerCoordinate(corners)
 
-    leftEdge, bottomEdge, topEdge, rightEdge = edgeMidpoints
-    bottomLeft,bottomRight,topLeft,topRight = corners
+
 
     # NOTE: the only difference between mpd and diamond-square is that
     # mpd would not pass centerPoint to interpolate
@@ -208,6 +211,11 @@ function square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tu
     mat[bottomEdge...] = interpolate(mat, [bottomLeft,bottomRight,centerPoint]) + displace(alg.H, round)
     mat[topEdge...] = interpolate(mat, [topLeft,topRight,centerPoint]) + displace(alg.H, round)
     mat[rightEdge...] = interpolate(mat, [topRight,bottomRight,centerPoint]) + displace(alg.H, round)
+
+    @assert isfinite(mat[leftEdge...])
+    @assert isfinite(mat[rightEdge...])
+    @assert isfinite(mat[bottomEdge...])
+    @assert isfinite(mat[topEdge...])
 
 end
 
