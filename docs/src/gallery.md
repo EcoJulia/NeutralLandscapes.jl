@@ -31,7 +31,9 @@ demolandscape(EdgeGradient(186))
 demolandscape(WaveSurface(35, 3))
 ```
 
-## Rectangular clusterdemolandscape(RectangularCluster())
+## Rectangular cluster
+```@example gallery
+demolandscape(RectangularCluster())
 ```
 
 ## Distance gradient
@@ -39,6 +41,12 @@ demolandscape(WaveSurface(35, 3))
 ```@example gallery
 sources = unique(rand(1:40000, 50))
 demolandscape(DistanceGradient(sources))
+```
+
+## Perlin Noise
+
+```@example gallery
+demolandscape(PerlinNoise())
 ```
 
 ## Classify landscape
@@ -50,5 +58,10 @@ heatmap(NeutralLandscapes.classify!(rand(DistanceGradient(sources), (200, 200)),
 
 ## Diamond Square
 ```@example gallery
-heatmap(rand!(zeros(65,65), DiamondSquare()))
+demolandscape(DiamondSquare())
+```
+
+## Midpoint Displacement
+```@example gallery
+demolandscape(MPD())
 ```
