@@ -19,7 +19,7 @@ NearestNeighborElement() = NearestNeighborElement(3, 1)
 
 function _landscape!(mat, alg::NearestNeighborElement)
     fill!(mat, 0.0)
-    clusters = StatsBase.sample(eachindex(mat), alg.n; replace=false)
+    clusters = sample(eachindex(mat), alg.n; replace=false)
     for (i,n) in enumerate(clusters)
         mat[n] = i
     end  
