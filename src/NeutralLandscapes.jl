@@ -4,6 +4,8 @@ import NaNMath
 import StatsBase
 using Random: rand!
 using Statistics: quantile
+using Distributions: Normal
+using Statistics: quantile, mean
 using NearestNeighbors: KDTree, knn, nn
 
 """
@@ -25,6 +27,9 @@ export PlanarGradient
 include(joinpath("algorithms", "edgegradient.jl"))
 export EdgeGradient
 
+include(joinpath("algorithms", "diamondsquare.jl"))
+export DiamondSquare, MidpointDisplacement
+
 include(joinpath("algorithms", "wavesurface.jl"))
 export WaveSurface
 
@@ -37,7 +42,10 @@ export RectangularCluster
 include(joinpath("algorithms", "nnelement.jl"))
 export NearestNeighborElement
 
+include(joinpath("algorithms", "perlinnoise.jl"))
+export PerlinNoise
+
 include("classify.jl")
-export classify!
+export classify!, blend
 
 end # module
