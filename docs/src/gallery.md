@@ -43,6 +43,12 @@ sources = unique(rand(1:40000, 50))
 demolandscape(DistanceGradient(sources))
 ```
 
+## Nearest-neighbor element
+
+```@example gallery
+heatmap(rand(NearestNeighborElement(20, 1), (45, 45)))
+```
+
 ## Perlin Noise
 
 ```@example gallery

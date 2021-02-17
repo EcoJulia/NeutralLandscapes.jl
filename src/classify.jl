@@ -8,8 +8,8 @@ function classify!(array, weights, mask = nothing)
     cumsum!(quantiles, weights)
     quantiles ./= quantiles[end]
     boundaryvalues = isnothing(mask) ?
-        quantile(filter(isfinite, array), quantiles) :
-        quantile(array[mask .& isfinite.(array)], quantiles)
+    quantile(filter(isfinite, array), quantiles) :
+    quantile(array[mask .& isfinite.(array)], quantiles)
     for i in eachindex(array)
         array[i] = isnan(array[i]) ? NaN : searchsortedfirst(boundaryvalues, array[i])
     end
