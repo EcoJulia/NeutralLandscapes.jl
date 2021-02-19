@@ -16,6 +16,7 @@ function classify!(array, weights, mask = nothing)
     array
 end
 
+# TODO fix this function using _label
 function _clusterMean(clusterArray, array)
     clusters = Dict{Float64, Float64}()
     clustersum = Dict{Float64, Float64}()
@@ -57,3 +58,47 @@ function blend(clusterarray, arrays, scaling::AbstractVector{<:Number} = ones(le
     ret = sum(_clusterMean.(Ref(clusterarray), arrays) .* scaling)
     _rescale!(clusterarray + ret)
 end
+
+
+function _label(mat)
+    rook = ((1, 0), (0, 1))
+    m, n = size(mat)
+    (m >= 3 && n >= 3) || error("The label algorithm requires the landscape to be at least 3 cells in each direction")
+    
+    # initialize objects and fill corners of ret
+    ret = zeros(Int, m, n)
+    clusters = Dict{Int, Int}()
+    label = 0
+
+    # run through the matrix and make clusters
+    for j in axes(mat, 2), i in axes(mat, 1)
+        same = [i - n[1] > 0 && j - n[2] > 0 && mat[i - n[1], j - n[2]] == mat[i, j] for n in rook]
+        if count(same) == 0
+            ret[i, j] = label += 1
+            clusters[label] = label
+        else
+            vals = [ret[i - n[1], j - n[2]] for n in rook[same]]
+            mi = minimum(vals)
+            for v in vals
+                clusters[v] = mi
+            end
+            ret[i, j] = mi
+        end
+    end
+    
+    # merge adjacent clusters with same value
+    ncl = 0
+    for i in eachindex(ret)
+        ret[i] = _getval(clusters, ret[i])
+        ncl = max(ncl, ret[i])
+    end
+    ncl, ret
+end
+
+function _getval(clusters, val)
+    while true
+        val2 = clusters[val]
+        val2 == val && return val
+        val = val2
+    end
+end 
