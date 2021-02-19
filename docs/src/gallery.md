@@ -69,5 +69,5 @@ demolandscape(DiamondSquare())
 
 ## Midpoint Displacement
 ```@example gallery
-demolandscape(MPD())
+demolandscape(MidpointDisplacement())
 ```
