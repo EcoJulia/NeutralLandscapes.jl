@@ -1,7 +1,7 @@
 module NeutralLandscapes
 
 import NaNMath
-import StatsBase
+using StatsBase: sample
 using Random: rand!
 using Statistics: quantile
 using Distributions: Normal
