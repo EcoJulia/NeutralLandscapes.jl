@@ -5,8 +5,8 @@ Assigns a value to each patch using a k-NN algorithmm with `n` initial clusters
 and `k` neighbors. The default is to use three cluster and a single neighbor.
 """
 struct NearestNeighborElement <: NeutralLandscapeMaker
-    n::Int64
-    k::Int64
+    n::Int
+    k::Int
     function NearestNeighborElement(n::Int64, k::Int64)
         @assert n > 0
         @assert k > 0
@@ -15,6 +15,12 @@ struct NearestNeighborElement <: NeutralLandscapeMaker
     end
 end
 
+"""
+    NearestNeighborElement()
+
+When given no arguments, partitions the landscape using the closest of three
+neighbors.
+"""
 NearestNeighborElement() = NearestNeighborElement(3, 1)
 
 function _landscape!(mat, alg::NearestNeighborElement)
@@ -23,7 +29,7 @@ function _landscape!(mat, alg::NearestNeighborElement)
     for (i,n) in enumerate(clusters)
         mat[n] = i
     end  
-    coordinates = Matrix{Float64}(undef, (2, prod(size(mat))))
+    coordinates = Matrix{AbstractFloat}(undef, (2, prod(size(mat))))
     for (i, p) in enumerate(Iterators.product(axes(mat)...))
         coordinates[1:2, i] .= p
     end

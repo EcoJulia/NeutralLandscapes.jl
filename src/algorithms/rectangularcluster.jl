@@ -6,14 +6,20 @@ rectangle/patch is between `minimum` and `maximum` (the two can be equal for a
 fixed size rectangle).
 """
 struct RectangularCluster <: NeutralLandscapeMaker
-    minimum::Integer
-    maximum::Integer
-    function RectangularCluster(x::T, y::T) where {T <: Integer}
+    minimum::Int
+    maximum::Int
+    function RectangularCluster(x::Int, y::Int)
         @assert 0 < x <= y
         new(x, y)
     end
 end
 
+"""
+    RectangularCluster()
+
+When given no arguments, the rectangular clusters will have dimensions between 2
+and 4.
+"""
 RectangularCluster() = RectangularCluster(2,4)
 
 function _landscape!(mat, alg::RectangularCluster)

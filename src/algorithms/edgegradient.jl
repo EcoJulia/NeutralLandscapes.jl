@@ -8,13 +8,13 @@ constructor takes the mod of the value passed and 360, so that a value that is
 out of the correct interval will be corrected.
 """
 struct EdgeGradient <: NeutralLandscapeMaker
-    direction::Float64
+    direction::Real
     EdgeGradient(x::T) where {T <: Real} = new(mod(x, 360.0))
 end
 
 EdgeGradient() = EdgeGradient(360rand())
 
-function _landscape!(mat, alg::EdgeGradient) where {IT <: Integer}
+function _landscape!(mat, alg::EdgeGradient)
     _landscape!(mat, PlanarGradient(alg.direction))
     mat .= -2.0abs.(0.5 .- mat) .+ 1.0
 end

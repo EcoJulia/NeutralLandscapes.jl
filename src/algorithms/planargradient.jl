@@ -8,7 +8,7 @@ constructor takes the mod of the value passed and 360, so that a value that is
 out of the correct interval will be corrected.
 """
 struct PlanarGradient <: NeutralLandscapeMaker
-    direction::Float64
+    direction::AbstractFloat
     PlanarGradient(x::T) where {T <: Real} = new(mod(x, 360.0))
 end
 
@@ -19,7 +19,7 @@ Creates a `PlanarGradient` with a random direction.
 """
 PlanarGradient() = PlanarGradient(360rand())
 
-function _landscape!(mat, alg::PlanarGradient) where {IT <: Integer}
+function _landscape!(mat, alg::PlanarGradient)
     eastness = sin(deg2rad(alg.direction))
     southness = -1cos(deg2rad(alg.direction))
     rows, cols = axes(mat)

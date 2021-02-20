@@ -216,7 +216,7 @@ Random value are drawn from a Gaussian distribution using `Distribution.Normal`
 The standard deviation of this Gaussian, σ, is set to (1/2)^(round*H), which
 will move from 1.0 to 0 as `round` increases.
 """
-_displace(H::AbstractFloat, round::Int) rand(Normal(0, 0.5^(round*H)))
+_displace(H::AbstractFloat, round::Int) = rand(Normal(0, 0.5^(round*H)))
 
 
 """
@@ -249,7 +249,8 @@ Returns the y-coordinate from a lattice coordinate `pt`.
 """
     _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
 
-    Returns an array of midpoints for a square defined by `corners` for the `DiamondSquare` algorithm.
+Returns an array of midpoints for a square defined by `corners` for the
+`DiamondSquare` algorithm.
 """
 function _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
     # bottom left, bottom right, top left, top right
@@ -265,10 +266,11 @@ function _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
 end
 
 """
-     _isPowerOfTwo(x::IT) where {IT <: Integer}
+    _isPowerOfTwo(x::IT) where {IT <: Integer}
 
-     Determines if `x`, an integer, can be expressed as `2^n`, where `n` is also an integer.
+Determines if `x`, an integer, can be expressed as `2^n`, where `n` is also an
+integer.
 """
-function _isPowerOfTwo(x::IT) where {IT <: Integer}
+function _isPowerOfTwo(x::Int)
     return x & (x-1) == 0
 end
