@@ -61,9 +61,14 @@ function blend(clusterarray, arrays::AbstractVector, scaling::AbstractVector{<:N
 end
 blend(clusterarray, array) = blend(clusterarray, [array])
 
+const _neighborhoods = Dict(
+    :rook     => ((1, 0), (0, 1)),
+    :diagonal => ((1, 0), (0, 1), (1, 1)),
+    :queen    => ((1, 0), (0, 1), (1, 1), (1, -1)),
+)
 
-function _label(mat)
-    rook = ((1, 0), (0, 1))
+function _label(mat, neighborhood = :rook)
+    neighbors = _neighborhoods[neighborhood]
     m, n = size(mat)
     (m >= 3 && n >= 3) || error("The label algorithm requires the landscape to be at least 3 cells in each direction")
     
@@ -74,12 +79,12 @@ function _label(mat)
 
     # run through the matrix and make clusters
     for j in axes(mat, 2), i in axes(mat, 1)
-        same = [i - n[1] > 0 && j - n[2] > 0 && mat[i - n[1], j - n[2]] == mat[i, j] for n in rook]
+        same = [i - n[1] > 0 && j - n[2] > 0 && mat[i - n[1], j - n[2]] == mat[i, j] for n in neighbors]
         if count(same) == 0
             ret[i, j] = label += 1
             clusters[label] = label
         else
-            vals = [ret[i - n[1], j - n[2]] for n in rook[same]]
+            vals = [ret[i - n[1], j - n[2]] for n in neighbors[same]]
             mi = minimum(vals)
             for v in vals
                 clusters[v] = mi
