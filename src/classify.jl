@@ -87,7 +87,7 @@ function _label(mat, neighborhood = :rook)
             vals = [ret[i - n[1], j - n[2]] for n in neighbors[same]]
             mi = minimum(vals)
             for v in vals
-                clusters[v] = mi
+                clusters[v] = min(mi, clusters[v])
             end
             ret[i, j] = mi
         end
