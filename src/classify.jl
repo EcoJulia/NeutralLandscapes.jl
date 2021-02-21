@@ -55,10 +55,11 @@ end
 Blend a primary cluster NLM with other arrays in which the mean value per 
 cluster is weighted by scaling factors.
 """
-function blend(clusterarray, arrays, scaling::AbstractVector{<:Number} = ones(length(arrays)))
+function blend(clusterarray, arrays::AbstractVector, scaling::AbstractVector{<:Number} = ones(length(arrays)))
     ret = sum(_clusterMean.(Ref(clusterarray), arrays) .* scaling)
     _rescale!(clusterarray + ret)
 end
+blend(clusterarray, array) = blend(clusterarray, [array])
 
 
 function _label(mat)
