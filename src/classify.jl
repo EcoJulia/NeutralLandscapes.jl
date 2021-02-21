@@ -20,8 +20,9 @@ end
 function _clusterMean(clusterArray, array)
     clusters = Dict{Float64, Float64}()
     clustersum = Dict{Float64, Float64}()
-    for ind in eachindex(clusterArray, array)
-        temp = clusterArray[ind]
+    labels, nlabels = _label(clusterArray)
+    for ind in eachindex(labels, array)
+        temp = labels[ind]
         if !haskey(clusters, temp)
             clusters[temp] = clustersum[temp] = 0.0
         end
@@ -32,7 +33,7 @@ function _clusterMean(clusterArray, array)
         clustersum[cl] /= clusters[cl]
     end
     clustersum[NaN] = NaN
-    _rescale!(get.(Ref(clustersum), clusterArray, NaN))
+    _rescale!(get.(Ref(clustersum), labels, NaN))
 end
 
 """
