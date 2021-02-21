@@ -94,7 +94,7 @@ function _label(mat)
         ret[i] = _getval(clusters, ret[i])
         ncl = max(ncl, ret[i])
     end
-    ncl, ret
+    ret, ncl
 end
 
 function _getval(clusters, val)
