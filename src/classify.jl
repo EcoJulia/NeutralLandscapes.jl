@@ -16,11 +16,10 @@ function classify!(array, weights, mask = nothing)
     array
 end
 
-# TODO fix this function using _label
 function _clusterMean(clusterArray, array)
     clusters = Dict{Float64, Float64}()
     clustersum = Dict{Float64, Float64}()
-    labels, nlabels = _label(clusterArray)
+    labels, nlabels = label(clusterArray)
     for ind in eachindex(labels, array)
         temp = labels[ind]
         if !haskey(clusters, temp)
