@@ -67,7 +67,19 @@ const _neighborhoods = Dict(
     :queen    => ((1, 0), (0, 1), (1, 1), (1, -1)),
 )
 
-function _label(mat, neighborhood = :rook)
+
+"""
+    label(mat[, neighborhood])
+
+Assign an arbitrary label to all clusters of contiguous matrix elements with the same value.
+Returns a matrix of values and the total number of final clusters.
+The `neighborhood = :rook` structure can be 
+`:rook`     `:queen`    `:diagonal`
+0 1 0         1 1 1        0 1 1
+1 x 1         1 x 1        1 x 1
+0 1 0         1 1 1        1 1 0 
+"""
+function label(mat, neighborhood = :rook)
     neighbors = _neighborhoods[neighborhood]
     m, n = size(mat)
     (m >= 3 && n >= 3) || error("The label algorithm requires the landscape to be at least 3 cells in each direction")
