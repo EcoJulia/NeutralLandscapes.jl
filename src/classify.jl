@@ -118,11 +118,3 @@ function label(mat, neighborhood = :rook)
     end 
     ret, length(finalclusters)
 end
-
-function _getval(clusters, val)
-    while true
-        val2 = clusters[val]
-        val2 == val && return val
-        val = val2
-    end
-end 
