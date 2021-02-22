@@ -72,18 +72,19 @@ const _neighborhoods = Dict(
 
 Assign an arbitrary label to all clusters of contiguous matrix elements with the same value.
 Returns a matrix of values and the total number of final clusters.
-The `neighborhood = :rook` structure can be 
+The `neighborhood` structure can be 
 `:rook`     `:queen`    `:diagonal`
-0 1 0         1 1 1        0 1 1
-1 x 1         1 x 1        1 x 1
-0 1 0         1 1 1        1 1 0 
+ 0 1 0        1 1 1        0 1 1
+ 1 x 1        1 x 1        1 x 1
+ 0 1 0        1 1 1        1 1 0 
+`:rook` is the default
 """
 function label(mat, neighborhood = :rook)
     neighbors = _neighborhoods[neighborhood]
     m, n = size(mat)
     (m >= 3 && n >= 3) || error("The label algorithm requires the landscape to be at least 3 cells in each direction")
     
-    # initialize objects and fill corners of ret
+    # initialize objects
     ret = zeros(Int, m, n)
     clusters = IntDisjointSets(0)
 
@@ -116,5 +117,6 @@ function label(mat, neighborhood = :rook)
     for i in eachindex(ret)
         ret[i] = randomcode[ret[i]]
     end 
+    
     ret, length(finalclusters)
 end
