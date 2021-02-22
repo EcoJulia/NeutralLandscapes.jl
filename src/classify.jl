@@ -86,32 +86,38 @@ function label(mat, neighborhood = :rook)
     
     # initialize objects and fill corners of ret
     ret = zeros(Int, m, n)
-    clusters = Dict{Int, Int}()
-    label = 0
+    clusters = IntDisjointSets(0)
 
     # run through the matrix and make clusters
     for j in axes(mat, 2), i in axes(mat, 1)
         same = [i - n[1] > 0 && j - n[2] > 0 && mat[i - n[1], j - n[2]] == mat[i, j] for n in neighbors]
         if count(same) == 0
-            ret[i, j] = label += 1
-            clusters[label] = label
+            push!(clusters)
+            ret[i, j] = length(clusters)
+        elseif count(same) == 1
+            n1, n2 = only(neighbors[same])
+            ret[i, j] = ret[i - n1, j - n2]
         else
             vals = [ret[i - n[1], j - n[2]] for n in neighbors[same]]
-            mi = minimum(vals)
-            for v in vals
-                clusters[v] = min(mi, clusters[v])
+            for v in vals[2:end]
+                ret[i, j] = union!(clusters, vals[1], v)
             end
-            ret[i, j] = mi
         end
     end
-    
+
     # merge adjacent clusters with same value
-    ncl = 0
+    finalclusters = Set{Int}()
     for i in eachindex(ret)
-        ret[i] = _getval(clusters, ret[i])
-        ncl = max(ncl, ret[i])
+        ret[i] = find_root(clusters, ret[i])
+        push!(finalclusters, ret[i])
     end
-    ret, ncl
+
+    # assign each cluster a random number in steps of 1 (good for plotting)
+    randomcode = Dict(i => j for (i, j) in zip(finalclusters, 1:length(finalclusters)))
+    for i in eachindex(ret)
+        ret[i] = randomcode[ret[i]]
+    end 
+    ret, length(finalclusters)
 end
 
 function _getval(clusters, val)
