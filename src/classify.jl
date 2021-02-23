@@ -85,7 +85,7 @@ function label(mat, neighborhood = :rook)
     (m >= 3 && n >= 3) || error("The label algorithm requires the landscape to be at least 3 cells in each direction")
     
     # initialize objects
-    ret = zeros(Int, m, n)
+    ret = similar(mat)
     clusters = IntDisjointSets(0)
 
     # run through the matrix and make clusters
