@@ -4,6 +4,7 @@ authors = ["Timothée Poisot <timothee.poisot@umontreal.ca>", "Michael Krabbe Bo
 version = "0.0.1"
 
 [deps]
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 NaNMath = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 NearestNeighbors = "b8a86587-4115-5ab1-83bc-aa920d37bbce"

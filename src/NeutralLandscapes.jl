@@ -7,6 +7,7 @@ using Statistics: quantile
 using Distributions: Normal
 using Statistics: quantile, mean
 using NearestNeighbors: KDTree, knn, nn
+using DataStructures: IntDisjointSets, union!, find_root, push!
 
 """
 All algorithms are descended from the `NeutralLandscapeMaker` type. A new
@@ -46,6 +47,6 @@ include(joinpath("algorithms", "perlinnoise.jl"))
 export PerlinNoise
 
 include("classify.jl")
-export classify!, blend
+export classify!, blend, label
 
 end # module
