@@ -17,7 +17,7 @@ end
 
 function _landscape!(mat, alg::NearestNeighborCluster)
     _landscape!(mat, NoGradient())
-    classify!(mat, [alg. p, 1 - alg.p])
+    classify!(mat, [alg.p, 1 - alg.p])
     replace!(mat, 2.0 => NaN)
     clusters, nClusters = label(mat, alg.n)
     coordinates = _coordinatematrix(clusters)
