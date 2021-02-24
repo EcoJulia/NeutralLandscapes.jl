@@ -1,8 +1,9 @@
 """
-    NearestNeighborCluster
+    NearestNeighborCluster(p, n)
 
 Create a random cluster nearest-neighbour neutral landscape model with 
-values ranging 0-1.
+values ranging 0-1. `p` sets the density of original clusters, and `n`
+sets the neighborhood for clustering (see `?label` for neighborhood options)
 """
 struct NearestNeighborCluster <: NeutralLandscapeMaker
     p::Float64
