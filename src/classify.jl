@@ -16,6 +16,8 @@ function classify!(array, weights, mask = nothing)
     array
 end
 
+classify(array, weights, mask = nothing) = classify!(copy(array), weights, mask)
+
 function _clusterMean(clusterArray, array)
     clusters = Dict{Float64, Float64}()
     clustersum = Dict{Float64, Float64}()

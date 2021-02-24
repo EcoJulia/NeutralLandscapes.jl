@@ -47,6 +47,6 @@ include(joinpath("algorithms", "perlinnoise.jl"))
 export PerlinNoise
 
 include("classify.jl")
-export classify!, blend, label
+export classify!, classify, blend, label
 
 end # module
