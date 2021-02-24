@@ -17,7 +17,7 @@ end
 function _landscape!(mat, alg::NearestNeighborCluster)
     classify!(_landscape!(mat, NoGradient()), [1 - alg.p, alg.p])
     replace!(mat, 2.0 => NaN)
-    clusters, nClusters = label(mat)
+    clusters, nClusters = label(mat, alg.n)
     coordinates = _coordinatematrix(clusters)
     sources = findall(!isnan, vec(clusters))
     tree = KDTree(coordinates[:,sources])
