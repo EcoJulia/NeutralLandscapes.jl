@@ -16,7 +16,7 @@ struct NearestNeighborCluster <: NeutralLandscapeMaker
 end
 
 function _landscape!(mat, alg::NearestNeighborCluster)
-    classify!(_landscape!(mat, NoGradient()), [1 - alg.p, alg.p])
+    classify!(_landscape!(mat, NoGradient()), [alg. p, 1 - alg.p])
     replace!(mat, 2.0 => NaN)
     clusters, nClusters = label(mat, alg.n)
     coordinates = _coordinatematrix(clusters)
