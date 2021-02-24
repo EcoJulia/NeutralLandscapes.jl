@@ -1,5 +1,3 @@
-module NeutralLandscapeTestPlanar
-
 using NeutralLandscapes
 using Test
 
@@ -14,5 +12,3 @@ pl33m = rand(PlanarGradient(0.0), (3,3); mask=testmask)
 
 mat = rand(Float64, (10, 10))
 rand!(mat, PlanarGradient(90.0))
-
-end
