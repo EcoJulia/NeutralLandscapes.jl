@@ -1,24 +1,28 @@
 """
-    NearestNeighborElement
+    NearestNeighborCluster
 
 Create a random cluster nearest-neighbour neutral landscape model with 
 values ranging 0-1.
 """
-struct NearestNeighborCluster{T<:AbstractFloat} <: NeutralLandscapeMaker
-    p::T
+struct NearestNeighborCluster <: NeutralLandscapeMaker
+    p::Float64
     n::Symbol
-    function NearestNeighborCluster(p::T = 0.5, n::Symbol = :rook)
+    function NearestNeighborCluster(p::Float64 = 0.5, n::Symbol = :rook) 
         @assert p > 0
         @assert n ∈ (:rook, :queen, :diagonal)
         new(p,n)
     end
 end
 
-NearestNeighborCluster(p::T = 0.5, n::Symbol = :rook) where T <: AbstractFloat = 
-    NearestNeighborCluster{T}(p, n)
-
-function _landscape!(mat, alg::NearestNeighborElement)
-    # I ignore the masking here - all the other algos apply it after only
-    classify!(rand!(mat), [1 - p, p])
+function _landscape!(mat, alg::NearestNeighborCluster)
+    classify!(_landscape!(mat, NoGradient()), [1 - alg.p, alg.p])
+    replace!(mat, 2.0 => NaN)
     clusters, nClusters = label(mat)
-    clusters .= rand(nClusters)[clusters]
+    coordinates = _coordinatematrix(clusters)
+    sources = findall(!isnan, vec(clusters))
+    tree = KDTree(coordinates[:,sources])
+    clusters[:] .= clusters[sources[nn(tree, coordinates)[1]]]
+    randvals = rand(nClusters)
+    mat .= randvals[Int.(clusters)]
+    mat
+end
