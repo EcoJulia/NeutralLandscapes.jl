@@ -1,7 +1,7 @@
 """
     classify!(array, weights[, classifyMask])
 
-Classify an array into proportions based upon a list of class weights.
+Classify an array in-place into proportions based upon a list of class weights.
 """
 function classify!(array, weights, mask = nothing)
     quantiles = zeros(length(weights))
@@ -15,8 +15,15 @@ function classify!(array, weights, mask = nothing)
     end
     array
 end
+classify!(array, weights::Real, mask = nothing) = classify!(array, ones(weights), mask)
 
+"""
+    classify(array, weights[, classifyMask])
+
+Classify an array into proportions based upon a list of class weights.
+"""
 classify(array, weights, mask = nothing) = classify!(copy(array), weights, mask)
+classify(array, weights::Real, mask = nothing) = classify(array, ones(weights), mask)
 
 function _clusterMean(clusterArray, array)
     clusters = Dict{Float64, Float64}()
