@@ -60,7 +60,7 @@ function blend(clusterarray, arrays::AbstractVector, scaling::AbstractVector{<:N
     ret = sum(_clusterMean.(Ref(clusterarray), arrays) .* scaling)
     _rescale!(clusterarray + ret)
 end
-blend(clusterarray, array) = blend(clusterarray, [array])
+blend(clusterarray, array, scaling = 1) = blend(clusterarray, [array], [scaling])
 
 const _neighborhoods = Dict(
     :rook     => ((1, 0), (0, 1)),
