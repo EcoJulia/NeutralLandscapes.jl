@@ -43,6 +43,9 @@ export RectangularCluster
 include(joinpath("algorithms", "nnelement.jl"))
 export NearestNeighborElement
 
+include(joinpath("algorithms", "nncluster.jl"))
+export NearestNeighborCluster
+
 include(joinpath("algorithms", "perlinnoise.jl"))
 export PerlinNoise
 
