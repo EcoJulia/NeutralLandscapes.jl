@@ -49,7 +49,7 @@ Fig1q = rand(PlanarGradient(90), siz, mask = Fig1n .== 2) #TODO mask as keyword 
 # Hierarchical NLM
 Fig1r = ifelse.(Fig1o .== 2, Fig1m .+ 2, Fig1o)
 # Rotated NLM
-Fig1s = rot(Fig1l) #TODO
+Fig1s = rotr90(Fig1l)
 # Transposed NLM
 Fig1t = Fig1o'
 
@@ -58,7 +58,7 @@ plot(
     heatmap(Fig1a), heatmap(Fig1b), heatmap(Fig1c), heatmap(Fig1d), heatmap(Fig1e),
     heatmap(Fig1f), heatmap(Fig1g), heatmap(Fig1h), heatmap(Fig1i), heatmap(Fig1j), 
     heatmap(Fig1k), heatmap(Fig1l), heatmap(Fig1m), heatmap(Fig1n), heatmap(Fig1o),
-    heatmap(Fig1p), heatmap(Fig1q), heatmap(Fig1r), heatmap(Fig1t), heatmap(Fig1t),
+    heatmap(Fig1p), heatmap(Fig1q), heatmap(Fig1r), heatmap(Fig1s), heatmap(Fig1t),
     layout = (4,5), size = (1600, 1300)
 )
 ```
