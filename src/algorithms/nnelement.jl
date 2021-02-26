@@ -7,7 +7,7 @@ and `k` neighbors. The default is to use three cluster and a single neighbor.
 struct NearestNeighborElement <: NeutralLandscapeMaker
     n::Int64
     k::Int64
-    function NearestNeighborElement(n::Int64, k::Int64)
+    function NearestNeighborElement(n::Int64, k::Int64 = 1)
         @assert n > 0
         @assert k > 0
         @assert k <= n
