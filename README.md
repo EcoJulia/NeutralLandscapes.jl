@@ -53,13 +53,16 @@ Fig1s = rotr90(Fig1l)
 # Transposed NLM
 Fig1t = Fig1o'
 
+class = cgrad(:Set3_4, 4, categorical = true)
+c2, c3, c4 = class[1:2], class[1:3], class[1:4]
+
 gr(color = :fire, ticks = false, framestyle = :box, colorbar = false)
 plot(
-    heatmap(Fig1a), heatmap(Fig1b), heatmap(Fig1c), heatmap(Fig1d), heatmap(Fig1e),
-    heatmap(Fig1f), heatmap(Fig1g), heatmap(Fig1h), heatmap(Fig1i), heatmap(Fig1j), 
-    heatmap(Fig1k), heatmap(Fig1l), heatmap(Fig1m), heatmap(Fig1n), heatmap(Fig1o),
-    heatmap(Fig1p), heatmap(Fig1q), heatmap(Fig1r), heatmap(Fig1s), heatmap(Fig1t),
-    layout = (4,5), size = (1600, 1300)
+    heatmap(Fig1a),         heatmap(Fig1b),         heatmap(Fig1c),         heatmap(Fig1d, c = c2), heatmap(Fig1e),
+    heatmap(Fig1f),         heatmap(Fig1g),         heatmap(Fig1h),         heatmap(Fig1i),         heatmap(Fig1j), 
+    heatmap(Fig1k),         heatmap(Fig1l, c = c4), heatmap(Fig1m, c = c2), heatmap(Fig1n, c = c2), heatmap(Fig1o, c = c3),
+    heatmap(Fig1p, c = c4), heatmap(Fig1q),         heatmap(Fig1r, c = c4), heatmap(Fig1s, c = c4), heatmap(Fig1t, c = c3),
+    layout = (4,5), size = (1600, 1270)
 )
 ```
-![Fig1](https://user-images.githubusercontent.com/8429802/109274687-1613af80-7814-11eb-8a58-1fb0ee43c7e2.png)
+![Fig1](https://user-images.githubusercontent.com/8429802/109293089-998ccb00-782b-11eb-864f-b25522e7b746.png)
