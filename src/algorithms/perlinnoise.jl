@@ -123,7 +123,7 @@ function _mesh!(A, x, y)
     return A
 end
 
-function _view_from_square(source, ncol, nrow)
+function _view_from_square(source, nrow, ncol)
     # Extract a portion of the array to match the dimensions
     dim = size(source, 1)
     startrow = rand(1:(dim - nrow + 1))

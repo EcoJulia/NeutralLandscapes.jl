@@ -1,7 +1,7 @@
 """
     classify!(array, weights[, classifyMask])
 
-Classify an array into proportions based upon a list of class weights.
+Classify an array in-place into proportions based upon a list of class weights.
 """
 function classify!(array, weights, mask = nothing)
     quantiles = zeros(length(weights))
@@ -15,12 +15,22 @@ function classify!(array, weights, mask = nothing)
     end
     array
 end
+classify!(array, weights::Real, mask = nothing) = classify!(array, ones(weights), mask)
+
+"""
+    classify(array, weights[, classifyMask])
+
+Classify an array into proportions based upon a list of class weights.
+"""
+classify(array, weights, mask = nothing) = classify!(copy(array), weights, mask)
+classify(array, weights::Real, mask = nothing) = classify(array, ones(weights), mask)
 
 function _clusterMean(clusterArray, array)
     clusters = Dict{Float64, Float64}()
     clustersum = Dict{Float64, Float64}()
-    for ind in eachindex(clusterArray, array)
-        temp = clusterArray[ind]
+    labels, nlabels = label(clusterArray)
+    for ind in eachindex(labels, array)
+        temp = labels[ind]
         if !haskey(clusters, temp)
             clusters[temp] = clustersum[temp] = 0.0
         end
@@ -31,7 +41,7 @@ function _clusterMean(clusterArray, array)
         clustersum[cl] /= clusters[cl]
     end
     clustersum[NaN] = NaN
-    _rescale!(get.(Ref(clustersum), clusterArray, NaN))
+    _rescale!(get.(Ref(clustersum), labels, NaN))
 end
 
 """
@@ -53,7 +63,78 @@ end
 Blend a primary cluster NLM with other arrays in which the mean value per 
 cluster is weighted by scaling factors.
 """
-function blend(clusterarray, arrays, scaling::AbstractVector{<:Number} = ones(length(arrays)))
+function blend(clusterarray, arrays::AbstractVector, scaling::AbstractVector{<:Number} = ones(length(arrays)))
     ret = sum(_clusterMean.(Ref(clusterarray), arrays) .* scaling)
     _rescale!(clusterarray + ret)
+end
+blend(clusterarray, array, scaling = 1) = blend(clusterarray, [array], [scaling])
+
+const _neighborhoods = Dict(
+    :rook     => ((1, 0), (0, 1)),
+    :diagonal => ((1, 0), (0, 1), (1, 1)),
+    :queen    => ((1, 0), (0, 1), (1, 1), (1, -1)),
+)
+
+
+"""
+    label(mat[, neighborhood])
+
+Assign an arbitrary label to all clusters of contiguous matrix elements with the same value.
+Returns a matrix of values and the total number of final clusters.
+The `neighborhood` structure can be 
+`:rook`     `:queen`    `:diagonal`
+ 0 1 0        1 1 1        0 1 1
+ 1 x 1        1 x 1        1 x 1
+ 0 1 0        1 1 1        1 1 0 
+`:rook` is the default
+"""
+function label(mat, neighborhood = :rook)
+    neighbors = _neighborhoods[neighborhood]
+    m, n = size(mat)
+    (m >= 3 && n >= 3) || error("The label algorithm requires the landscape to be at least 3 cells in each direction")
+    
+    # initialize objects
+    ret = similar(mat)
+    clusters = IntDisjointSets(0)
+
+    # run through the matrix and make clusters
+    for j in axes(mat, 2), i in axes(mat, 1)
+        if isfinite(mat[i, j])
+            same = [i - n[1] > 0 && j - n[2] > 0 && mat[i - n[1], j - n[2]] == mat[i, j] for n in neighbors]
+            if count(same) == 0
+                push!(clusters)
+                ret[i, j] = length(clusters)
+            elseif count(same) == 1
+                n1, n2 = only(neighbors[same])
+                ret[i, j] = ret[i - n1, j - n2]
+            else
+                vals = unique([ret[i - n[1], j - n[2]] for n in neighbors[same]])
+                if length(vals) == 1
+                    ret[i, j] = only(vals)
+                else
+                    for v in vals[2:end]
+                        ret[i, j] = union!(clusters, Int(vals[1]), Int(v))
+                    end
+                end
+            end
+        else
+            ret[i, j] = NaN
+        end
+    end
+
+    # merge adjacent clusters with same value
+    finalclusters = Set{eltype(ret)}()
+    for i in eachindex(ret)
+        ret[i] = isnan(ret[i]) ? NaN : find_root(clusters, Int(ret[i]))
+        push!(finalclusters, ret[i])
+    end
+
+    # assign each cluster a random number in steps of 1 (good for plotting)
+    randomcode = Dict(i => j for (i, j) in zip(finalclusters, 1.0:length(finalclusters)))
+    randomcode[NaN] = NaN
+    for i in eachindex(ret)
+        ret[i] = randomcode[ret[i]]
+    end 
+    
+    ret, length(finalclusters)
 end

@@ -7,6 +7,7 @@ using Statistics: quantile
 using Distributions: Normal
 using Statistics: quantile, mean
 using NearestNeighbors: KDTree, knn, nn
+using DataStructures: IntDisjointSets, union!, find_root, push!
 
 """
 All algorithms are descended from the `NeutralLandscapeMaker` type. A new
@@ -42,6 +43,9 @@ export RectangularCluster
 include(joinpath("algorithms", "nnelement.jl"))
 export NearestNeighborElement
 
+include(joinpath("algorithms", "nncluster.jl"))
+export NearestNeighborCluster
+
 include(joinpath("algorithms", "perlinnoise.jl"))
 export PerlinNoise
 
@@ -49,6 +53,6 @@ include(joinpath("algorithms", "discretevoronoi.jl"))
 export DiscreteVoronoi
 
 include("classify.jl")
-export classify!, blend
+export classify!, classify, blend, label
 
 end # module

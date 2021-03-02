@@ -17,16 +17,21 @@ end
 
 NearestNeighborElement() = NearestNeighborElement(3, 1)
 
+function _coordinatematrix(mat)
+    coordinates = Matrix{Float64}(undef, (2, prod(size(mat))))
+    for (i, p) in enumerate(Iterators.product(axes(mat)...))
+        coordinates[1:2, i] .= p
+    end
+    coordinates
+end
+
 function _landscape!(mat, alg::NearestNeighborElement)
     fill!(mat, 0.0)
     clusters = sample(eachindex(mat), alg.n; replace=false)
     for (i,n) in enumerate(clusters)
         mat[n] = i
     end  
-    coordinates = Matrix{Float64}(undef, (2, prod(size(mat))))
-    for (i, p) in enumerate(Iterators.product(axes(mat)...))
-        coordinates[1:2, i] .= p
-    end
+    coordinates = _coordinatematrix(mat)
     tree = KDTree(coordinates[:,clusters])
     if alg.k  == 1
         mat[:] .= nn(tree, coordinates)[1]
