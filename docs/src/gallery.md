@@ -49,6 +49,12 @@ demolandscape(DistanceGradient(sources))
 heatmap(rand(NearestNeighborElement(20, 1), (45, 45)))
 ```
 
+## Voronoi
+
+```@example gallery
+demolandscape(DiscreteVoronoi(40))
+```
+
 ## Perlin Noise
 
 ```@example gallery

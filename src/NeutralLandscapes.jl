@@ -49,6 +49,9 @@ export NearestNeighborCluster
 include(joinpath("algorithms", "perlinnoise.jl"))
 export PerlinNoise
 
+include(joinpath("algorithms", "discretevoronoi.jl"))
+export DiscreteVoronoi
+
 include("classify.jl")
 export classify!, classify, blend, label
 

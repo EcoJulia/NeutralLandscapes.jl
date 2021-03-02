@@ -13,6 +13,7 @@ WaveSurface
 DistanceGradient
 RectangularCluster
 NearestNeighborElement
+DiscreteVoronoi
 PerlinNoise
 ```
 
