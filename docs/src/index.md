@@ -6,27 +6,33 @@ A pure Julia port of https://github.com/tretherington/nlmpy
 
 ```@docs
 NeutralLandscapeMaker
-NoGradient
-PlanarGradient
-EdgeGradient
-WaveSurface
-DistanceGradient
-RectangularCluster
-NearestNeighborElement
+DiamondSquare
 DiscreteVoronoi
+DistanceGradient
+EdgeGradient
+MidpointDisplacement
+NearestNeighborCluster
+NearestNeighborElement
+NoGradient
 PerlinNoise
+PlanarGradient
+RectangularCluster
+WaveSurface
 ```
 
 ## Landscape generating function
 
 ```@docs
-rand!
 rand
-_landscape!
+rand!
 ```
 
 ## Other functions
 
 ```@docs
-mask!
+classify
+classify!
+blend
+label
+NeutralLandscapes.mask!
 ```
