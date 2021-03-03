@@ -1,26 +1,12 @@
 import Random.rand!
 
 """
-    _rescale!(mat)
+    NeutralLandscapeMaker
 
-Changes the matrix `mat` so that it is between `0` and `1`.
+Abstract supertype that all algorithms are descended from. A new
+algorithm must minimally implement a `_landscape!` method for this type.
 """
-function _rescale!(mat)
-    mat .-= NaNMath.minimum(mat)
-    mat ./= NaNMath.maximum(mat)
-end 
-
-"""
-    mask!(array::AbstractArray{<:AbstractFloat}, maskarray::AbstractArray{<:AbstractBool}) 
-
-Modifies `array` so that the positions at which `maskarray` is `false` are
-replaced by `NaN`.
-"""
-function mask!(array::AbstractArray{<:Float64}, maskarray::AbstractArray{<:Bool}) 
-    (size(array) == size(maskarray)) || throw(DimensionMismatch("The dimensions of array, $(size(array)), and maskarray, $(size(maskarray)), must match. "))
-    array[.!maskarray] .= NaN
-    array
-end
+abstract type NeutralLandscapeMaker end
 
 """
     rand(alg, dims::Tuple{Vararg{Int64,2}}; mask=nothing) where {T <: Integer}
@@ -47,3 +33,22 @@ function rand!(mat::AbstractArray{<:AbstractFloat,2} where N, alg::T; mask=nothi
     isnothing(mask) || mask!(mat, mask)
     _rescale!(mat)
 end
+
+"""
+    mask!(array::AbstractArray{<:AbstractFloat}, maskarray::AbstractArray{<:AbstractBool}) 
+
+Modifies `array` so that the positions at which `maskarray` is `false` are
+replaced by `NaN`.
+"""
+function mask!(array::AbstractArray{<:Float64}, maskarray::AbstractArray{<:Bool}) 
+    (size(array) == size(maskarray)) || throw(DimensionMismatch("The dimensions of array, $(size(array)), and maskarray, $(size(maskarray)), must match. "))
+    array[.!maskarray] .= NaN
+    array
+end
+
+
+# Changes the matrix `mat` so that it is between `0` and `1`.
+function _rescale!(mat)
+    mat .-= NaNMath.minimum(mat)
+    mat ./= NaNMath.maximum(mat)
+end 

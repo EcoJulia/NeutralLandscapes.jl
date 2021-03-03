@@ -1,5 +1,5 @@
 """
-    classify!(array, weights[, classifyMask])
+    classify!(array, weights[, mask])
 
 Classify an array in-place into proportions based upon a list of class weights.
 """
@@ -20,7 +20,7 @@ end
 classify!(array, weights::Real, mask = nothing) = classify!(array, ones(weights), mask)
 
 """
-    classify(array, weights[, classifyMask])
+    classify(array, weights[, mask])
 
 Classify an array into proportions based upon a list of class weights.
 """
@@ -79,7 +79,7 @@ const _neighborhoods = Dict(
 
 
 """
-    label(mat[, neighborhood])
+    label(mat[, neighborhood = :rook])
 
 Assign an arbitrary label to all clusters of contiguous matrix elements with the same value.
 Returns a matrix of values and the total number of final clusters.

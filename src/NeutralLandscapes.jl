@@ -9,50 +9,35 @@ using NearestNeighbors: KDTree, knn, nn
 using DataStructures: IntDisjointSets, union!, find_root, push!
 using Base: @kwdef
 
-"""
-All algorithms are descended from the `NeutralLandscapeMaker` type. A new
-algorithm must minimally implement and `_landscape!` method for this type.
-"""
-abstract type NeutralLandscapeMaker end
+export rand, rand!
+export classify!, classify, blend, label
+
 export NeutralLandscapeMaker
 
-include("landscape.jl")
-export rand, rand!
-
-include(joinpath("algorithms", "nogradient.jl"))
-export NoGradient
-
-include(joinpath("algorithms", "planargradient.jl"))
-export PlanarGradient
-
-include(joinpath("algorithms", "edgegradient.jl"))
-export EdgeGradient
-
-include(joinpath("algorithms", "diamondsquare.jl"))
+export DiscreteVoronoi
 export DiamondSquare, MidpointDisplacement
-
-include(joinpath("algorithms", "wavesurface.jl"))
+export EdgeGradient
+export DistanceGradient
+export NearestNeighborCluster
+export NearestNeighborElement
+export NoGradient
+export PerlinNoise
+export PlanarGradient
+export RectangularCluster
 export WaveSurface
 
-include(joinpath("algorithms", "distancegradient.jl"))
-export DistanceGradient
-
-include(joinpath("algorithms", "rectangularcluster.jl"))
-export RectangularCluster
-
-include(joinpath("algorithms", "nnelement.jl"))
-export NearestNeighborElement
-
-include(joinpath("algorithms", "nncluster.jl"))
-export NearestNeighborCluster
-
-include(joinpath("algorithms", "perlinnoise.jl"))
-export PerlinNoise
-
-include(joinpath("algorithms", "discretevoronoi.jl"))
-export DiscreteVoronoi
-
+include("landscape.jl")
 include("classify.jl")
-export classify!, classify, blend, label
+include("algorithms/diamondsquare.jl")
+include("algorithms/discretevoronoi.jl")
+include("algorithms/distancegradient.jl")
+include("algorithms/edgegradient.jl")
+include("algorithms/nncluster.jl")
+include("algorithms/nnelement.jl")
+include("algorithms/nogradient.jl")
+include("algorithms/perlinnoise.jl")
+include("algorithms/planargradient.jl")
+include("algorithms/rectangularcluster.jl")
+include("algorithms/wavesurface.jl")
 
 end # module
