@@ -1,12 +1,15 @@
 """
-    NearestNeighborElement
+    NearestNeighborElement <: NeutralLandscapeMaker
+
+    NearestNeighborElement(; n = 3, k = 1)
+    NearestNeighborElement(n, k)
 
 Assigns a value to each patch using a k-NN algorithmm with `n` initial clusters
 and `k` neighbors. The default is to use three cluster and a single neighbor.
 """
-struct NearestNeighborElement <: NeutralLandscapeMaker
-    n::Int64
-    k::Int64
+@kwdef struct NearestNeighborElement <: NeutralLandscapeMaker
+    n::Int64 = 3
+    k::Int64 = 1
     function NearestNeighborElement(n::Int64, k::Int64 = 1)
         @assert n > 0
         @assert k > 0
@@ -14,8 +17,6 @@ struct NearestNeighborElement <: NeutralLandscapeMaker
         new(n,k)
     end
 end
-
-NearestNeighborElement() = NearestNeighborElement(3, 1)
 
 function _coordinatematrix(mat)
     coordinates = Matrix{Float64}(undef, (2, prod(size(mat))))

@@ -3,11 +3,11 @@ module NeutralLandscapes
 import NaNMath
 using StatsBase: sample
 using Random: rand!
-using Statistics: quantile
-using Distributions: Normal
 using Statistics: quantile, mean
+using Distributions: Normal
 using NearestNeighbors: KDTree, knn, nn
 using DataStructures: IntDisjointSets, union!, find_root, push!
+using Base: @kwdef
 
 """
 All algorithms are descended from the `NeutralLandscapeMaker` type. A new
