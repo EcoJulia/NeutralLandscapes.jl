@@ -59,9 +59,10 @@ MidpointDisplacement() = MidpointDisplacement(0.5)
 """
     _landscape!(mat, alg::Union{DiamondSquare, MidpointDisplacement}; kw...)
 
-    Check if `mat` is the right size.
-    If mat is not the correct size (DiamondSquare can only run on a lattice of size NxN where N = (2^n)+1 for integer n),
-    allocates the smallest lattice large enough to contain `mat` that can run DiamondSquare.
+Check if `mat` is the right size. If mat is not the correct size (DiamondSquare
+can only run on a lattice of size NxN where N = (2^n)+1 for integer n),
+allocates the smallest lattice large enough to contain `mat` that can run
+DiamondSquare.
 """
 function _landscape!(mat, alg::Union{DiamondSquare, MidpointDisplacement}; kw...) where {IT <: Integer}
 
@@ -72,9 +73,6 @@ function _landscape!(mat, alg::Union{DiamondSquare, MidpointDisplacement}; kw...
     if !rightSize
         dim1, dim2 = size(mat)
         smallestContainingLattice::Int = 2^ceil(log2(max(dim1, dim2))) + 1
-        @warn "$alg cannot be run on the input dimensions ($dim1 x $dim2),
-                and will instead run on the next smallest valid size ($smallestContainingLattice x $smallestContainingLattice).
-                This can slow performance as it involves additional memory allocation."
         dsMat = zeros(smallestContainingLattice, smallestContainingLattice)
     end
     _diamondsquare!(dsMat, alg)
