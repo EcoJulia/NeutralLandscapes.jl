@@ -1,14 +1,15 @@
 """
-    DistanceGradient
+    DistanceGradient <: NeutralLandscapeMaker
 
-The `sources` field is the *linear* indices of the matrix, from which the
-distance must be calculated.
+    DistanceGradient(; sources=[1])
+    DistanceGradient(sources)
+
+The `sources` field is a `Vector{Integer}` of *linear* indices of the matrix, 
+from which the distance must be calculated.
 """
-struct DistanceGradient <: NeutralLandscapeMaker
-    sources::Vector{Integer}
+@kwdef struct DistanceGradient <: NeutralLandscapeMaker
+    sources::Vector{Integer} = [1]
 end
-
-DistanceGradient() = DistanceGradient([1])
 
 function _landscape!(mat, alg::DistanceGradient)
     @assert maximum(alg.sources) <= length(mat)

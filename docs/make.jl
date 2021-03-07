@@ -7,7 +7,9 @@ makedocs(
     pages=[
         "Index" => "index.md",
         "Gallery" => "gallery.md"
-        ]
+        ],
+    checkdocs=:all,
+    strict=true,
 )
 
 deploydocs(

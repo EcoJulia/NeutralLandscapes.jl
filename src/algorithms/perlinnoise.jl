@@ -2,6 +2,7 @@
     PerlinNoise <: NeutralLandscapeMaker
 
     PerlinNoise(; kw...)
+    PerlinNoise(periods, octaves, lacunarity, persistance, valley)
 
 Create a Perlin noise neutral landscape model with values ranging 0-1.
 
@@ -22,7 +23,7 @@ Note: This is a memory-intensive algorithm with some settings. Be careful using 
 prime numbers for `period` when also using a large array size, high lacuarity and/or many 
 octaves. Memory use scales with the lowest common multiple of `periods`.
 """
-Base.@kwdef struct PerlinNoise{PT<:Real} <: NeutralLandscapeMaker 
+@kwdef struct PerlinNoise{PT<:Real} <: NeutralLandscapeMaker 
     periods::Tuple{Int,Int} = (1, 1)
     octaves::Int = 1
     lacunarity::Int = 2
