@@ -1,11 +1,25 @@
 # Neutral Landscapes
 
-**Python source:** https://github.com/tretherington/nlmpy
-
-This is a direct port of the NLMpy neutral landscape generation package to julia.
-This code reproduces Fig 1 from the paper introducing the package: 
+This packages allows the generation of neutral landscapes in *Julia*. It is a port of the [`NLMPy` package](https://github.com/tretherington/nlmpy), which is described in greater detail at:
 
 Etherington, T.R., Holland, E.P. & O’Sullivan, D. (2015) NLMpy: a python software package for the creation of neutral landscape models within a general numerical framework. _Methods in Ecology and Evolution_, __6__, 164–168.
+
+![GitHub last commit](https://img.shields.io/github/last-commit/EcoJulia/NeutralLandscapes.jl)
+![GitHub latest release](https://img.shields.io/github/v/release/EcoJulia/NeutralLandscapes.jl)
+![GitHub release date](https://img.shields.io/github/release-date/EcoJulia/NeutralLandscapes.jl)
+
+![GitHub license](https://img.shields.io/github/license/EcoJulia/NeutralLandscapes.jl)
+![GitHub contributors](https://img.shields.io/github/contributors/EcoJulia/NeutralLandscapes.jl)
+![Codecov](https://img.shields.io/codecov/c/gh/EcoJulia/NeutralLandscapes.jl?token=1VNPTN2MVV)
+![GitHub issues](https://img.shields.io/github/issues/EcoJulia/NeutralLandscapes.jl)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/EcoJulia/NeutralLandscapes.jl)
+
+[![Doc stable](https://img.shields.io/badge/manual-stable-green)](https://ecojulia.github.io/NeutralLandscapes.jl/stable/)
+[![Doc dev](https://img.shields.io/badge/manual-latest-blue)](https://ecojulia.github.io/NeutralLandscapes.jl/dev/)
+
+All landscapes are generated using an overload of the `rand` (or `rand!`) method, taking as arguments a `NeutralLandscapeGenerator`, as well as a dimension and a Boolean mask if required. The additional functions `classify` and `blend` are used to respectively discretize the network, or merge the result of different neutral generators.
+
+The code below reproduces figure 1 of Etherington et al. (2015):
 
 ```julia
 using NeutralLandscapes, Plots
@@ -65,4 +79,5 @@ plot(
     layout = (4,5), size = (1600, 1270)
 )
 ```
+
 ![Fig1](https://user-images.githubusercontent.com/8429802/109293089-998ccb00-782b-11eb-864f-b25522e7b746.png)
