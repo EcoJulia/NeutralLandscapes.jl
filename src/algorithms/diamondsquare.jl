@@ -21,7 +21,7 @@ The result of the diamond-square algorithm is a fractal with dimension D = 2 + H
 A similar algorithm, midpoint-displacement, functions almost
 identically, except that in DiamondSquare, the square step interpolates
 edge midpoints from the nearest two corners and the square's center, where as 
-midpoint-displacement only intepolates from the nearest corners (see `MidpointDisplacement`).
+midpoint-displacement only interpolates from the nearest corners (see `MidpointDisplacement`).
 
 """
 @kwdef struct DiamondSquare <: NeutralLandscapeMaker
@@ -40,12 +40,12 @@ end
 Creates a midpoint-displacement algorithm object `MidpointDisplacement`. 
 The degree of spatial autocorrelation is controlled by a parameter `H`,
 which varies from 0.0 (low autocorrelation) to 1.0 (high autocorrelation) --- 
-note this is non-inclusive and H = 0 and H = 1 will not behavive as expected.
+note this is non-inclusive and H = 0 and H = 1 will not behave as expected.
 
 A similar algorithm, diamond-square, functions almost
 identically, except that in diamond-square, the square step interpolates
 edge midpoints from the nearest two corners and the square's center, where as 
-`MidpointDisplacement` only intepolates from the nearest corners (see `DiamondSquare`).
+`MidpointDisplacement` only interpolates from the nearest corners (see `DiamondSquare`).
 """
 @kwdef struct MidpointDisplacement <: NeutralLandscapeMaker
     H::Float64 = 0.5
@@ -154,7 +154,7 @@ function _square!(mat, alg::MidpointDisplacement, round::Int, corners::AbstractV
     mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight]) + _displace(alg.H, round)
 end
 
-# Computes the mean of a set of points, represented as a list of indecies to a matrix `mat`.
+# Computes the mean of a set of points, represented as a list of indicies to a matrix `mat`.
 function _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
     return mean(mat[pt...] for pt in points)
 end
