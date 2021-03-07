@@ -1,7 +1,7 @@
 """
     RectangularCluster <: NeutralLandscapeMaker
 
-    RectangularCluster(; minimum = 2, maximum = 4)
+    RectangularCluster(; minimum=2, maximum=4)
     RectangularCluster(minimum, maximum)
 
 Fills the landscape with rectangles containing a random value. The size of each

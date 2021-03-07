@@ -1,7 +1,7 @@
 """
     NearestNeighborCluster <: NeutralLandscapeMaker
 
-    NearestNeighborCluster(; p = 0.5, n = :rook)
+    NearestNeighborCluster(; p=0.5, n=:rook)
     NearestNeighborCluster(p, n)
 
 Create a random cluster nearest-neighbour neutral landscape model with 

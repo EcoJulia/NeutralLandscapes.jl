@@ -1,7 +1,7 @@
 """
     EdgeGradient <: NeutralLandscapeMaker
 
-    EdgeGradient(; direction = 360rand())
+    EdgeGradient(; direction=360rand())
     EdgeGradient(direction)
 
 This type is used to generate an edge gradient landscape, where values change

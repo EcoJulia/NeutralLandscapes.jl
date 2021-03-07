@@ -2,6 +2,7 @@
     PerlinNoise <: NeutralLandscapeMaker
 
     PerlinNoise(; kw...)
+    PerlinNoise(periods, octaves, lacunarity, persistance, valley)
 
 Create a Perlin noise neutral landscape model with values ranging 0-1.
 

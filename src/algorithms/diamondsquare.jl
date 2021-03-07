@@ -2,6 +2,7 @@
     DiamondSquare <: NeutralLandscapeMaker
 
     DiamondSquare(; H = 0.5) 
+    DiamondSquare(H) 
 
 This type generates a neutral landscape using the diamond-squares
 algorithm, which produces fractals with variable spatial autocorrelation.

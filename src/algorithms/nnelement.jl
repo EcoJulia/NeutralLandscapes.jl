@@ -1,7 +1,7 @@
 """
     NearestNeighborElement <: NeutralLandscapeMaker
 
-    NearestNeighborElement(; n = 3, k = 1)
+    NearestNeighborElement(; n=3, k=1)
     NearestNeighborElement(n, k)
 
 Assigns a value to each patch using a k-NN algorithmm with `n` initial clusters
