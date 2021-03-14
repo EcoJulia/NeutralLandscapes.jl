@@ -102,7 +102,11 @@ function label(mat, neighborhood = :rook)
     # run through the matrix and make clusters
     for j in axes(mat, 2), i in axes(mat, 1)
         if isfinite(mat[i, j])
-            same = [i - n[1] > 0 && j - n[2] > 0 && mat[i - n[1], j - n[2]] == mat[i, j] for n in neighbors]
+            same = []
+            for neigh in neighbors[same]
+                x,y = i-neigh[1], j-neigh[2]
+                1 <= x <= m && 1 <= y <= n && push!(vals, mat[x,y]==mat[i,j] )
+            end
             if count(same) == 0
                 push!(clusters)
                 ret[i, j] = length(clusters)
@@ -110,7 +114,12 @@ function label(mat, neighborhood = :rook)
                 n1, n2 = only(neighbors[same])
                 ret[i, j] = ret[i - n1, j - n2]
             else
-                vals = unique([ret[i - n[1], j - n[2]] for n in neighbors[same]])
+                vals = []
+                for neigh in neighbors[same]
+                    x,y = i-neigh[1], j-neigh[2]
+                    1 <= x <= m && 1 <= y <= n && push!(vals, mat[x,y] )
+                end
+                unique!(vals)
                 if length(vals) == 1
                     ret[i, j] = only(vals)
                 else
@@ -140,3 +149,4 @@ function label(mat, neighborhood = :rook)
     
     ret, length(finalclusters)
 end
+
