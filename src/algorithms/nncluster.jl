@@ -2,7 +2,7 @@
     NearestNeighborCluster <: NeutralLandscapeMaker
 
     NearestNeighborCluster(; p=0.5, n=:rook)
-    NearestNeighborCluster(p, n)
+    NearestNeighborCluster(p, [n=:rook])
 
 Create a random cluster nearest-neighbour neutral landscape model with 
 values ranging 0-1. `p` sets the density of original clusters, and `n`
@@ -11,7 +11,7 @@ sets the neighborhood for clustering (see `?label` for neighborhood options)
 @kwdef struct NearestNeighborCluster <: NeutralLandscapeMaker
     p::Float64 = 0.5
     n::Symbol = :rook
-    function NearestNeighborCluster(p::Float64, n::Symbol) 
+    function NearestNeighborCluster(p::Float64, n::Symbol = :rook) 
         @assert p > 0
         @assert n ∈ (:rook, :queen, :diagonal)
         new(p,n)
