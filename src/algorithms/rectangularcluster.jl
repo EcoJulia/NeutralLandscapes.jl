@@ -2,7 +2,7 @@
     RectangularCluster <: NeutralLandscapeMaker
 
     RectangularCluster(; minimum=2, maximum=4)
-    RectangularCluster(minimum, maximum)
+    RectangularCluster(minimum, [maximum=4])
 
 Fills the landscape with rectangles containing a random value. The size of each
 rectangle/patch is between `minimum` and `maximum` (the two can be equal for a
@@ -11,9 +11,9 @@ fixed size rectangle).
 @kwdef struct RectangularCluster <: NeutralLandscapeMaker
     minimum::Integer = 2
     maximum::Integer = 4
-    function RectangularCluster(x::T, y::T) where {T <: Integer}
-        @assert 0 < x <= y
-        new(x, y)
+    function RectangularCluster(minimum::T, maximum::T=4) where {T <: Integer}
+        @assert 0 < minimum <= maximum
+        new(minimum, maximum)
     end
 end
 

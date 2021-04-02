@@ -2,7 +2,7 @@
     PerlinNoise <: NeutralLandscapeMaker
 
     PerlinNoise(; kw...)
-    PerlinNoise(periods, octaves, lacunarity, persistance, valley)
+    PerlinNoise(periods, [octaves=1, lacunarity=2, persistance=0.5, valley=:u])
 
 Create a Perlin noise neutral landscape model with values ranging 0-1.
 
@@ -13,7 +13,7 @@ Create a Perlin noise neutral landscape model with values ranging 0-1.
 - `octaves::Int=1`: the number of octaves that will form the Perlin noise.
 - `lacunarity::Int=2` : the rate at which the frequency of periods increases for each 
     octive.
-- `persistance::Real=0.5` : the rate at which the amplitude of periods decreases for each 
+- `persistance::Float64=0.5` : the rate at which the amplitude of periods decreases for each 
     octive.
 - `valley::Symbol=`:u`: the kind of valley bottom that will be mimicked: `:u` produces 
     u-shaped valleys, `:v` produces v-shaped valleys, and `:-` produces flat bottomed 
@@ -23,12 +23,15 @@ Note: This is a memory-intensive algorithm with some settings. Be careful using 
 prime numbers for `period` when also using a large array size, high lacuarity and/or many 
 octaves. Memory use scales with the lowest common multiple of `periods`.
 """
-@kwdef struct PerlinNoise{PT<:Real} <: NeutralLandscapeMaker 
+@kwdef struct PerlinNoise <: NeutralLandscapeMaker 
     periods::Tuple{Int,Int} = (1, 1)
     octaves::Int = 1
     lacunarity::Int = 2
-    persistance::PT = 0.5
+    persistance::Float64 = 0.5
     valley::Symbol = :u
+    function PerlinNoise(periods, octaves=1, lacunarity=2, persistance=0.5, valley=:u)
+        new(periods, octaves, lacunarity, persistance, valley)
+    end
 end
 
 function _landscape!(A, alg::PerlinNoise)
