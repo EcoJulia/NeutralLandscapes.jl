@@ -1,7 +1,7 @@
 module NeutralLandscapes
 
 import NaNMath
-using StatsBase: sample
+using StatsBase: sample, ZScoreTransform, fit, transform
 using Random: rand!
 using Statistics: quantile, mean
 using Distributions: Normal
@@ -40,4 +40,9 @@ include("algorithms/planargradient.jl")
 include("algorithms/rectangularcluster.jl")
 include("algorithms/wavesurface.jl")
 
+include("update.jl")
+export NeutralLandscapeUpdater, update!, SpatiallyAutocorrelatedUpdater, SpatiotemporallyAutocorrelatedUpdater
+
 end # module
+
+
