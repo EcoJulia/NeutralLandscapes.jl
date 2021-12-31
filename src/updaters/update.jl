@@ -15,33 +15,35 @@ abstract type NeutralLandscapeUpdater end
     which defines the expected change in any cell per timestep.  
 """
 rate(up::NeutralLandscapeUpdater) = up.rate
-
-generator(up::NeutralLandscapeUpdater) = up.generator
+spatialupdater(up::NeutralLandscapeUpdater) = up.spatialupdater
+direction(up::NeutralLandscapeUpdater) = up.direction
 
 function update(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
 end
-@kwdef struct SpatiallyAutocorrelatedUpdater{G,R} <: NeutralLandscapeUpdater
-    generator::G = DiamondSquare(0.5)
-    rate::R = 0.1
+@kwdef struct SpatiallyAutocorrelatedUpdater{SU,D,S} <: NeutralLandscapeUpdater
+    spatialupdater::SU = DiamondSquare(0.5)
+    direction::D = 0.1
+    rate::S = 0.1
 end
 function _update(sau::SpatiallyAutocorrelatedUpdater, mat)
-    change = rand(generator(sau), size(mat))
-    delta = rate(sau) .+ rate(sau) .* transform(fit(ZScoreTransform, change), change)
+    change = rand(spatialupdater(sau), size(mat))
+    delta = direction(sau) .+ rate(sau) .* transform(fit(ZScoreTransform, change), change)
     mat .+ delta
 end
 
 
-@kwdef struct SpatiotemporallyAutocorrelatedUpdater{G,R,T} <: NeutralLandscapeUpdater
-    generator::G = DiamondSquare(0.1)
-    rate::R = 0.1 
-    temporalupdater::T = BrownianMotion()
+@kwdef struct SpatiotemporallyAutocorrelatedUpdater{SU,TU,D,R} <: NeutralLandscapeUpdater
+    spatialupdater::SU = DiamondSquare(0.1)
+    temporalupdater::TU = BrownianMotion()
+    direction::D = 0.1
+    rate::R = 0.1
 end
 function _update(stau::SpatiotemporallyAutocorrelatedUpdater, mat)
-    change = rand(generator(stau), size(mat))
+    change = rand(spatialupdater(stau), size(mat))
     temporalshift = broadcast(x->update(stau.temporalupdater, x), mat)
     z = transform(fit(ZScoreTransform, change), change)
-    delta = rate(stau) .+ (rate(stau) .* z) .+ (temporalshift .* z)
+    delta = direction(stau) .+ (rate(stau) .* z) .+ (temporalshift .* z)
     mat .+ delta
 end
 
