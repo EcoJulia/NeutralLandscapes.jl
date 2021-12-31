@@ -18,7 +18,7 @@ rate(up::NeutralLandscapeUpdater) = up.rate
 
 generator(up::NeutralLandscapeUpdater) = up.generator
 
-function update!(updater::T, mat) where {T<:NeutralLandscapeUpdater}
+function update(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
 end
 @kwdef struct SpatiallyAutocorrelatedUpdater{G,R} <: NeutralLandscapeUpdater
@@ -39,7 +39,7 @@ end
 end
 function _update(stau::SpatiotemporallyAutocorrelatedUpdater, mat)
     change = rand(generator(stau), size(mat))
-    temporalshift = broadcast(x->update!(stau.temporalupdater, x), mat)
+    temporalshift = broadcast(x->update(stau.temporalupdater, x), mat)
     delta = rate(stau) .+ temporalshift .* transform(fit(ZScoreTransform, change), change)
     mat .+ delta
 end

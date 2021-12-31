@@ -1,6 +1,6 @@
 abstract type TemporalUpdater end 
 
-update!(tu::T, x) where {T<:TemporalUpdater} = _getchange(tu, x) 
+update(tu::T, x) where {T<:TemporalUpdater} = _getchange(tu, x) 
 
 @kwdef struct BrownianMotion{S} <: TemporalUpdater
     σ::S = 0.1
