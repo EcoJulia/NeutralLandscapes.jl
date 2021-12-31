@@ -40,7 +40,8 @@ end
 function _update(stau::SpatiotemporallyAutocorrelatedUpdater, mat)
     change = rand(generator(stau), size(mat))
     temporalshift = broadcast(x->update(stau.temporalupdater, x), mat)
-    delta = rate(stau) .+ temporalshift .* transform(fit(ZScoreTransform, change), change)
+    z = transform(fit(ZScoreTransform, change), change)
+    delta = rate(stau) .+ (rate(stau) .* z) .+ (temporalshift .* z)
     mat .+ delta
 end
 
