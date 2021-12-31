@@ -21,26 +21,27 @@ generator(up::NeutralLandscapeUpdater) = up.generator
 function update!(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
 end
-
-
 @kwdef struct SpatiallyAutocorrelatedUpdater{G,R} <: NeutralLandscapeUpdater
     generator::G = DiamondSquare(0.5)
     rate::R = 0.1
 end
 function _update(sau::SpatiallyAutocorrelatedUpdater, mat)
     change = rand(generator(sau), size(mat))
-    delta = rate(sau) .* transform(fit(ZScoreTransform, change), change)
+    delta = rate(sau) .+ rate(sau) .* transform(fit(ZScoreTransform, change), change)
     mat .+ delta
 end
 
 
 @kwdef struct SpatiotemporallyAutocorrelatedUpdater{G,R,T} <: NeutralLandscapeUpdater
     generator::G = DiamondSquare(0.1)
-    rate::R = 0.1
-    temporalautocorrelation = 0.1
+    rate::R = 0.1 
+    temporalupdater::T = BrownianMotion()
 end
-function _update(sau::SpatiallyAutocorrelatedUpdater, mat)
-    
+function _update(stau::SpatiotemporallyAutocorrelatedUpdater, mat)
+    change = rand(generator(stau), size(mat))
+    temporalshift = broadcast(x->update!(stau.temporalupdater, x), mat)
+    delta = rate(stau) .+ temporalshift .* transform(fit(ZScoreTransform, change), change)
+    mat .+ delta
 end
 
 
@@ -54,3 +55,4 @@ end
 #sau = SpatiallyAutocorrelatedUpdater()
 #new = update!(sau, env)
 #plot(heatmap.([env, new])...)
+
