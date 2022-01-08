@@ -42,8 +42,9 @@ include("algorithms/wavesurface.jl")
 
 include("updaters/update.jl")
 include("updaters/temporal.jl")
-export TemporalUpdater, BrownianMotion, OhrsteinUhlenbeck
-export NeutralLandscapeUpdater, update, update!, SpatiallyAutocorrelatedUpdater, SpatiotemporallyAutocorrelatedUpdater
+include("updaters/spatial.jl")
+include("updaters/spatiotemporal.jl")
+export update, update!, NeutralLandscapeUpdater, TemporallyAutocorrelatedUpdater, SpatiallyAutocorrelatedUpdater, SpatiotemporallyAutocorrelatedUpdater
 
 end # module
 
