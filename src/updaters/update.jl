@@ -21,6 +21,10 @@ direction(up::NeutralLandscapeUpdater) = up.direction
 function update(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
 end
+function update!(updater::T, mat) where {T<:NeutralLandscapeUpdater}
+    mat = _update(updater, mat)
+end
+
 @kwdef struct SpatiallyAutocorrelatedUpdater{SU,D,S} <: NeutralLandscapeUpdater
     spatialupdater::SU = DiamondSquare(0.5)
     direction::D = 0.1
