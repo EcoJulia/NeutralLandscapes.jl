@@ -19,6 +19,6 @@ function _landscape!(mat, alg::PlanarGradient) where {IT <: Integer}
     eastness = sin(deg2rad(alg.direction))
     southness = -1cos(deg2rad(alg.direction))
     rows, cols = axes(mat)
-    mat .= southness .* rows .+ (eastness .* cols)'
+    mat .= collect(rows) .* southness .+ cols' .* eastness
     return mat
 end

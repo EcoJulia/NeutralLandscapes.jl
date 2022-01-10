@@ -18,26 +18,29 @@ and `k` neighbors. The default is to use three cluster and a single neighbor.
     end
 end
 
-function _coordinatematrix(mat)
-    coordinates = Matrix{Float64}(undef, (2, prod(size(mat))))
-    for (i, p) in enumerate(Iterators.product(axes(mat)...))
-        coordinates[1:2, i] .= p
-    end
-    coordinates
-end
-
 function _landscape!(mat, alg::NearestNeighborElement)
-    fill!(mat, 0.0)
     clusters = sample(eachindex(mat), alg.n; replace=false)
-    for (i,n) in enumerate(clusters)
-        mat[n] = i
-    end  
-    coordinates = _coordinatematrix(mat)
-    tree = KDTree(coordinates[:,clusters])
-    if alg.k  == 1
-        mat[:] .= nn(tree, coordinates)[1]
+    # Preallocate for NearestNeighbors
+    idx = Vector{Int}(undef, alg.k)
+    dist = Vector{Float64}(undef, alg.k)
+    coordinates = CartesianIndices(mat)
+    cluster_coordinates = map(clusters) do c
+        SVector(Tuple(coordinates[c]))
+    end
+    tree = KDTree(cluster_coordinates)
+    sortres = false
+    if alg.k == 1
+        for i in eachindex(mat)
+            point = SVector(Tuple(coordinates[i]))
+            knn_point!(tree, point, sortres, dist, idx, always_false)
+            mat[i] = idx[1]
+        end
     else
-        mat[:] .= map(mean, knn(tree, coordinates, alg.k)[1])
+        for i in eachindex(mat)
+            point = SVector(Tuple(coordinates[i]))
+            knn_point!(tree, point, sortres, dist, idx, always_false)
+            mat[i] = mean(idx)
+        end
     end
     return mat
 end

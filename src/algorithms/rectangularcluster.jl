@@ -19,7 +19,7 @@ end
 
 function _landscape!(mat, alg::RectangularCluster)
     mat .= -1.0
-    while minimum(mat) == -1.0
+    while any(i -> i === -1.0, mat)
         width, height = rand(alg.minimum:alg.maximum, 2)
         row = rand(1:(size(mat,1)-(width-1)))
         col = rand(1:(size(mat,2)-(height-1)))
