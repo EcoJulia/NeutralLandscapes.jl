@@ -18,10 +18,19 @@ rate(up::NeutralLandscapeUpdater) = up.rate
 spatialupdater(up::NeutralLandscapeUpdater) = up.spatialupdater
 direction(up::NeutralLandscapeUpdater) = up.direction
 
+
 function update(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
 end
+function update(updater::T, mat, n::I) where {T<:NeutralLandscapeUpdater, I<:Integer}
+    sequence = [zeros(size(mat)) for _ in 1:n]
+    sequence[begin] = mat
+    for i in 2:n
+        sequence[i] = _update(updater, sequence[i-1])
+    end
+    sequence
+end
 function update!(updater::T, mat) where {T<:NeutralLandscapeUpdater}
-    mat = _update(updater, mat)
+    mat[:] = _update(updater, mat)
 end
 
