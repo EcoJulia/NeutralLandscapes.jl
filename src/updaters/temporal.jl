@@ -1,11 +1,23 @@
+"""
+TemporallyVariableUpdater{D,S} <: NeutralLandscapeUpdater
 
-@kwdef struct TemporallyAutocorrelatedUpdater{D,S} <: NeutralLandscapeUpdater
-    spatialupdater = missing
-    direction::D = 0.1
-    rate::S = 0.1
+A `NeutralLandscapeUpdater` that has a prescribed
+
+"""
+@kwdef struct TemporallyVariableUpdater{D,R,V} <: NeutralLandscapeUpdater
+    spatialupdater::D = missing
+    rate::R = 0.1
+    variability::V = 0.1
 end
-function _update(sau::TemporallyAutocorrelatedUpdater, mat)
-    U = rand(Normal(), size(mat))
-    Δ = direction(sau) .+ rate(sau) .* U
+
+"""
+_update(tvu::TemporallyVariableUpdater, mat)
+
+Updates `mat` using temporally autocorrelated change, 
+using the direction and rate parameters from `tvu`.
+"""
+function _update(tvu::TemporallyVariableUpdater, mat)
+    U = rand(Normal(0, variability(tvu)), size(mat))
+    Δ = rate(tvu) .+ U
     mat .+ Δ
 end

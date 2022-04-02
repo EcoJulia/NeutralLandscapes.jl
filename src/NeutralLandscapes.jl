@@ -44,7 +44,12 @@ include("updaters/update.jl")
 include("updaters/temporal.jl")
 include("updaters/spatial.jl")
 include("updaters/spatiotemporal.jl")
-export update, update!, NeutralLandscapeUpdater, TemporallyAutocorrelatedUpdater, SpatiallyAutocorrelatedUpdater, SpatiotemporallyAutocorrelatedUpdater
+export update, update!
+export NeutralLandscapeUpdater
+export TemporallyVariableUpdater
+export SpatiallyAutocorrelatedUpdater
+export SpatiotemporallyAutocorrelatedUpdater
+export rate, variability
 
 end # module
 
