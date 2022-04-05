@@ -29,6 +29,25 @@ spatialupdater(up::NeutralLandscapeUpdater) = up.spatialupdater
 """
 variability(up::NeutralLandscapeUpdater) = up.variability
 
+"""
+    normalize
+"""
+function normalize(mats::Vector{M}) where {M<:AbstractMatrix}
+
+    # We want to normalize such that all values fall on 0 to 1 scale,
+    # where the min value seen across all matrices in `vec` 
+
+    mins, maxs = findmin.(mats), findmax.(mats)
+    totalmin, totalmax = findmin([x[1] for x in mins])[1], findmax([x[1] for x in maxs])[1]
+
+    returnmats = copy(mats)
+
+    for (i,mat) in enumerate(mats)
+        returnmats[i] = (mat .+ totalmin) ./ totalmax
+    end
+
+    return returnmats
+end 
 
 function update(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
@@ -44,4 +63,5 @@ end
 function update!(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     mat .= _update(updater, mat)
 end
+
 

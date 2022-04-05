@@ -50,7 +50,10 @@ export TemporallyVariableUpdater
 export SpatiallyAutocorrelatedUpdater
 export SpatiotemporallyAutocorrelatedUpdater
 export rate, variability
+export normalize
 
 end # module
+
+
 
 
