@@ -39,11 +39,11 @@ function normalize(mats::Vector{M}) where {M<:AbstractMatrix}
 
     mins, maxs = findmin.(mats), findmax.(mats)
     totalmin, totalmax = findmin([x[1] for x in mins])[1], findmax([x[1] for x in maxs])[1]
-
+    @show totalmin, totalmax
     returnmats = copy(mats)
 
     for (i,mat) in enumerate(mats)
-        returnmats[i] = (mat .+ totalmin) ./ totalmax
+        returnmats[i] = (mat .- totalmin) ./ (totalmax - totalmin)
     end
 
     return returnmats
