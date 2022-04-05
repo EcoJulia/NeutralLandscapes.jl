@@ -1,5 +1,9 @@
 using NeutralLandscapes, Test
 
+@testset "_rescale" begin
+    @test NeutralLandscapes._rescale!([3.0 -2.0; 0.0 1.0]) == [1.0 0.0; 0.4 0.6] 
+end
+
 algorithms = (
    DiamondSquare(),
    DiamondSquare(; H=0.2),

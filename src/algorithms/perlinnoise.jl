@@ -48,10 +48,11 @@ function _landscape!(A, alg::PerlinNoise)
 
     # Generate the Perlin noise
     noise = zeros(eltype(A), (dim, dim))
-    meshbuf = Array{eltype(A),3}(undef, dim, dim, 2)
+    meshbuf1 = Array{eltype(A),2}(undef, dim, dim)
+    meshbuf2 = Array{eltype(A),2}(undef, dim, dim)
     nbufs = ntuple(_->Array{eltype(A),2}(undef, dim, dim), 4)
     for octave in 0:alg.octaves-1
-        octave_noise!(noise, meshbuf, nbufs, alg, octave, dim, dim)
+        octave_noise!(noise, meshbuf1, meshbuf2, nbufs, alg, octave, dim, dim)
     end
 
     # Randomly extract the desired array size
@@ -70,7 +71,7 @@ function _landscape!(A, alg::PerlinNoise)
 end
 
 function octave_noise!(
-    noise, mesh, (n11, n21, n12, n22), alg::PerlinNoise, octave, nrow, ncol
+    noise, m1, m2, (n11, n21, n12, n22), alg::PerlinNoise, octave, nrow, ncol
 )        
     f(t) = @fastmath 6 * t ^ 5 - 15 * t ^ 4 + 10 * t ^ 3 # Wut
 
@@ -78,13 +79,12 @@ function octave_noise!(
     rp, cp = alg.periods .* alg.lacunarity^(octave)
     delta = (rp / nrow, cp / ncol)
     ranges = range(0, rp-delta[1], length=nrow), range(0, cp-delta[2], length=ncol)
-    _mesh!(mesh, ranges...)
-    @fastmath mesh .%= 1
+    _rem_meshes!(m1, m2, ranges...)
 
     # Gradients
     # This allocates, but the gradients size changes with octave so it needs to 
     # be a very smart in-place `repeat!` or some kind of generator, and the improvement 
-    # may not be than large (~20%). 
+    # may not be that large (~20%). 
     angles = 2pi .* rand(rp + 1, cp + 1)
     @fastmath gradients = cat(cos.(angles), sin.(angles); dims=3)
     d = (nrow ÷ rp, ncol ÷ cp)
@@ -100,31 +100,28 @@ function octave_noise!(
     g222 = @view grad[end-nrow+1:end, end-ncol+1:end, 2]
 
     # Ramps
-    m1 = @view mesh[:, :, 1]
-    m2 = @view mesh[:, :, 2]
     n11 .= ((m1     .+ m2     ) .* g111 .+ (m1     .+ m2     ) .* g112)
     n21 .= ((m1 .-1 .+ m2     ) .* g211 .+ (m1 .-1 .+ m2     ) .* g212)
     n12 .= ((m1     .+ m2 .- 1) .* g121 .+ (m1     .+ m2 .- 1) .* g122)
     n22 .= ((m1 .-1 .+ m2 .- 1) .* g221 .+ (m1 .-1 .+ m2 .- 1) .* g222)
 
     # Interpolation
-    mesh .= f.(mesh)
-    t1 = @view mesh[:, :, 1]
-    t2 = @view mesh[:, :, 2]
+    m1 .= f.(m1)
+    m2 .= f.(m2)
     noise .+= sqrt(2) .*  (alg.persistance ^ octave) .*
-        ((1 .- t2) .* (n11 .* (1 .- t1) .+ t1 .* n21) .+ 
-               t2  .* (n12 .* (1 .- t1) .+ t1 .* n22))
+        ((1 .- m2) .* (n11 .* (1 .- m1) .+ m1 .* n21) .+ 
+               m2  .* (n12 .* (1 .- m1) .+ m1 .* n22))
     return noise
 end
 
-function _mesh!(A, x, y)
+function _rem_meshes!(m1, m2, x, y)
     for (i, ival) in enumerate(x), j in 1:length(y) 
-        A[i, j, 1] = ival
+        @fastmath m1[i, j] = ival % 1
     end
     for i in 1:length(x), (j, jval) in enumerate(y)
-        A[i, j, 2] = jval
+        @fastmath m2[i, j] = jval % 1
     end
-    return A
+    return
 end
 
 function _view_from_square(source, nrow, ncol)

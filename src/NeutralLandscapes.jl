@@ -5,7 +5,7 @@ using StatsBase: sample, ZScoreTransform, fit, transform
 using Random: rand!
 using Statistics: quantile, mean
 using Distributions: Normal
-using NearestNeighbors: KDTree, knn, nn
+using NearestNeighbors: KDTree, knn, nn, always_false, knn_point!, SVector
 using DataStructures: IntDisjointSets, union!, find_root, push!
 using Base: @kwdef
 

@@ -72,9 +72,9 @@ end
 blend(clusterarray, array, scaling = 1) = blend(clusterarray, [array], [scaling])
 
 const _neighborhoods = Dict(
-    :rook     => ((1, 0), (0, 1)),
-    :diagonal => ((1, 0), (0, 1), (1, 1)),
-    :queen    => ((1, 0), (0, 1), (1, 1), (1, -1)),
+    :rook     => [(1, 0), (0, 1)],
+    :diagonal => [(1, 0), (0, 1), (1, 1)],
+    :queen    => [(1, 0), (0, 1), (1, 1), (1, -1)],
 )
 
 
