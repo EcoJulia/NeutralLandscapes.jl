@@ -12,7 +12,7 @@ abstract type NeutralLandscapeUpdater end
 
 """
     All `NeutralLandscapeUpdater`s have a field `rate`
-    which defines the expected change in any cell per timestep.  
+    which defines the expected (or mean) change across all cells per timestep.  
 """
 rate(up::NeutralLandscapeUpdater) = up.rate
 
@@ -24,34 +24,40 @@ rate(up::NeutralLandscapeUpdater) = up.rate
 spatialupdater(up::NeutralLandscapeUpdater) = up.spatialupdater
 
 """
-    TODO rate and direction should have different names to clarify what they actually are
-
+    variability(up::NeutralLandscapeUpdater)
+    
+    Returns the `variability` of a given `NeutralLandscapeUpdater`. 
+    The variability of an updater is how much temporal variation there
+    will be in a generated time-series of landscapes.
 """
 variability(up::NeutralLandscapeUpdater) = up.variability
 
 """
-    normalize
+    normalize(mats::Vector{M})
+
+
+    Normalizes a vector of neutral landscapes `mats` such that all
+    values between 0 and 1. Note that this does not preserve the 
+    `rate` parameter for a given `NeutralLandscapeUpdater`, and instead
+    rescales it proportional to the difference between the total maximum
+    and total minimum across all `mats`.
 """
 function normalize(mats::Vector{M}) where {M<:AbstractMatrix}
-
-    # We want to normalize such that all values fall on 0 to 1 scale,
-    # where the min value seen across all matrices in `vec` 
-
     mins, maxs = findmin.(mats), findmax.(mats)
     totalmin, totalmax = findmin([x[1] for x in mins])[1], findmax([x[1] for x in maxs])[1]
-    @show totalmin, totalmax
     returnmats = copy(mats)
-
     for (i,mat) in enumerate(mats)
         returnmats[i] = (mat .- totalmin) ./ (totalmax - totalmin)
     end
-
     return returnmats
 end 
+
+
 
 function update(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
 end
+
 function update(updater::T, mat, n::I) where {T<:NeutralLandscapeUpdater, I<:Integer}
     sequence = [zeros(size(mat)) for _ in 1:n]
     sequence[begin] .= mat
@@ -60,6 +66,7 @@ function update(updater::T, mat, n::I) where {T<:NeutralLandscapeUpdater, I<:Int
     end
     sequence
 end
+
 function update!(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     mat .= _update(updater, mat)
 end

@@ -9,6 +9,6 @@ function _update(stau::SpatiotemporallyAutocorrelatedUpdater, mat)
     change = rand(spatialupdater(stau), size(mat))
     temporalshift = rand(Normal(0, variability(stau)), size(mat))
     z = transform(fit(ZScoreTransform, change), change)
-    delta = rate(stau) .+  z .+ temporalshift
+    delta = rate(stau) .+  variability(stau) * z .+ temporalshift
     mat .+ delta
 end
