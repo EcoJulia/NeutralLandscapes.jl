@@ -53,11 +53,23 @@ function normalize(mats::Vector{M}) where {M<:AbstractMatrix}
 end 
 
 
+"""
+    update(updater::T, mat)
 
+    Returns one-timestep applied to `mat` based on the `NeutralLandscapeUpdater` 
+    provided (`updater`).
+"""
 function update(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
 end
 
+
+"""
+update(updater::T, mat, n::I)
+
+Returns a sequence of length `n` where the original neutral landscape
+`mat` is updated by the `NeutralLandscapeUpdater` `update` for `n` timesteps.
+"""
 function update(updater::T, mat, n::I) where {T<:NeutralLandscapeUpdater, I<:Integer}
     sequence = [zeros(size(mat)) for _ in 1:n]
     sequence[begin] .= mat
@@ -67,6 +79,12 @@ function update(updater::T, mat, n::I) where {T<:NeutralLandscapeUpdater, I<:Int
     sequence
 end
 
+
+"""
+update!(updater::T, mat)
+
+Updates a landscape `mat` in-place by directly mutating `mat`.
+"""
 function update!(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     mat .= _update(updater, mat)
 end
