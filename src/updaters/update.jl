@@ -1,25 +1,25 @@
 """
-    This file contains methods for simulating change in a
-    landscape with expected amounts of spatial and temporal 
-    autocorrelation. 
+This file contains methods for simulating change in a
+landscape with expected amounts of spatial and temporal 
+autocorrelation. 
 """
 
 """
-    NeutralLandscapeUpdater is an abstract type for methods
-    for updating a landscape matrix
+NeutralLandscapeUpdater is an abstract type for methods
+for updating a landscape matrix
 """
 abstract type NeutralLandscapeUpdater end 
 
 """
-    All `NeutralLandscapeUpdater`s have a field `rate`
-    which defines the expected (or mean) change across all cells per timestep.  
+All `NeutralLandscapeUpdater`s have a field `rate`
+which defines the expected (or mean) change across all cells per timestep.  
 """
 rate(up::NeutralLandscapeUpdater) = up.rate
 
 """
-    All `NeutralLandscapeUpdater`'s have a `spatialupdater` field
-    which is either a `NeutralLandscapeMaker`, or `Missing` (in the case
-    of temporally correlated updaters).
+All `NeutralLandscapeUpdater`'s have a `spatialupdater` field
+which is either a `NeutralLandscapeMaker`, or `Missing` (in the case
+of temporally correlated updaters).
 """
 spatialupdater(up::NeutralLandscapeUpdater) = up.spatialupdater
 
@@ -33,14 +33,14 @@ spatialupdater(up::NeutralLandscapeUpdater) = up.spatialupdater
 variability(up::NeutralLandscapeUpdater) = up.variability
 
 """
-    normalize(mats::Vector{M})
+normalize(mats::Vector{M})
 
 
-    Normalizes a vector of neutral landscapes `mats` such that all
-    values between 0 and 1. Note that this does not preserve the 
-    `rate` parameter for a given `NeutralLandscapeUpdater`, and instead
-    rescales it proportional to the difference between the total maximum
-    and total minimum across all `mats`.
+Normalizes a vector of neutral landscapes `mats` such that all
+values between 0 and 1. Note that this does not preserve the 
+`rate` parameter for a given `NeutralLandscapeUpdater`, and instead
+rescales it proportional to the difference between the total maximum
+and total minimum across all `mats`.
 """
 function normalize(mats::Vector{M}) where {M<:AbstractMatrix}
     mins, maxs = findmin.(mats), findmax.(mats)
@@ -54,10 +54,10 @@ end
 
 
 """
-    update(updater::T, mat)
+update(updater::T, mat)
 
-    Returns one-timestep applied to `mat` based on the `NeutralLandscapeUpdater` 
-    provided (`updater`).
+Returns one-timestep applied to `mat` based on the `NeutralLandscapeUpdater` 
+provided (`updater`).
 """
 function update(updater::T, mat) where {T<:NeutralLandscapeUpdater}
     _update(updater, mat)
