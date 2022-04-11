@@ -1,16 +1,22 @@
 """
+NeutralLandscapeUpdater
+
 NeutralLandscapeUpdater is an abstract type for methods
 for updating a landscape matrix
 """
 abstract type NeutralLandscapeUpdater end 
 
 """
+spatialupdater(up::NeutralLandscapeUpdater) 
+
 All `NeutralLandscapeUpdater`s have a field `rate`
 which defines the expected (or mean) change across all cells per timestep.  
 """
 rate(up::NeutralLandscapeUpdater) = up.rate
 
 """
+spatialupdater(up::NeutralLandscapeUpdater) 
+
 All `NeutralLandscapeUpdater`'s have a `spatialupdater` field
 which is either a `NeutralLandscapeMaker`, or `Missing` (in the case
 of temporally correlated updaters).
@@ -18,11 +24,11 @@ of temporally correlated updaters).
 spatialupdater(up::NeutralLandscapeUpdater) = up.spatialupdater
 
 """
-    variability(up::NeutralLandscapeUpdater)
-    
-    Returns the `variability` of a given `NeutralLandscapeUpdater`. 
-    The variability of an updater is how much temporal variation there
-    will be in a generated time-series of landscapes.
+variability(up::NeutralLandscapeUpdater)
+
+Returns the `variability` of a given `NeutralLandscapeUpdater`. 
+The variability of an updater is how much temporal variation there
+will be in a generated time-series of landscapes.
 """
 variability(up::NeutralLandscapeUpdater) = up.variability
 
