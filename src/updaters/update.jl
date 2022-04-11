@@ -1,10 +1,4 @@
 """
-This file contains methods for simulating change in a
-landscape with expected amounts of spatial and temporal 
-autocorrelation. 
-"""
-
-"""
 NeutralLandscapeUpdater is an abstract type for methods
 for updating a landscape matrix
 """
