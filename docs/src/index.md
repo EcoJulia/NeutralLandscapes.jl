@@ -36,6 +36,10 @@ rand!
     update
     update!
     normalize
+    NeutralLandscapes.rate
+    NeutralLandscapes.variability
+    NeutralLandscapes.spatialupdater
+    NeutralLandscapes._update
 ```
 
 
