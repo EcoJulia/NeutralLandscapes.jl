@@ -35,9 +35,6 @@ rand!
     SpatiotemporallyAutocorrelatedUpdater
     update
     update!
-    spatialupdater,
-    variability,
-    rate
     normalize
 ```
 
