@@ -1,9 +1,9 @@
 """
-TemporallyVariableUpdater{D,S} <: NeutralLandscapeUpdater
+    TemporallyVariableUpdater{D,S} <: NeutralLandscapeUpdater
 
-A `NeutralLandscapeUpdater` that has a prescribed level of
-temporal variation (`variability`) and rate of change (`rate`),
-but no spatial correlation in where change is distributed.
+A `NeutralLandscapeUpdater` that has a prescribed level of temporal variation
+(`variability`) and rate of change (`rate`), but no spatial correlation in where
+change is distributed.
 """
 @kwdef struct TemporallyVariableUpdater{D,R,V} <: NeutralLandscapeUpdater
     spatialupdater::D = missing
@@ -12,16 +12,14 @@ but no spatial correlation in where change is distributed.
 end
 
 """
-_update(tvu::TemporallyVariableUpdater, mat)
+    _update(tvu::TemporallyVariableUpdater, mat)
 
-Updates `mat` using temporally autocorrelated change, 
-using the direction and rate parameters from `tvu`.
+Updates `mat` using temporally autocorrelated change, using the direction and
+rate parameters from `tvu`.
 
-
-#TODO this doesn't have to be a Normal distribution, 
-#could be arbitrary distribution that is continuous
-#and can have mean 0 (or that can be transformed to 
-# have mean 0)
+TODO: this doesn't have to be a Normal distribution, could be arbitrary
+distribution that is continuous and can have mean 0 (or that can be transformed
+to have mean 0)
 """
 function _update(tvu::TemporallyVariableUpdater, mat)
     U = rand(Normal(0, variability(tvu)), size(mat))

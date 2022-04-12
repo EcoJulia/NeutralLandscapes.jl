@@ -1,6 +1,6 @@
 
 """
-SpatiallyAutocorrelatedUpdater{SU,R,V}
+    SpatiallyAutocorrelatedUpdater{SU,R,V}
 
 A `NeutralLandscapeUpdater` that has a prescribed level of 
 spatial variation (`variability`) and rate of change (`rate`),
@@ -17,12 +17,13 @@ TODO: make it possible to fix a given spatial updater at each timestep.
 end
 
 """
-_update(sau::SpatiallyAutocorrelatedUpdater, mat)
+    _update(sau::SpatiallyAutocorrelatedUpdater, mat; transform=ZScoreTransform)
 
-Updates `mat` using spatially autocorrelated change, 
-using the direction, rate, and spatialupdater parameters from `sau"
+Updates `mat` using spatially autocorrelated change, using the direction, rate,
+and spatial updater parameters from `sau`.
 
-TODO: doesn't necessarily have to be a ZScoreTransform, could be arbitrary argument
+TODO: doesn't necessarily have to be a ZScoreTransform, could be arbitrary
+argument
 """
 function _update(sau::SpatiallyAutocorrelatedUpdater, mat)
     change = rand(spatialupdater(sau), size(mat))
