@@ -38,7 +38,6 @@ rand!
     spatialupdater,
     variability,
     rate
-    _update
     normalize
 ```
 
