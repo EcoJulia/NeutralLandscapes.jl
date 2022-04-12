@@ -27,6 +27,22 @@ rand
 rand!
 ```
 
+## Temporal Change
+```@docs 
+    NeutralLandscapeUpdater
+    TemporallyVariableUpdater
+    SpatiallyAutocorrelatedUpdater
+    SpatiotemporallyAutocorrelatedUpdater
+    update
+    update!
+    spatialupdater,
+    variability,
+    rate
+    _update
+    normalize
+```
+
+
 ## Other functions
 
 ```@docs
