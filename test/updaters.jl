@@ -1,0 +1,41 @@
+using NeutralLandscapes
+using Test
+
+# test it's running
+@test TemporallyVariableUpdater() != π
+@test SpatiallyAutocorrelatedUpdater() != π
+@test SpatiotemporallyAutocorrelatedUpdater() != π
+
+function testupdaters(model)
+    updater = model()
+
+    # Test defaults 
+    @test rate(updater) == 0.1 
+    @test variability(updater) == 0.1 
+
+    # Test kwargs 
+    updater = model(rate = 1.0, variability=0.05, spatialupdater=MidpointDisplacement(0.5))
+    @test rate(updater) == 1.0
+    @test variability(updater) == 0.05 
+    @test typeof(updater.spatialupdater) <: NeutralLandscapeMaker
+    @test updater.spatialupdater == MidpointDisplacement(0.5)
+
+    # Test updating
+    env = rand(MidpointDisplacement(0.5), 50, 50)
+    newenv = update(updater, env)
+    @test env != newenv
+
+    oldenv = deepcopy(env)
+    update!(updater, env)
+    @test env != oldenv 
+end 
+
+
+
+models = [
+    TemporallyVariableUpdater, 
+    SpatiallyAutocorrelatedUpdater, 
+    SpatiotemporallyAutocorrelatedUpdater
+]
+
+testupdaters.(models)

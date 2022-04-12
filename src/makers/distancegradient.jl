@@ -14,11 +14,24 @@ end
 function _landscape!(mat, alg::DistanceGradient)
     @assert maximum(alg.sources) <= length(mat)
     @assert minimum(alg.sources) > 0
-    coordinates = Matrix{Float64}(undef, (2, prod(size(mat))))
-    for (i, p) in enumerate(Iterators.product(axes(mat)...))
-        coordinates[1:2, i] .= p
+    coordinates = CartesianIndices(mat)
+    source_coordinates = map(alg.sources) do c
+        SVector(Tuple(coordinates[c]))
     end
-    tree = KDTree(coordinates[:,alg.sources])
-    mat[:] .= nn(tree, coordinates)[2]
+    idx = Vector{Int}(undef, 1)
+    dist = Vector{Float64}(undef, 1)
+    tree = KDTree(source_coordinates)
+    _write_knn!(mat, dist, idx, tree, coordinates)
+    return mat
+end
+
+# Function barrier, somehow we lose type stability with this above
+function _write_knn!(mat, dist, idx, tree, coordinates)
+    sortres = false
+    for i in eachindex(mat)
+        point = SVector(Tuple(coordinates[i]))
+        knn_point!(tree, point, sortres, dist, idx, always_false)
+        mat[i] = dist[1]
+    end
     return mat
 end

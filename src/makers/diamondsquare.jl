@@ -115,13 +115,13 @@ end
 
 # Returns the coordinates for the corners of the subsquare (x,y) given a side-length `sideLength`.
 function _subsquareCornerCoordinates(x::Int, y::Int, sideLength::Int)
-    corners = [1 .+ sideLength.*i for i in [(x,y), (x+1, y), (x, y+1), (x+1, y+1)]]
+    return (1 .+ sideLength.*i for i in ((x,y), (x+1, y), (x, y+1), (x+1, y+1)))
 end
 
 # Runs the diamond step of the `DiamondSquare` algorithm on the square defined by
 # `corners` on the matrix `mat`. The center of the square is interpolated from the
 # four corners, and is displaced. The displacement is drawn according to `alg.H` and round using `displace`
-function _diamond!(mat, alg, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+function _diamond!(mat, alg, round::Int, corners)
     centerPt = _centerCoordinate(corners)
     mat[centerPt...] = _interpolate(mat, corners) + _displace(alg.H, round)
 end
@@ -130,32 +130,32 @@ end
 # by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
 # by computing the mean value of the two corners on the edge and the center of the square, and the
 # displacing it. The displacement is drawn according to `alg.H` and round using `displace`
-function _square!(mat, alg::DiamondSquare, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+function _square!(mat, alg::DiamondSquare, round::Int, corners)
     bottomLeft,bottomRight,topLeft,topRight = corners
     leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
     centerPoint = _centerCoordinate(corners)
 
-    mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft,centerPoint]) + _displace(alg.H, round)
-    mat[bottomEdge...] = _interpolate(mat, [bottomLeft,bottomRight,centerPoint]) + _displace(alg.H, round)
-    mat[topEdge...] = _interpolate(mat, [topLeft,topRight,centerPoint]) + _displace(alg.H, round)
-    mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight,centerPoint]) + _displace(alg.H, round)
+    mat[leftEdge...] = _interpolate(mat, (topLeft,bottomLeft,centerPoint)) + _displace(alg.H, round)
+    mat[bottomEdge...] = _interpolate(mat, (bottomLeft,bottomRight,centerPoint)) + _displace(alg.H, round)
+    mat[topEdge...] = _interpolate(mat, (topLeft,topRight,centerPoint)) + _displace(alg.H, round)
+    mat[rightEdge...] = _interpolate(mat, (topRight,bottomRight,centerPoint)) + _displace(alg.H, round)
 end
 
 # Runs the square step of the `MidpointDisplacement` algorithm on the square defined
 # by `corners` on the matrix `mat`. The midpoint of each edge of this square is interpolated
 # by computing the mean value of the two corners on the edge and the center of the square, and the
 # displacing it. The displacement is drawn according to `alg.H` and round using `displace`
-function _square!(mat, alg::MidpointDisplacement, round::Int, corners::AbstractVector{Tuple{Int, Int}})
+function _square!(mat, alg::MidpointDisplacement, round::Int, corners)
     bottomLeft,bottomRight,topLeft,topRight = corners
     leftEdge, bottomEdge, topEdge, rightEdge = _edgeMidpointCoordinates(corners)
-    mat[leftEdge...] = _interpolate(mat, [topLeft,bottomLeft]) + _displace(alg.H, round)
-    mat[bottomEdge...] = _interpolate(mat, [bottomLeft,bottomRight]) + _displace(alg.H, round)
-    mat[topEdge...] = _interpolate(mat, [topLeft,topRight]) + _displace(alg.H, round)
-    mat[rightEdge...] = _interpolate(mat, [topRight,bottomRight]) + _displace(alg.H, round)
+    mat[leftEdge...] = _interpolate(mat, (topLeft,bottomLeft)) + _displace(alg.H, round)
+    mat[bottomEdge...] = _interpolate(mat, (bottomLeft,bottomRight)) + _displace(alg.H, round)
+    mat[topEdge...] = _interpolate(mat, (topLeft,topRight)) + _displace(alg.H, round)
+    mat[rightEdge...] = _interpolate(mat, (topRight,bottomRight)) + _displace(alg.H, round)
 end
 
 # Computes the mean of a set of points, represented as a list of indicies to a matrix `mat`.
-function _interpolate(mat, points::AbstractVector{Tuple{Int,Int}})
+function _interpolate(mat, points)
     return mean(mat[pt...] for pt in points)
 end
 
@@ -169,12 +169,12 @@ end
 # move from 1.0 to 0 as `round` increases.
 function _displace(H::Float64, round::Int)
     σ = 0.5^(round*H)
-    return(rand(Normal(0, σ)))
+    return rand(Normal(0, σ))
 end
 
 # Returns the center coordinate for a square defined by `corners` for the
 # `DiamondSquare` algorithm.
-function _centerCoordinate(corners::AbstractVector{Tuple{Int,Int}})
+function _centerCoordinate(corners)
     bottomLeft,bottomRight,topLeft,topRight = corners
     centerX::Int = (_xcoord(bottomLeft)+_xcoord(bottomRight)) ÷ 2
     centerY::Int = (_ycoord(topRight)+_ycoord(bottomRight)) ÷ 2
@@ -187,7 +187,7 @@ _xcoord(pt::Tuple{Int,Int}) = pt[1]
 _ycoord(pt::Tuple{Int,Int}) = pt[2]
 
 # Returns an array of midpoints for a square defined by `corners` for the `DiamondSquare` algorithm.
-function _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
+function _edgeMidpointCoordinates(corners)
     # bottom left, bottom right, top left, top right
     bottomLeft,bottomRight,topLeft,topRight = corners
 
@@ -196,7 +196,7 @@ function _edgeMidpointCoordinates(corners::AbstractVector{Tuple{Int,Int}})
     topEdgeMidpoint::Tuple{Int,Int} = ( (_xcoord(topLeft)+_xcoord(topRight))÷2, _ycoord(topLeft))
     rightEdgeMidpoint::Tuple{Int,Int} = ( _xcoord(bottomRight), (_ycoord(bottomRight)+_ycoord(topRight))÷2)
 
-    edgeMidpoints = [leftEdgeMidpoint, bottomEdgeMidpoint, topEdgeMidpoint, rightEdgeMidpoint]
+    edgeMidpoints = (leftEdgeMidpoint, bottomEdgeMidpoint, topEdgeMidpoint, rightEdgeMidpoint)
     return edgeMidpoints
 end
 

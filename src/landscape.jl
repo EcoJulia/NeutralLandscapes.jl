@@ -43,12 +43,11 @@ replaced by `NaN`.
 function mask!(array::AbstractArray{<:Float64}, maskarray::AbstractArray{<:Bool}) 
     (size(array) == size(maskarray)) || throw(DimensionMismatch("The dimensions of array, $(size(array)), and maskarray, $(size(maskarray)), must match. "))
     array[.!maskarray] .= NaN
-    array
+    return array
 end
-
 
 # Changes the matrix `mat` so that it is between `0` and `1`.
 function _rescale!(mat)
-    mat .-= NaNMath.minimum(mat)
-    mat ./= NaNMath.maximum(mat)
+    mn, mx = NaNMath.extrema(mat)
+    mat .= (mat .- mn) ./ (mx - mn)
 end 

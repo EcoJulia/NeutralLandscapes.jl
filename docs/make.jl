@@ -1,5 +1,8 @@
 using Documenter, NeutralLandscapes
 
+# For GR docs bug
+ENV["GKSwstype"] = "100"
+
 makedocs(
     sitename="Neutral Landscapes",
     authors="Timothée Poisot",

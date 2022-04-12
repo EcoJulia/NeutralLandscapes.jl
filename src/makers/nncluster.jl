@@ -23,11 +23,21 @@ function _landscape!(mat, alg::NearestNeighborCluster)
     classify!(mat, [alg.p, 1 - alg.p])
     replace!(mat, 2.0 => NaN)
     clusters, nClusters = label(mat, alg.n)
-    coordinates = _coordinatematrix(clusters)
+    coordinates = CartesianIndices(clusters)
     sources = findall(!isnan, vec(clusters))
-    tree = KDTree(coordinates[:,sources])
-    clusters[:] .= clusters[sources[nn(tree, coordinates)[1]]]
+    cluster_coordinates = map(sources) do c
+        SVector(Tuple(coordinates[c]))
+    end
+    idx = Vector{Int}(undef, 1)
+    dist = Vector{Float64}(undef, 1)
+    tree = KDTree(cluster_coordinates)
     randvals = rand(nClusters)
-    mat .= randvals[Int.(clusters)]
-    mat
+    sortres = false
+    for i in eachindex(mat)
+        point = SVector(Tuple(coordinates[i]))
+        knn_point!(tree, point, sortres, dist, idx, always_false)
+        cluster = clusters[sources[idx[1]]]
+        mat[i] = randvals[Int(cluster)]
+    end
+    return mat
 end
