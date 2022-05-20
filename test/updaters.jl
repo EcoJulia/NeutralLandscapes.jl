@@ -30,7 +30,20 @@ function testupdaters(model)
     @test env != oldenv 
 end 
 
+function testnormalize(model)
+    updater = model()
+    env = rand(MidpointDisplacement(0.5), 50, 50)
+    seq = update(updater, env, 30)
+    normseq = normalize(seq)
+    @test min(normseq...) >= 0 && max(normseq...) <= 1
+    @test length(findall(isnan, normseq[end])) == 0
 
+    env = [NaN 5 2 1 NaN; 3 4 5 2 1; 6 NaN 0 5 2; NaN NaN 0 4 5]
+    seq = update(updater, env, 30)
+    normseq = normalize(seq) 
+    @test length(findall(isnan, normseq[end])) == 5
+
+end
 
 models = [
     TemporallyVariableUpdater, 
@@ -38,4 +51,6 @@ models = [
     SpatiotemporallyAutocorrelatedUpdater
 ]
 
+
+testnormalize.(models)
 testupdaters.(models)
