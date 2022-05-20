@@ -41,8 +41,8 @@ and 1. Note that this does not preserve the `rate` parameter for a given
 difference between the total maximum and total minimum across all `mats`.
 """
 function normalize(mats::Vector{M}) where {M<:AbstractMatrix}
-    mins, maxs = findmin.(mats), findmax.(mats)
-    totalmin, totalmax = findmin([x[1] for x in mins])[1], findmax([x[1] for x in maxs])[1]
+    mins, maxs = [NaNMath.min(x...) for x in mats], [NaNMath.max(x...) for x in mats]
+    totalmin, totalmax = NaNMath.min(mins...), NaNMath.max(maxs...)
     returnmats = copy(mats)
     for (i,mat) in enumerate(mats)
         returnmats[i] = (mat .- totalmin) ./ (totalmax - totalmin)
