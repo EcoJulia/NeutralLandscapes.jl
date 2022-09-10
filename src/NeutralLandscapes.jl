@@ -52,6 +52,11 @@ export SpatiotemporallyAutocorrelatedUpdater
 export rate, variability
 export normalize
 
+using Requires
+function __init__()
+    @require SimpleSDMLayers="2c645270-77db-11e9-22c3-0f302a89c64c" include(joinpath("integrations", "simplesdmlayers.jl"))
+end
+
 end # module
 
 

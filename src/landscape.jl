@@ -46,6 +46,7 @@ function mask!(array::AbstractArray{<:Float64}, maskarray::AbstractArray{<:Bool}
     return array
 end
 
+
 # Changes the matrix `mat` so that it is between `0` and `1`.
 function _rescale!(mat)
     mn, mx = NaNMath.extrema(mat)
