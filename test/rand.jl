@@ -27,6 +27,7 @@ algorithms = (
    NearestNeighborCluster(; n=:diagonal),
    NearestNeighborCluster(0.2, :diagonal),
    NoGradient(),
+   Patches(),
    PerlinNoise(),
    PerlinNoise(; octaves=3, lacunarity=3, persistance=0.3),
    PerlinNoise((1, 2), 3, 2, 0.2),

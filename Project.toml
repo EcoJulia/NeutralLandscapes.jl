@@ -6,6 +6,7 @@ version = "0.1.2"
 [deps]
 DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+HaltonSequences = "13907d55-377f-55d6-a9d6-25ac19e11b95"
 NaNMath = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 NearestNeighbors = "b8a86587-4115-5ab1-83bc-aa920d37bbce"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -15,9 +16,7 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
 [compat]
 DataStructures = "0.18"
-Distributions = "0.24, 0.25"
 NaNMath = "0.3, 1.0"
 NearestNeighbors = "0.4"
-StatsBase = "0.33"
 Requires = "1.3"
-julia = "1.6"
+StatsBase = "0.33"

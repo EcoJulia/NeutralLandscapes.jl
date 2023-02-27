@@ -4,10 +4,11 @@ import NaNMath
 using StatsBase: sample, ZScoreTransform, fit, transform
 using Random: rand!
 using Statistics: quantile, mean
-using Distributions: Normal
+using Distributions: Normal, LogNormal, MvNormal, Categorical, pdf
 using NearestNeighbors: KDTree, knn, nn, always_false, knn_point!, SVector
 using DataStructures: IntDisjointSets, union!, find_root, push!
 using Base: @kwdef
+using HaltonSequences: haltonvalue
 
 export rand, rand!
 export classify!, classify, blend, label
@@ -25,6 +26,7 @@ export PerlinNoise
 export PlanarGradient
 export RectangularCluster
 export WaveSurface
+export Patches 
 
 include("landscape.jl")
 include("classify.jl")
@@ -39,6 +41,7 @@ include("makers/perlinnoise.jl")
 include("makers/planargradient.jl")
 include("makers/rectangularcluster.jl")
 include("makers/wavesurface.jl")
+include("makers/patches.jl")
 
 include("updaters/update.jl")
 include("updaters/temporal.jl")
@@ -54,7 +57,7 @@ export normalize
 
 using Requires
 function __init__()
-    @require SimpleSDMLayers="2c645270-77db-11e9-22c3-0f302a89c64c" include(joinpath("integrations", "simplesdmlayers.jl"))
+    @require SpeciesDistributionToolkit="72b53823-5c0b-4575-ad0e-8e97227ad13b" include(joinpath("integrations", "simplesdmlayers.jl"))
 end
 
 end # module
