@@ -1,5 +1,4 @@
 using Documenter, NeutralLandscapes
-using Deps
 import Literate
 
 # For GR docs bug
