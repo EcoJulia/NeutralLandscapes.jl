@@ -1,4 +1,5 @@
 using Documenter, NeutralLandscapes
+using Deps
 import Literate
 
 # For GR docs bug
@@ -31,7 +32,6 @@ makedocs(;
 )
 
 deploydocs(
-    deps=Deps.pip("pygments", "python-markdown-math"),
     repo="github.com/EcoJulia/NeutralLandscapes.jl.git",
     devbranch="main",
     push_preview=true
