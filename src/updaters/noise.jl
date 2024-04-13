@@ -34,7 +34,8 @@ function _generate_signal(ng::NoiseGenerator{I,F}) where {I,F}
 end 
 
 function _generate_noise(ng::NoiseGenerator{I,F}) where {I,F}
-    # The original algorithm doubles the sequence length for numerical stability of FFT over the 1:n interval for  
+    # The original algorithm doubles the sequence length for numerical stability
+    # of FFT recovering frequency over the 1:n interval for pulse value  
     n = ng.timesteps
     H, W = _pulse_values(ng.α, 2n), Distributions.rand(Normal(0,1), 2n)
     H_ft, W_ft = imag.([fft(H), fft(W)])
