@@ -9,6 +9,7 @@ using NearestNeighbors: KDTree, knn, nn, always_false, knn_point!, SVector
 using DataStructures: IntDisjointSets, union!, find_root, push!
 using Base: @kwdef
 using HaltonSequences: haltonvalue
+using FFTW: fft, ifft
 
 export rand, rand!
 export classify!, classify, blend, label
@@ -44,10 +45,12 @@ include("makers/wavesurface.jl")
 include("makers/patches.jl")
 
 include("updaters/update.jl")
+include("updaters", "noise.jl")
 include("updaters/temporal.jl")
 include("updaters/spatial.jl")
 include("updaters/spatiotemporal.jl")
 export update, update!
+export NoiseGenerator
 export NeutralLandscapeUpdater
 export TemporallyVariableUpdater
 export SpatiallyAutocorrelatedUpdater
