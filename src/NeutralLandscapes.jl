@@ -55,11 +55,6 @@ export SpatiotemporallyAutocorrelatedUpdater
 export rate, variability
 export normalize
 
-using Requires
-function __init__()
-    @require SpeciesDistributionToolkit="72b53823-5c0b-4575-ad0e-8e97227ad13b" include(joinpath("integrations", "simplesdmlayers.jl"))
-end
-
 end # module
 
 
