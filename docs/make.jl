@@ -1,37 +1,26 @@
-using Documenter, NeutralLandscapes
-import Literate
+push!(LOAD_PATH, "../src/")
 
-# For GR docs bug
-ENV["GKSwstype"] = "100"
-
-vignettes = filter(
-    endswith(".jl"),
-    readdir(joinpath(@__DIR__, "src", "vignettes"); join = true, sort = true),
-)
-for vignette in vignettes
-    Literate.markdown(
-        vignette,
-        joinpath(@__DIR__, "src", "vignettes");
-        config = Dict("credit" => false, "execute" => true),
-    )
-end
+using Documenter
+using DocumenterCitations
+using DocumenterVitepress
+using NeutralLandscapes
 
 makedocs(;
-    sitename = "NeutralLandscapes",
-    authors = "M.D. Catchen",
-    modules = [NeutralLandscapes],
-    pages = [
+    sitename="NeutralLandscapes",
+    authors="M.D. Catchen",
+    modules=[NeutralLandscapes],
+    pages=[
         "Index" => "index.md",
         "Gallery" => "gallery.md",
-        "Vignettes" => [
-            "Overview" => "vignettes/overview.md",
-        ],
     ],
-    checkdocs = :all,
+    format = DocumenterVitepress.MarkdownVitepress(
+        repo="https://github.com/EcoJulia/NeutralLandscapes.jl",
+        devurl="dev"
+     ),
+    warnonly=true
 )
 
 deploydocs(
     repo="github.com/EcoJulia/NeutralLandscapes.jl.git",
-    devbranch="main",
     push_preview=true
 )
