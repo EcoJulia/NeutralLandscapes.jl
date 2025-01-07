@@ -13,6 +13,10 @@ makedocs(;
         "Index" => "index.md",
         "Gallery" => "gallery.md",
     ],
+    format = DocumenterVitepress.MarkdownVitepress(
+        repo="https://github.com/EcoJulia/NeutralLandscapes.jl",
+        devurl="dev"
+     ),
     warnonly=true
 )
 
