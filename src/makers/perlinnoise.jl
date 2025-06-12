@@ -23,7 +23,7 @@ Note: This is a memory-intensive algorithm with some settings. Be careful using 
 prime numbers for `period` when also using a large array size, high lacuarity and/or many 
 octaves. Memory use scales with the lowest common multiple of `periods`.
 """
-@kwdef struct PerlinNoise <: NeutralLandscapeMaker 
+@kwdef struct PerlinNoise <: NeutralLandscapeMaker
     periods::Tuple{Int,Int} = (1, 1)
     octaves::Int = 1
     lacunarity::Int = 2
@@ -50,35 +50,35 @@ function _landscape!(A, alg::PerlinNoise)
     noise = zeros(eltype(A), (dim, dim))
     meshbuf1 = Array{eltype(A),2}(undef, dim, dim)
     meshbuf2 = Array{eltype(A),2}(undef, dim, dim)
-    nbufs = ntuple(_->Array{eltype(A),2}(undef, dim, dim), 4)
+    nbufs = ntuple(_ -> Array{eltype(A),2}(undef, dim, dim), 4)
     for octave in 0:alg.octaves-1
         octave_noise!(noise, meshbuf1, meshbuf2, nbufs, alg, octave, dim, dim)
     end
 
     # Randomly extract the desired array size
-    noiseview = _view_from_square(noise, size(A)...)    
-    
+    noiseview = _view_from_square(noise, size(A)...)
+
     # Rescale the Perlin noise to mimic different kinds of valley bottoms
     return if alg.valley == :u
         A .= noiseview
     elseif alg.valley == :v
         A .= abs.(noiseview)
     elseif alg.valley == :-
-        A .= noiseview.^2
-    else 
+        A .= noiseview .^ 2
+    else
         error("$(alg.valley) not recognised for `valley` use `:u`, `:v` or `:-`")
     end
 end
 
 function octave_noise!(
     noise, m1, m2, (n11, n21, n12, n22), alg::PerlinNoise, octave, nrow, ncol
-)        
-    f(t) = @fastmath 6 * t ^ 5 - 15 * t ^ 4 + 10 * t ^ 3 # Wut
+)
+    f(t) = @fastmath 6 * t^5 - 15 * t^4 + 10 * t^3 # Wut
 
     # Mesh
     rp, cp = alg.periods .* alg.lacunarity^(octave)
     delta = (rp / nrow, cp / ncol)
-    ranges = range(0, rp-delta[1], length=nrow), range(0, cp-delta[2], length=ncol)
+    ranges = range(0, rp - delta[1], length=nrow), range(0, cp - delta[2], length=ncol)
     _rem_meshes!(m1, m2, ranges...)
 
     # Gradients
@@ -90,32 +90,32 @@ function octave_noise!(
     d = (nrow ÷ rp, ncol ÷ cp)
     grad = repeat(gradients, inner=[d[1], d[2], 1])
 
-    g111 = @view grad[1:ncol,         1:ncol,         1]
-    g211 = @view grad[end-nrow+1:end, 1:ncol,         1]
-    g121 = @view grad[1:ncol,         end-ncol+1:end, 1]
+    g111 = @view grad[1:ncol, 1:ncol, 1]
+    g211 = @view grad[end-nrow+1:end, 1:ncol, 1]
+    g121 = @view grad[1:ncol, end-ncol+1:end, 1]
     g221 = @view grad[end-nrow+1:end, end-ncol+1:end, 1]
-    g112 = @view grad[1:ncol,         1:ncol,         2]
-    g212 = @view grad[end-nrow+1:end, 1:ncol,         2]
-    g122 = @view grad[1:ncol,         end-ncol+1:end, 2]
+    g112 = @view grad[1:ncol, 1:ncol, 2]
+    g212 = @view grad[end-nrow+1:end, 1:ncol, 2]
+    g122 = @view grad[1:ncol, end-ncol+1:end, 2]
     g222 = @view grad[end-nrow+1:end, end-ncol+1:end, 2]
 
     # Ramps
-    n11 .= ((m1     .+ m2     ) .* g111 .+ (m1     .+ m2     ) .* g112)
-    n21 .= ((m1 .-1 .+ m2     ) .* g211 .+ (m1 .-1 .+ m2     ) .* g212)
-    n12 .= ((m1     .+ m2 .- 1) .* g121 .+ (m1     .+ m2 .- 1) .* g122)
-    n22 .= ((m1 .-1 .+ m2 .- 1) .* g221 .+ (m1 .-1 .+ m2 .- 1) .* g222)
+    n11 .= (m1 .* g111 .+ m2 .* g112)  # Bottom-left
+    n21 .= ((m1 .- 1) .* g211 .+ m2 .* g212)  # Top-left
+    n12 .= (m1 .* g121 .+ (m2 .- 1) .* g122)  # Bottom-right
+    n22 .= ((m1 .- 1) .* g221 .+ (m2 .- 1) .* g222)  # Top-right
 
     # Interpolation
     m1 .= f.(m1)
     m2 .= f.(m2)
-    noise .+= sqrt(2) .*  (alg.persistance ^ octave) .*
-        ((1 .- m2) .* (n11 .* (1 .- m1) .+ m1 .* n21) .+ 
-               m2  .* (n12 .* (1 .- m1) .+ m1 .* n22))
+    noise .+= sqrt(2) .* (alg.persistance^octave) .*
+              ((1 .- m2) .* (n11 .* (1 .- m1) .+ m1 .* n21) .+
+               m2 .* (n12 .* (1 .- m1) .+ m1 .* n22))
     return noise
 end
 
 function _rem_meshes!(m1, m2, x, y)
-    for (i, ival) in enumerate(x), j in 1:length(y) 
+    for (i, ival) in enumerate(x), j in 1:length(y)
         @fastmath m1[i, j] = ival % 1
     end
     for i in 1:length(x), (j, jval) in enumerate(y)
@@ -127,7 +127,7 @@ end
 function _view_from_square(source, nrow, ncol)
     # Extract a portion of the array to match the dimensions
     dim = size(source, 1)
-    startrow = rand(1:(dim - nrow + 1))
-    startcol = rand(1:(dim - ncol + 1))
-    return @view source[startrow:startrow + nrow - 1, startcol:startcol + ncol - 1]
+    startrow = rand(1:(dim-nrow+1))
+    startcol = rand(1:(dim-ncol+1))
+    return @view source[startrow:startrow+nrow-1, startcol:startcol+ncol-1]
 end
