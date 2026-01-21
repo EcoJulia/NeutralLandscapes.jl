@@ -7,7 +7,11 @@ using Statistics: quantile, mean
 using Distributions: Normal, LogNormal, MvNormal, Categorical, pdf
 using NearestNeighbors: KDTree, knn, nn, knn_point!, SVector
 
-const always_false = isdefined(NearestNeighbors, :always_false) ? NearestNeighbors.always_false : Returns(false)
+import NearestNeighbors
+always_false = Returns(false)
+if isdefined(NearestNeighbors, :always_false)
+    global always_false = NearestNeighbors.always_false
+end
 
 using DataStructures: IntDisjointSets, union!, find_root, push!
 using Base: @kwdef
