@@ -5,7 +5,10 @@ using StatsBase: sample, ZScoreTransform, fit, transform
 using Random: rand!
 using Statistics: quantile, mean
 using Distributions: Normal, LogNormal, MvNormal, Categorical, pdf
-using NearestNeighbors: KDTree, knn, nn, always_false, knn_point!, SVector
+using NearestNeighbors: KDTree, knn, nn, knn_point!, SVector
+
+const always_false = isdefined(NearestNeighbors, :always_false) ? NearestNeighbors.always_false : Returns(false)
+
 using DataStructures: IntDisjointSets, union!, find_root, push!
 using Base: @kwdef
 using HaltonSequences: haltonvalue
