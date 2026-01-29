@@ -5,7 +5,14 @@ using StatsBase: sample, ZScoreTransform, fit, transform
 using Random: rand!
 using Statistics: quantile, mean
 using Distributions: Normal, LogNormal, MvNormal, Categorical, pdf
-using NearestNeighbors: KDTree, knn, nn, always_false, knn_point!, SVector
+using NearestNeighbors: KDTree, knn, nn, knn_point!, SVector
+
+import NearestNeighbors
+always_false = Returns(false)
+if isdefined(NearestNeighbors, :always_false)
+    global always_false = NearestNeighbors.always_false
+end
+
 using DataStructures: IntDisjointSets, union!, find_root, push!
 using Base: @kwdef
 using HaltonSequences: haltonvalue
