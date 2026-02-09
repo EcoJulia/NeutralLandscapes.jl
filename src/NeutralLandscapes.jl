@@ -16,6 +16,7 @@ end
 using DataStructures: IntDisjointSets, union!, find_root, push!
 using Base: @kwdef
 using HaltonSequences: haltonvalue
+using FFTW: fft, ifft
 
 export rand, rand!
 export classify!, classify, blend, label
@@ -37,24 +38,26 @@ export Patches
 
 include("landscape.jl")
 include("classify.jl")
-include("makers/diamondsquare.jl")
-include("makers/discretevoronoi.jl")
-include("makers/distancegradient.jl")
-include("makers/edgegradient.jl")
-include("makers/nncluster.jl")
-include("makers/nnelement.jl")
-include("makers/nogradient.jl")
-include("makers/perlinnoise.jl")
-include("makers/planargradient.jl")
-include("makers/rectangularcluster.jl")
-include("makers/wavesurface.jl")
-include("makers/patches.jl")
+include(joinpath("makers", "diamondsquare.jl"))
+include(joinpath("makers", "discretevoronoi.jl"))
+include(joinpath("makers", "distancegradient.jl"))
+include(joinpath("makers", "edgegradient.jl"))
+include(joinpath("makers", "nncluster.jl"))
+include(joinpath("makers", "nnelement.jl"))
+include(joinpath("makers", "nogradient.jl"))
+include(joinpath("makers", "perlinnoise.jl"))
+include(joinpath("makers", "planargradient.jl"))
+include(joinpath("makers", "rectangularcluster.jl"))
+include(joinpath("makers","wavesurface.jl"))
+include(joinpath("makers", "patches.jl"))
 
-include("updaters/update.jl")
-include("updaters/temporal.jl")
-include("updaters/spatial.jl")
-include("updaters/spatiotemporal.jl")
+include(joinpath("updaters", "update.jl"))
+include(joinpath("updaters", "noise.jl"))
+include(joinpath("updaters", "temporal.jl"))
+include(joinpath("updaters", "spatial.jl"))
+include(joinpath("updaters", "spatiotemporal.jl"))
 export update, update!
+export NoiseGenerator
 export NeutralLandscapeUpdater
 export TemporallyVariableUpdater
 export SpatiallyAutocorrelatedUpdater
