@@ -17,7 +17,7 @@ NeutralLandscapeMaker
 Abstract supertype that all algorithms are descended from. A new algorithm must minimally implement a `_landscape!` method for this type.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/landscape.jl#L3-L8" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/landscape.jl#L3-L8" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -45,7 +45,7 @@ The degree of spatial autocorrelation is controlled by a parameter `H`, which va
 A similar algorithm, midpoint-displacement, functions almost identically, except that in DiamondSquare, the square step interpolates edge midpoints from the nearest two corners and the square&#39;s center, where as  midpoint-displacement only interpolates from the nearest corners (see `MidpointDisplacement`).
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/diamondsquare.jl#L1-L26" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/diamondsquare.jl#L1-L26" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -65,7 +65,7 @@ DiscreteVoronoi(n)
 This type provides a rasterization of a Voronoi-like diagram. Assigns a value to each patch using a 1-NN algorithmm with `n` initial clusters. It is a `NearestNeighborElement` algorithmm with `k` neighbors set to 1. The default is to use three clusters.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/discretevoronoi.jl#L1-L11" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/discretevoronoi.jl#L1-L11" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -85,7 +85,7 @@ DistanceGradient(sources)
 The `sources` field is a `Vector{Integer}` of _linear_ indices of the matrix,  from which the distance must be calculated.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/distancegradient.jl#L1-L9" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/distancegradient.jl#L1-L9" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -105,7 +105,7 @@ EdgeGradient(direction)
 This type is used to generate an edge gradient landscape, where values change as a bilinear function of the _x_ and _y_ coordinates. The direction is expressed as a floating point value, which will be in _[0,360]_. The inner constructor takes the mod of the value passed and 360, so that a value that is out of the correct interval will be corrected.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/edgegradient.jl#L1-L12" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/edgegradient.jl#L1-L12" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -126,7 +126,7 @@ Creates a midpoint-displacement algorithm object `MidpointDisplacement`.  The de
 A similar algorithm, diamond-square, functions almost identically, except that in diamond-square, the square step interpolates edge midpoints from the nearest two corners and the square&#39;s center, where as  `MidpointDisplacement` only interpolates from the nearest corners (see `DiamondSquare`).
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/diamondsquare.jl#L35-L49" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/diamondsquare.jl#L35-L49" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -146,7 +146,7 @@ NearestNeighborCluster(p, [n=:rook])
 Create a random cluster nearest-neighbour neutral landscape model with  values ranging 0-1. `p` sets the density of original clusters, and `n` sets the neighborhood for clustering (see `?label` for neighborhood options)
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/nncluster.jl#L1-L10" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/nncluster.jl#L1-L10" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -166,7 +166,7 @@ NearestNeighborElement(n, [k=1])
 Assigns a value to each patch using a k-NN algorithmm with `n` initial clusters and `k` neighbors. The default is to use three cluster and a single neighbor.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/nnelement.jl#L1-L9" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/nnelement.jl#L1-L9" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -185,7 +185,7 @@ NoGradient()
 This type is used to generate a random landscape with no gradients
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/nogradient.jl#L1-L7" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/nogradient.jl#L1-L7" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -219,7 +219,7 @@ Create a Perlin noise neutral landscape model with values ranging 0-1.
 Note: This is a memory-intensive algorithm with some settings. Be careful using larger  prime numbers for `period` when also using a large array size, high lacuarity and/or many  octaves. Memory use scales with the lowest common multiple of `periods`.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/perlinnoise.jl#L1-L25" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/perlinnoise.jl#L1-L25" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -239,7 +239,7 @@ PlanarGradient(direction)
 This type is used to generate a planar gradient landscape, where values change as a bilinear function of the _x_ and _y_ coordinates. The direction is expressed as a floating point value, which will be in _[0,360]_. The inner constructor takes the mod of the value passed and 360, so that a value that is out of the correct interval will be corrected.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/planargradient.jl#L1-L12" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/planargradient.jl#L1-L12" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -259,7 +259,7 @@ RectangularCluster(minimum, [maximum=4])
 Fills the landscape with rectangles containing a random value. The size of each rectangle/patch is between `minimum` and `maximum` (the two can be equal for a fixed size rectangle).
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/rectangularcluster.jl#L1-L10" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/rectangularcluster.jl#L1-L10" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -279,7 +279,7 @@ WaveSurface(direction, [periods=1])
 Creates a sinusoidal landscape with a `direction` and a number of `periods`. If neither are specified, there will be a single period of random direction.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/makers/wavesurface.jl#L1-L9" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/makers/wavesurface.jl#L1-L9" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -298,7 +298,7 @@ rand(alg, dims::Tuple{Vararg{Int64,2}}; mask=nothing) where {T <: Integer}
 Creates a landscape of size `dims` (a tuple of two integers) following the model defined by `alg`. The `mask` argument accepts a matrix of boolean values, and is passed to `mask!` if it is not `nothing`. 
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/landscape.jl#L11-L17" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/landscape.jl#L11-L17" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -315,7 +315,7 @@ rand!(mat, alg) where {IT <: Integer}
 Fill the matrix `mat` with a landscape created following the model defined by `alg`. The `mask` argument accepts a matrix of boolean values, and is passed to `mask!` if it is not `nothing`. 
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/landscape.jl#L24-L30" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/landscape.jl#L24-L30" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -334,7 +334,7 @@ NeutralLandscapeUpdater
 NeutralLandscapeUpdater is an abstract type for methods for updating a landscape matrix
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/update.jl#L1-L6" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/update.jl#L1-L6" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -351,7 +351,7 @@ TemporallyVariableUpdater{D,S} <: NeutralLandscapeUpdater
 A `NeutralLandscapeUpdater` that has a prescribed level of temporal variation (`variability`) and rate of change (`rate`), but no spatial correlation in where change is distributed.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/temporal.jl#L1-L7" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/temporal.jl#L1-L7" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -370,7 +370,7 @@ A `NeutralLandscapeUpdater` that has a prescribed level of  spatial variation (`
 TODO: make it possible to fix a given spatial updater at each timestep.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/spatial.jl#L2-L12" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/spatial.jl#L2-L12" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -389,7 +389,7 @@ A `NeutralLandscapeUpdater` that has a prescribed level of spatial and temporal 
 TODO: perhaps spatial and temporal should each have their own variability param
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/spatiotemporal.jl#L2-L12" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/spatiotemporal.jl#L2-L12" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -406,7 +406,7 @@ update(updater::T, mat)
 Returns one-timestep applied to `mat` based on the `NeutralLandscapeUpdater` provided (`updater`).
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/update.jl#L54-L59" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/update.jl#L54-L59" target="_blank" rel="noreferrer">source</a></Badge>
 
 
 
@@ -418,7 +418,7 @@ update(updater::T, mat, n::I)
 Returns a sequence of length `n` where the original neutral landscape `mat` is updated by the `NeutralLandscapeUpdater` `update` for `n` timesteps.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/update.jl#L65-L70" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/update.jl#L65-L70" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -435,7 +435,7 @@ update!(updater::T, mat)
 Updates a landscape `mat` in-place by directly mutating `mat`.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/update.jl#L81-L85" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/update.jl#L81-L85" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -452,7 +452,7 @@ normalize(mats::Vector{M})
 Normalizes a vector of neutral landscapes `mats` such that all values between 0 and 1. Note that this does not preserve the `rate` parameter for a given `NeutralLandscapeUpdater`, and instead rescales it proportional to the difference between the total maximum and total minimum across all `mats`.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/update.jl#L35-L42" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/update.jl#L35-L42" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -469,7 +469,7 @@ spatialupdater(up::NeutralLandscapeUpdater)
 All `NeutralLandscapeUpdater`s have a field `rate` which defines the expected (or mean) change across all cells per timestep.  
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/update.jl#L9-L14" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/update.jl#L9-L14" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -486,7 +486,7 @@ variability(up::NeutralLandscapeUpdater)
 Returns the `variability` of a given `NeutralLandscapeUpdater`. The variability of an updater is how much temporal variation there will be in a generated time-series of landscapes.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/update.jl#L26-L32" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/update.jl#L26-L32" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -503,7 +503,7 @@ spatialupdater(up::NeutralLandscapeUpdater)
 All `NeutralLandscapeUpdater`&#39;s have a `spatialupdater` field which is either a `NeutralLandscapeMaker`, or `Missing` (in the case of temporally correlated updaters).
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/update.jl#L17-L23" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/update.jl#L17-L23" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -522,7 +522,7 @@ Updates `mat` using temporally autocorrelated change, using the direction and ra
 TODO: this doesn&#39;t have to be a Normal distribution, could be arbitrary distribution that is continuous and can have mean 0 (or that can be transformed to have mean 0)
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/temporal.jl#L14-L23" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/temporal.jl#L14-L23" target="_blank" rel="noreferrer">source</a></Badge>
 
 
 
@@ -536,7 +536,7 @@ Updates `mat` using spatially autocorrelated change, using the direction, rate, 
 TODO: doesn&#39;t necessarily have to be a ZScoreTransform, could be arbitrary argument
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/spatial.jl#L19-L27" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/spatial.jl#L19-L27" target="_blank" rel="noreferrer">source</a></Badge>
 
 
 
@@ -550,7 +550,7 @@ Updates `mat` using temporally autocorrelated change, using the direction, rate,
 TODO: doesn&#39;t necessarily have to be a Normal distribution or ZScoreTransform, could be arbitrary argument
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/updaters/spatiotemporal.jl#L20-L28" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/updaters/spatiotemporal.jl#L20-L28" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -569,7 +569,7 @@ classify(array, weights[, mask])
 Classify an array into proportions based upon a list of class weights.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/classify.jl#L22-L26" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/classify.jl#L22-L26" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -586,7 +586,7 @@ classify!(array, weights[, mask])
 Classify an array in-place into proportions based upon a list of class weights.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/classify.jl#L1-L5" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/classify.jl#L1-L5" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -603,7 +603,7 @@ blend(arrays[, scaling])
 Blend arrays weighted by scaling factors.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/classify.jl#L49-L53" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/classify.jl#L49-L53" target="_blank" rel="noreferrer">source</a></Badge>
 
 
 
@@ -615,7 +615,7 @@ blend(clusterarray, arrays[, scaling])
 Blend a primary cluster NLM with other arrays in which the mean value per  cluster is weighted by scaling factors.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/classify.jl#L62-L67" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/classify.jl#L62-L67" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -632,7 +632,7 @@ label(mat[, neighborhood = :rook])
 Assign an arbitrary label to all clusters of contiguous matrix elements with the same value. Returns a matrix of values and the total number of final clusters. The `neighborhood` structure can be  `:rook`     `:queen`    `:diagonal`  0 1 0        1 1 1        0 1 1  1 x 1        1 x 1        1 x 1  0 1 0        1 1 1        1 1 0  `:rook` is the default
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/classify.jl#L81-L92" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/classify.jl#L81-L92" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
@@ -649,7 +649,7 @@ mask!(array::AbstractArray{<:AbstractFloat}, maskarray::AbstractArray{<:Abstract
 Modifies `array` so that the positions at which `maskarray` is `false` are replaced by `NaN`.
 
 
-<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/200cd3ee29213131f72fde4d94c0b9d65ffb82c5/src/landscape.jl#L37-L42" target="_blank" rel="noreferrer">source</a></Badge>
+<Badge type="info" class="source-link" text="source"><a href="https://github.com/EcoJulia/NeutralLandscapes.jl/blob/c93d640e32d2f3f8ed0e645f63075ad0edeb71f8/src/landscape.jl#L37-L42" target="_blank" rel="noreferrer">source</a></Badge>
 
 </details>
 
