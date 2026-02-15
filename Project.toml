@@ -1,7 +1,7 @@
 name = "NeutralLandscapes"
 uuid = "71847384-8354-4223-ac08-659a5128069f"
 authors = ["Timothée Poisot <timothee.poisot@umontreal.ca>", "Michael Krabbe Borregaard <mkborregaard@sund.ku.dk>", "Michael David Catchen <michael.catchen@mail.mcgill.ca>", "Rafael Schouten <rafaelschouten@gmail.com>", "Virgile Baudrot <virgile.baudrot@posteo.net>"]
-version = "0.1.6"
+version = "0.1.5"
 
 [deps]
 DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
