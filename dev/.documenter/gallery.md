@@ -20,7 +20,7 @@ demolandscape (generic function with 1 method)
 demolandscape(NoGradient())
 ```
 
-![](bpcalyq.png){width=600px height=400px}
+![](hzxpsrm.png){width=600px height=400px}
 
 ## Planar gradient {#Planar-gradient}
 
@@ -28,7 +28,7 @@ demolandscape(NoGradient())
 demolandscape(PlanarGradient(35))
 ```
 
-![](cfzjcla.png){width=600px height=400px}
+![](foskcwl.png){width=600px height=400px}
 
 ## Edge gradient {#Edge-gradient}
 
@@ -36,7 +36,7 @@ demolandscape(PlanarGradient(35))
 demolandscape(EdgeGradient(186))
 ```
 
-![](pyyybfm.png){width=600px height=400px}
+![](gbxsywa.png){width=600px height=400px}
 
 ## Wave surface {#Wave-surface}
 
@@ -44,7 +44,7 @@ demolandscape(EdgeGradient(186))
 demolandscape(WaveSurface(35, 3))
 ```
 
-![](lnlgqyh.png){width=600px height=400px}
+![](cjvhihh.png){width=600px height=400px}
 
 ## Rectangular cluster {#Rectangular-cluster}
 
@@ -52,7 +52,7 @@ demolandscape(WaveSurface(35, 3))
 demolandscape(RectangularCluster())
 ```
 
-![](wgrocaj.png){width=600px height=400px}
+![](xqmmtkc.png){width=600px height=400px}
 
 ## Distance gradient {#Distance-gradient}
 
@@ -61,7 +61,7 @@ sources = unique(rand(1:40000, 50))
 demolandscape(DistanceGradient(sources))
 ```
 
-![](nbauvin.png){width=600px height=400px}
+![](rpngypb.png){width=600px height=400px}
 
 ## Nearest-neighbor element {#Nearest-neighbor-element}
 
@@ -69,7 +69,7 @@ demolandscape(DistanceGradient(sources))
 heatmap(rand(NearestNeighborElement(20, 1), (45, 45)))
 ```
 
-![](znpzdoz.png){width=600px height=400px}
+![](sjxsuva.png){width=600px height=400px}
 
 ## Voronoi {#Voronoi}
 
@@ -77,7 +77,7 @@ heatmap(rand(NearestNeighborElement(20, 1), (45, 45)))
 demolandscape(DiscreteVoronoi(40))
 ```
 
-![](fusmnue.png){width=600px height=400px}
+![](tybujik.png){width=600px height=400px}
 
 ## Perlin Noise {#Perlin-Noise}
 
@@ -85,7 +85,7 @@ demolandscape(DiscreteVoronoi(40))
 demolandscape(PerlinNoise())
 ```
 
-![](ccdmoax.png){width=600px height=400px}
+![](oqddydh.png){width=600px height=400px}
 
 ## Classify landscape {#Classify-landscape}
 
@@ -94,7 +94,7 @@ sources = unique(rand(1:40000, 50))
 heatmap(NeutralLandscapes.classify!(rand(DistanceGradient(sources), (200, 200)), [0.5, 1, 1, 0.5]))
 ```
 
-![](pkntvyh.png){width=600px height=400px}
+![](khbufqh.png){width=600px height=400px}
 
 ## Diamond Square {#Diamond-Square}
 
@@ -102,7 +102,7 @@ heatmap(NeutralLandscapes.classify!(rand(DistanceGradient(sources), (200, 200)),
 demolandscape(DiamondSquare())
 ```
 
-![](wgobgst.png){width=600px height=400px}
+![](hnrvgxc.png){width=600px height=400px}
 
 ## Midpoint Displacement {#Midpoint-Displacement}
 
@@ -110,4 +110,4 @@ demolandscape(DiamondSquare())
 demolandscape(MidpointDisplacement())
 ```
 
-![](mjlktow.png){width=600px height=400px}
+![](tbxekav.png){width=600px height=400px}
