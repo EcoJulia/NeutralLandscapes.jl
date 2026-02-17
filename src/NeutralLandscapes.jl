@@ -49,7 +49,6 @@ include("makers/planargradient.jl")
 include("makers/rectangularcluster.jl")
 include("makers/wavesurface.jl")
 include("makers/patches.jl")
-
 include("updaters/update.jl")
 include("updaters/temporal.jl")
 include("updaters/spatial.jl")
